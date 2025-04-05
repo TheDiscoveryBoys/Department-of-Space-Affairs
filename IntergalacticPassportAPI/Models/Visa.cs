@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -7,8 +7,8 @@ using Dapper;
 
 namespace IntergalacticPassportAPI.Models
 {
-    [Table("passport")]
-    public class Passport
+    [Table("visa")]
+    public class Visa
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
@@ -18,7 +18,19 @@ namespace IntergalacticPassportAPI.Models
         public string UserId { get; set; }
 
         [Required]
-        public int StatusId{ get; set; }
+        public string DestinationPlanet { get; set; }
+
+        [Required]
+        public string TravelReason { get; set; }
+
+        [Required]
+        public DateTime StartDate { get; set; }
+
+        [Required]
+        public DateTime EndDate { get; set; }
+
+        [Required]
+        public int StatusId { get; set; }
 
         [Required]
         public DateTime SubmittedAt { get; set; }
@@ -27,4 +39,5 @@ namespace IntergalacticPassportAPI.Models
 
         public string? OfficerId { get; set; }
     }
+
 }

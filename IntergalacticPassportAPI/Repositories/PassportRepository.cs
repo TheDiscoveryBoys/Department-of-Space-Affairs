@@ -22,7 +22,7 @@ namespace IntergalacticPassportAPI.Data
         public async Task<IEnumerable<Passport>> GetAllAsync()
         {
             using var connection = CreateConnection();
-            return await connection.QueryAsync<Passport>("SELECT * FROM passports ORDER BY id;");
+            return await connection.QueryAsync<Passport>("SELECT * FROM passport ORDER BY id;");
         }
 
         public async Task<Passport?> GetByIdAsync(int id)
@@ -34,11 +34,20 @@ namespace IntergalacticPassportAPI.Data
 
         public async Task<int> CreateAsync(Passport passport)
         {
-            using var connection = CreateConnection();
-            var sql = @"INSERT INTO passports (name, species, planet, issued_date)
+            try
+            {
+                using var connection = CreateConnection();
+                var sql = @"INSERT INTO passports (name, species, planet, issued_date)
                         VALUES (@Name, @Species, @Planet, @IssuedDate)
                         RETURNING id;";
-            return await connection.ExecuteScalarAsync<int>(sql, passport);
+                return await connection.ExecuteScalarAsync<int>(sql, passport);
+            }
+
+            catch (Exception ex) 
+            {
+                throw new Exception("An error occurred while creating the passport.", ex);
+            }
+            
         }
     }
 }
