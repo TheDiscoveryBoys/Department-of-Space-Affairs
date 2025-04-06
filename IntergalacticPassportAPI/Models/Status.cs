@@ -7,17 +7,20 @@ using Dapper;
 
 namespace IntergalacticPassportAPI.Models
 {
-	[Table("status")]
+	[Table("statuses")]
 	public class Status
 	{
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		[Key]
+        [Column("Id")]
         public int Id { get; set; }
 
 		[Required]
-		public string Name { get; set; }
+        [Column("name")]
+        public string Name { get; set; }
 
-		public string? Reason { get; set; }
+        [Column("reason")]
+        public string? Reason { get; set; }
 
 
 	}

@@ -1,14 +1,23 @@
 using System.Security.Cryptography;
 using System.Text;
 using IntergalacticPassportAPI.Data;
+using IntergalacticPassportAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using Microsoft.Extensions.DependencyInjection;
+using Dapper;
 
 var builder = WebApplication.CreateBuilder(args);
+Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true; // This line ensures that PascalCase prpoperties are correctly mapped to snake case in the DB.
 
 builder.Services.AddControllers();
 builder.Services.AddScoped<PassportRepository>();
+builder.Services.AddScoped<VisaRepository>();
+builder.Services.AddScoped<PassportDocumentRepository>();
+builder.Services.AddScoped<PassportService>();
+builder.Services.AddScoped<VisaService>();
+builder.Services.AddScoped<PassportDocumentService>();
 
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
