@@ -85,6 +85,10 @@ jobs:
             echo "VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
         shell: pwsh
 
+      - name: Show file structure
+        run: |
+            tree /f
+
       - name: Create Release
         uses: softprops/action-gh-release@v2
         env:
