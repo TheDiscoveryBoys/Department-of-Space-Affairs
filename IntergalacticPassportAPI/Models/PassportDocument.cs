@@ -8,17 +8,20 @@ using Dapper;
 namespace IntergalacticPassportAPI.Models
 {
     [Table("passport_document")]
-    public class PassportDocuments 
+    public class PassportDocument 
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
+        [Column("id")]
         public int Id { get; set; }
 
         [Required]
+        [Column("filename")]
         public string Filename { get; set; }
 
         [Required]
-        public string passport_application_id { get; set; }
+        [Column("passport_application_id")]
+        public int PassportApplicationId { get; set; }
     }
 
 }

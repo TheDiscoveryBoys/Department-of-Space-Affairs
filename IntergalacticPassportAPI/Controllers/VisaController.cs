@@ -1,5 +1,6 @@
 ﻿using IntergalacticPassportAPI.Data;
 using IntergalacticPassportAPI.Models;
+using IntergalacticPassportAPI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,6 +32,7 @@ namespace IntergalacticPassportAPI.Controllers
         }
 
         [HttpPost]
+        // TODO: AUTHORIZE
         public async Task<ActionResult<int>> Create(Visa visa)
         {
             var newId = await _repo.CreateAsync(visa);
