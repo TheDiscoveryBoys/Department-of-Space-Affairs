@@ -1,4 +1,5 @@
 using IntergalacticPassportAPI.Data;
+using IntergalacticPassportAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IntergalacticPassportAPI.Controllers

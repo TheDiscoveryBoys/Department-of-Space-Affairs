@@ -1,4 +1,9 @@
-public class Roles{
-    public int id {get; set;}
-    public string role {get; set;}
+
+namespace IntergalacticPassportAPI.Models
+{
+    public class Roles
+    {
+        public int id { get; set; }
+        public string role { get; set; }
+    }
 }
