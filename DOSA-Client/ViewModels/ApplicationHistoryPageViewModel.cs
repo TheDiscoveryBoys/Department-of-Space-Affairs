@@ -10,19 +10,19 @@ using DOSA_Client.Models;
 
 namespace DOSA_Client.ViewModels
 {
-    class PassportStatusPageViewModel : ScreenViewModelBase
+    class ApplicationHistoryPageViewModel : ScreenViewModelBase
     {
-        public string Title => "Passport status details page";
+        public string Title => "List of Previous Passport and Visa Applications";
         public PageManager PageManager { get; set; }
-        public ObservableCollection<PassportApplication> PassportApplications { get; set; }
+        public ObservableCollection<Application> Applications { get; set; }
 
-        public PassportStatusPageViewModel(PageManager pageManager)
+        public ApplicationHistoryPageViewModel(PageManager pageManager)
         {
             PageManager = pageManager;
             onNextButtonClickedCommand = new DelegateCommand<string>(OnNext);
 
             // Call API to get list of passport applications and their statuses
-            PassportApplications = new ObservableCollection<PassportApplication>(ApiClient.getPassportApplications(Context.UserGoogleId));
+            Applications = new ObservableCollection<Application>(ApiClient.getApplications(Context.UserGoogleId));
         }
         public ICommand onNextButtonClickedCommand { get; }
         public void OnNext(String pageName)

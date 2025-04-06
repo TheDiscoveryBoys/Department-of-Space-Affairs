@@ -16,6 +16,9 @@
         <DataTemplate DataType="{x:Type vm:VisaApplicationScreenViewModel}">
             <views:VisaApplicationView Background="#1C1C1C" />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:ApplicationHistoryScreenViewModel}">
+            <views:ApplicationHistoryScreenView Background="#1C1C1C" />
+        </DataTemplate>    
         <DataTemplate DataType="{x:Type vm:ProcessPassportApplicationsScreenViewModel}">
             <views:ProcessPassportApplicationsView Background="#1C1C1C"/>
         </DataTemplate>

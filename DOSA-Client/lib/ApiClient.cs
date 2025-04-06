@@ -9,15 +9,17 @@ namespace DOSA_Client.lib
 {
     static class ApiClient
     {
-        public static List<PassportApplication> getPassportApplications(string googleId)
+        public static List<Application> getApplications(string googleId)
         {
-            var passports = new List<PassportApplication>();
-            var passport1 = new PassportApplication(new Status("PENDING"), DateTime.Now);
-            var passport2 = new PassportApplication(new Status("REJECTED", "Applicant did not provide the correct documents. Not clear, REJECTED. Applicant did not provide the correct documents. Not clear, REJECTED. Applicant did not provide the correct documents. Not clear, REJECTED. Applicant did not provide the correct documents. Not clear, REJECTED. Applicant did not provide the correct documents. Not clear, REJECTED."), DateTime.Now.AddDays(-1));
-            passports.Add(passport1);
-            passports.Add(passport2);
+            var applications = new List<Application>();
+            var passport2 = new Application(new Status("REJECTED", "Applicant did not provide the correct documents. Not clear, REJECTED. Applicant did not provide the correct documents. Not clear, REJECTED. Applicant did not provide the correct documents. Not clear, REJECTED. Applicant did not provide the correct documents. Not clear, REJECTED. Applicant did not provide the correct documents. Not clear, REJECTED."), DateTime.Now.AddDays(-2), DateTime.Now, ApplicationType.Passport);
+            var passport1 = new Application(new Status("APPROVED"), DateTime.Now.AddDays(-1), ApplicationType.Passport);
+            var visa1 = new Application(new Status("PENDING"), DateTime.Now, ApplicationType.Visa);
+            applications.Add(passport1);
+            applications.Add(passport2);
+            applications.Add(visa1);
 
-            return passports;
+            return applications.OrderByDescending(app => app.SubmittedAt).ToList();
         }
     }
 }

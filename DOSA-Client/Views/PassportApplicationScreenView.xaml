@@ -8,9 +8,6 @@
         <DataTemplate DataType="{x:Type vm:UserDetailsPageViewModel}">
             <views:UserDetailsPageView />
         </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:PassportStatusPageViewModel}">
-            <views:PassportStatusPageView />
-        </DataTemplate>
         <DataTemplate DataType="{x:Type vm:UploadPassportDocumentsViewModel}">
             <views:UploadPassportDocumentsPageView />
         </DataTemplate>

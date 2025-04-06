@@ -2,18 +2,67 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <Grid>
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Title -->
+            <RowDefinition Height="*"/>
+            <!-- Content -->
+        </Grid.RowDefinitions>
 
-        <Button Content="Submit documents"
-                    Command="{Binding submitDocumentsCommand}"
-                    CommandParameter="Passport Status Page"
+        <!-- Title and Horizontal Line -->
+        <StackPanel Orientation="Vertical" Margin="30,20,30,20">
+            <TextBlock Text="{Binding Title}"
+                       FontSize="26"
+                       FontWeight="Bold"
+                       HorizontalAlignment="Left" />
+            <Border Height="1" Background="Gray" />
+        </StackPanel>
+
+        <!-- Upload Section -->
+        <StackPanel Grid.Row="1"
+                    VerticalAlignment="Top"
                     HorizontalAlignment="Center"
-                    Width="180"
-                    Height="40"
-                    Background="#007ACC"
-                    Foreground="White"
-                    FontWeight="Bold"
-                    FontSize="16"
-                    Margin="0,10,0,20"/>
+                    Margin="30,20,30,20"
+                    Width="600">
+
+            <!-- Button container to align Upload and Submit buttons next to each other -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10">
+                <!-- Upload Button -->
+                <Button Content="Upload Document"
+                        Command="{Binding uploadDocumentCommand}"
+                        Width="180"
+                        Height="40"
+                        Background="#007ACC"
+                        Foreground="White"
+                        FontWeight="Bold"
+                        FontSize="16"
+                        Margin="0,0,20,0"/>
+
+                <!-- Submit Button -->
+                <Button Content="Submit Documents"
+                        Command="{Binding submitDocumentsCommand}"
+                        HorizontalAlignment="Center"
+                        Width="180"
+                        Height="40"
+                        Background="#007ACC"
+                        Foreground="White"
+                        FontWeight="Bold"
+                        FontSize="16"
+                        Margin="0,0,0,0"/>
+            </StackPanel>
+
+            <!-- Uploaded Documents List -->
+            <ItemsControl ItemsSource="{Binding UploadedDocuments}" Margin="0,20,0,10">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderThickness="1" BorderBrush="Gray" Padding="10" Margin="5">
+                            <TextBlock Text="{Binding}" FontSize="14"/>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+        </StackPanel>
     </Grid>
 </UserControl>

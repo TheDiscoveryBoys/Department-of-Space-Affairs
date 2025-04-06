@@ -15,9 +15,12 @@ using System.Windows.Shapes;
 
 namespace DOSA_Client.Views
 {
-    public partial class PassportStatusPageView : UserControl
+    /// <summary>
+    /// Interaction logic for ApplicationHistoryScreenView.xaml
+    /// </summary>
+    public partial class ApplicationHistoryScreenView : UserControl
     {
-        public PassportStatusPageView()
+        public ApplicationHistoryScreenView()
         {
             InitializeComponent();
         }
