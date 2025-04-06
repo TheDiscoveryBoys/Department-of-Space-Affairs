@@ -1,0 +1,22 @@
+<!-- Views/OverviewView.xaml -->
+<UserControl x:Class="DOSA_Client.Views.PassportApplicationScreenView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:DOSA_Client.ViewModels"
+             xmlns:views="clr-namespace:DOSA_Client.Views">
+    <UserControl.Resources>
+        <DataTemplate DataType="{x:Type vm:UserDetailsPageViewModel}">
+            <views:UserDetailsPageView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:PassportStatusPageViewModel}">
+            <views:PassportStatusPageView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:UploadPassportDocumentsViewModel}">
+            <views:UploadPassportDocumentsPageView />
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid>
+         <ContentControl Content="{Binding PageManager.CurrentPage}"
+                        HorizontalAlignment="Center" VerticalAlignment="Center" /> 
+    </Grid>
+</UserControl>

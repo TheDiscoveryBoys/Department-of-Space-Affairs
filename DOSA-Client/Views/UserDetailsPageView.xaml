@@ -1,0 +1,113 @@
+<UserControl x:Class="DOSA_Client.Views.UserDetailsPageView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid Background="#F9F9F9">
+        <StackPanel VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                Width="600">
+            <TextBlock FontSize="24"
+                    Text="User Details Form"
+                       FontWeight="Bold"
+                    HorizontalAlignment="Center"
+                    Margin="0,10,0,30"/>
+
+            <Grid Margin="0,0,0,30">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="600"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Width="400" Grid.Row = "0" Grid.Column = "0" HorizontalAlignment="Center">
+                <TextBlock Text="Email:"
+                        FontWeight="Bold"
+                        VerticalAlignment="Center"
+                        Margin="0,10"/>
+                <TextBox 
+                        Margin="0,10"
+                        Height="30"
+                        FontSize="14"
+                         Text="user@example.com"/>
+                </StackPanel>
+
+                <StackPanel Width="400" Grid.Row = "1" Grid.Column = "0" HorizontalAlignment="Center">
+                <TextBlock Text="Name:"
+                        VerticalAlignment="Center"
+                        FontWeight="Bold"
+                        Margin="0,10"/>
+                <TextBox 
+                        Margin="0,10"
+                        Height="30"
+                        FontSize="14"
+                         Text="Cade Sayner"/>
+                </StackPanel>
+
+                <StackPanel Width="400" Grid.Row = "2" Grid.Column = "0" HorizontalAlignment="Center">
+                <TextBlock Text="Species:"
+                        VerticalAlignment="Center"
+                        FontWeight="Bold"
+                        Margin="0,10"/>
+                <TextBox 
+                        Margin="0,10"
+                        Height="30"
+                        FontSize="14"
+                         Text="Homo Sapien"/>
+                </StackPanel>
+
+                <StackPanel Width="400" Grid.Row = "3" Grid.Column = "0" HorizontalAlignment="Center">
+                <TextBlock Text="Planet of Origin:"
+                        VerticalAlignment="Center"
+                        FontWeight="Bold"
+                        Margin="0,10"/>
+                <TextBox 
+                        Margin="0,10"
+                        Height="30"
+                        FontSize="14"
+                         Text="Earth"/>
+                </StackPanel>
+
+                <StackPanel Width="400" Grid.Row = "4" Grid.Column = "0" HorizontalAlignment="Center">
+                <TextBlock Text="Primary Language"
+                        VerticalAlignment="Center"
+                        FontWeight="Bold"
+                        Margin="0,10"/>
+                <TextBox 
+                        Margin="0,10"
+                        Height="30"
+                        FontSize="14"
+                         Text="English"/>
+                </StackPanel>
+
+               <StackPanel Width="400" Grid.Row = "5" Grid.Column = "0" HorizontalAlignment="Center">
+                <TextBlock Text="Date of Birth:"
+                        VerticalAlignment="Center"
+                        Margin="0,10"
+                        FontWeight="Bold"
+                        />
+                 <DatePicker 
+                        Margin="0,10"
+                        Height="30"
+                        FontSize="14"/>
+                </StackPanel> 
+            </Grid>
+
+            <Button Content="Done"
+                    Command="{Binding onNextButtonClickedCommand}"
+                    CommandParameter="Upload Passport Documents Page"
+                    HorizontalAlignment="Center"
+                    Width="180"
+                    Height="40"
+                    Background="#007ACC"
+                    Foreground="White"
+                    FontWeight="Bold"
+                    FontSize="16"
+                    Margin="0,10,0,20"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

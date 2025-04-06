@@ -52,6 +52,10 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+/IntergalacticPassportApp/.vs
+/DOSA-Client/.vs
+*.user
+
 
 # Local .terraform directories
 **/.terraform/*
