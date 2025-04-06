@@ -54,7 +54,7 @@ jobs:
   flyway:
     needs:
       - terraform
-      - release
+      # - release
     name: Flyway Migrations
     runs-on: ubuntu-latest
     steps:
