@@ -20,7 +20,6 @@ namespace IntergalacticPassportAPI.Data
         {
             using var db = CreateDBConnection();
             var sql = $"SELECT * FROM {tableName} WHERE {tableName}.{PKIdentifier} = '{id}'";
-            Console.WriteLine(sql);
             return await db.QueryFirstOrDefaultAsync<Model>(sql);
 
         }

@@ -9,27 +9,38 @@ namespace IntergalacticPassportAPI.Controllers
 
     public class UserController(UsersRepository repo) : ControllerBase
     {
-        private readonly UsersRepository _repo = repo;
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Users>> GetUserByGoogleId(string id){
-            var user = await _repo.GetUserByGoogleId(id);
+        public async Task<ActionResult<Users>> GetUserByGoogleId(string id)
+        {
+            var user = await repo.GetUserByGoogleId(id);
             return user == null ? NoContent() : Ok(user);
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Users>>> GetAllUsers(){
-            var users = await _repo.GetAllUsers();
+        public async Task<ActionResult<IEnumerable<Users>>> GetAllUsers()
+        {
+            var users = await repo.GetAllUsers();
             return users.Any() ? Ok(users) : NoContent();
         }
 
         [HttpPost]
-        public async Task<ActionResult<Users>> RegisterOrLoginUser([FromBody] Users user){
-            if(!ModelState.IsValid)
+        public async Task<ActionResult<Users>> RegisterOrLoginUser([FromBody] Users user)
+        {
+            if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var registeredUser = await _repo.RegisterOrLoginUser(user);
-            return registeredUser == null ? NotFound() : Ok(registeredUser);
+            var existingUser = await repo.GetUserByGoogleId(user.google_id);
+
+            if (existingUser == null)
+            {
+                var registeredUser = await repo.RegisterUser(user);
+                return Ok(registeredUser);
+            }
+            else
+            {
+                return Ok(user);
+            }
         }
     }
 }
