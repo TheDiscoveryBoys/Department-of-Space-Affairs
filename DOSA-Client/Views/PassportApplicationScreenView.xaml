@@ -17,6 +17,6 @@
     </UserControl.Resources>
     <Grid>
          <ContentControl Content="{Binding PageManager.CurrentPage}"
-                        HorizontalAlignment="Center" VerticalAlignment="Center" /> 
+                        HorizontalAlignment="Stretch" VerticalAlignment="Stretch" /> 
     </Grid>
 </UserControl>

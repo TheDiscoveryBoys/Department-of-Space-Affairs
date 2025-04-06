@@ -13,7 +13,7 @@ namespace DOSA_Client.lib
         {
             var passports = new List<PassportApplication>();
             var passport1 = new PassportApplication(new Status("PENDING"), DateTime.Now);
-            var passport2 = new PassportApplication(new Status("PENDING"), DateTime.Now.AddDays(-1));
+            var passport2 = new PassportApplication(new Status("REJECTED", "Applicant did not provide the correct documents. Not clear, REJECTED. Applicant did not provide the correct documents. Not clear, REJECTED. Applicant did not provide the correct documents. Not clear, REJECTED. Applicant did not provide the correct documents. Not clear, REJECTED. Applicant did not provide the correct documents. Not clear, REJECTED."), DateTime.Now.AddDays(-1));
             passports.Add(passport1);
             passports.Add(passport2);
 
