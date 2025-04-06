@@ -41,7 +41,7 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: terraform init
+        run: terraform init -backend-config="bucket=space-affairs-bucket-test" -backend-config="key=terraformstate/terraform.tfstate" -backend-config="region=af-south-1"
 
       - name: Terraform Apply
         run: terraform apply -auto-approve

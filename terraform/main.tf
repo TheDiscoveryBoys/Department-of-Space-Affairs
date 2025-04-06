@@ -6,12 +6,8 @@ terraform {
     }
   }
 
-  backend "s3" {
-    bucket         = "SpaceAffairsS3Bucket"            
-    key            = "terraform.tfstate" 
+  backend "s3" {        
     region         = "af-south-1"
-    dynamodb_table = "state-lock"          
-    encrypt        = true
   }
 }
 
@@ -35,14 +31,6 @@ resource "aws_default_subnet" "subnet_az1" {
 
 resource "aws_default_subnet" "subnet_az2" {
   availability_zone = data.aws_availability_zones.available_zones.names[1]
-}
-
-resource "aws_s3_bucket_versioning" "terraform_state" {
-    bucket = aws_s3_bucket.terraform_state.id
-
-    versioning_configuration {
-      status = "Enabled"
-    }
 }
 
 resource "aws_security_group" "allow_postgres" {
