@@ -1,3 +1,4 @@
+using System.Windows;
 using System.Windows.Controls;
 using DOSA_Client.ViewModels;
 namespace DOSA_Client.Views
@@ -9,5 +10,16 @@ namespace DOSA_Client.Views
             InitializeComponent();
             this.DataContext = new ContainerViewModel();
         }
+
+        private void UserControl_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (DataContext is ContainerViewModel vm)
+            {
+                vm.OnVisibilityChanged((bool)e.NewValue);
+            }
+        }
+
     }
+
+
 }

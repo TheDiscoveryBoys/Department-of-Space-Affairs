@@ -7,10 +7,14 @@ using System.Threading.Tasks;
 
 namespace DOSA_Client.lib
 {
-
-    static class Context
+    public static class Context
     {
-        public static string UserGoogleId = "1";
+        private static readonly Dictionary<string, object> _store = new();
+        public static void Add(string key, object value) => _store[key] = value;
 
+        // A bit kak because it relies on caller discipline
+        public static T Get<T>(string key) => (T)_store[key]; 
+        public static bool Contains(String key) => _store.ContainsKey(key);
     }
 }
+

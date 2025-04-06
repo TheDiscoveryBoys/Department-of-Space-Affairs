@@ -55,7 +55,7 @@
                              FontSize="14" 
                              VerticalContentAlignment="Center"
                              Padding="5,0"
-                             Text="user@example.com"
+                             Text="{Binding CurrentUser.Email}"
                              Margin="0,10"/>
 
                     <!-- Name -->
@@ -69,7 +69,7 @@
                              FontSize="14"
                              VerticalContentAlignment="Center"
                              Padding="5,0"
-                             Text="Cade Sayner"
+                             Text="{Binding CurrentUser.Name }"
                              Margin="0,10"/>
 
                     <!-- Species -->
@@ -83,7 +83,7 @@
                              FontSize="14"
                              VerticalContentAlignment="Center"
                              Padding="5,0"
-                             Text="Homo Sapien"
+                             Text="{Binding CurrentUser.Species}"
                              Margin="0,10"/>
 
                     <!-- Planet of Origin -->
@@ -97,7 +97,7 @@
                              FontSize="14"
                              VerticalContentAlignment="Center"
                              Padding="5,0"
-                             Text="Earth"
+                             Text="{Binding CurrentUser.PlanetOfOrigin}"
                              Margin="0,10"/>
 
                     <!-- Primary Language -->
@@ -111,7 +111,7 @@
                              FontSize="14"
                              VerticalContentAlignment="Center"
                              Padding="5,0"
-                             Text="English"
+                             Text="{Binding CurrentUser.PrimaryLanguage}"
                              Margin="0,10"/>
 
                     <!-- Date of Birth -->
