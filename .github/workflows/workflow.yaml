@@ -99,7 +99,7 @@ jobs:
           body: "Automated release for commit ${{ github.sha }}"
           draft: false
           prerelease: false
-          files: DOSA-Client/bin/Release/net9.0-windows/win-x64/publish/DOSA-Client.exe
+          files: DOSA-Client/bin/Release/net9.0-windows/win-x64/publish/*.exe
 
   flyway:
     needs:
