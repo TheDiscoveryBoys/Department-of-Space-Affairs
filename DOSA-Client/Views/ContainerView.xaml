@@ -10,11 +10,8 @@
     </UserControl.DataContext>
 
     <UserControl.Resources>
-        <DataTemplate DataType="{x:Type vm:PassportScreenViewModel}">
-            <views:PassportScreenView Background="#1C1C1C" />
-        </DataTemplate>
         <DataTemplate DataType="{x:Type vm:PassportApplicationScreenViewModel}">
-            <views:PassportApplicationScreenView Background="#1C1C1C" />
+            <views:PassportApplicationScreenView Background="WhiteSmoke" />
         </DataTemplate>
         <DataTemplate DataType="{x:Type vm:VisaApplicationScreenViewModel}">
             <views:VisaApplicationView Background="#1C1C1C" />

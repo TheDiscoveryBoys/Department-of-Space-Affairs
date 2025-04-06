@@ -8,14 +8,15 @@ namespace DOSA_Client.ViewModels
     public class UploadPassportDocumentsViewModel : ScreenViewModelBase
     {
         public string Title => "Upload Passport Documents Page ";
-        public string Description => "You will see upload passport document screen here";
         public PageManager PageManager { get; set; } 
-        public ICommand OnNextButtonClickedCommand {get; }
         public UploadPassportDocumentsViewModel( PageManager pageManager){
             PageManager = pageManager;
-            OnNextButtonClickedCommand = new DelegateCommand<string>(OnNext);
+            submitDocumentsCommand = new DelegateCommand<string>(OnNext);
         }
+
+        public ICommand submitDocumentsCommand { get; }
         public void OnNext(String pageName){
+            Console.WriteLine($"Navigating to {pageName}");
             PageManager.NavigateTo(pageName);
         }
     }

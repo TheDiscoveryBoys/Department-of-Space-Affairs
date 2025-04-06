@@ -5,7 +5,7 @@ using System.ComponentModel;
 namespace DOSA_Client.lib{
     public class PageManager : INotifyPropertyChanged{
 
-        List<ScreenViewModelBase> Pages;
+        private List<ScreenViewModelBase> Pages;
 
         private ScreenViewModelBase _currentPage;
         public ScreenViewModelBase CurrentPage

@@ -2,9 +2,9 @@ using System.Windows.Controls;
 
 namespace DOSA_Client.Views
 {
-    public partial class UploadPassportDocumentsView : UserControl
+    public partial class UploadPassportDocumentsPageView : UserControl
     {
-        public UploadPassportDocumentsView()
+        public UploadPassportDocumentsPageView()
         {
             InitializeComponent();
         }

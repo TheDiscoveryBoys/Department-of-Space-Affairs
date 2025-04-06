@@ -19,7 +19,6 @@ namespace DOSA_Client.ViewModels
 
             if(userRole == Role.APPLICANT){
                 Tabs = new ObservableCollection<ScreenViewModelBase>(){
-                new PassportScreenViewModel(),
                 new PassportApplicationScreenViewModel(),
                 new VisaApplicationScreenViewModel()
                 };
