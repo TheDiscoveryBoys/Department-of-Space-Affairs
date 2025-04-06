@@ -67,52 +67,76 @@ output "db_host" {
   description = "The endpoint of the Postgres Server RDS instance"
 }
 
-# resource "aws_security_group" "ec2_security_group" {
-#   name_prefix = "spaceaffairs_api_sg"
+resource "aws_security_group" "ec2_security_group" {
+  name_prefix = "fupboard_api_sg"
 
-#   ingress {
-#     from_port   = 22
-#     to_port     = 22
-#     protocol    = "tcp"
-#     cidr_blocks = ["0.0.0.0/0"]
-#   }
-#   ingress {
-#     from_port   = 80
-#     to_port     = 80
-#     protocol    = "tcp"
-#     cidr_blocks = ["0.0.0.0/0"]
-#   }
-#   ingress {
-#     from_port   = 443
-#     to_port     = 443
-#     protocol    = "tcp"
-#     cidr_blocks = ["0.0.0.0/0"]
-#   }
-#   egress {
-#     from_port   = 0
-#     to_port     = 0
-#     protocol    = "-1"
-#     cidr_blocks = ["0.0.0.0/0"]
-#   }
-# }
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
 
-# resource "aws_instance" "spaceaffairs_ec2_instance" {
-#   ami           = "ami-00d6d5db7a745ff3f"
-#   instance_type = "t3.micro"
-#   key_name = var.key_name
-#   tags = {
-#     Name = "spaceaffairs_ec2_instance"
-#   }
+resource "aws_instance" "spaceaffairs_ec2_instance" {
+  ami           = "ami-00d6d5db7a745ff3f"
+  instance_type = "t3.micro"
+  tags = {
+    Name = "spaceaffairs_ec2_instance"
+  }
 
-#   vpc_security_group_ids = [ aws_security_group.ec2_security_group.id ]
-# }
+  vpc_security_group_ids = [ aws_security_group.ec2_security_group.id ]
 
-# resource "aws_eip" "spaceaffairs_ec2_eip" {
-#   instance = aws_instance.fup_ec2_instance.id
-#   domain   = "vpc"
-# }
+  user_data = <<-EOF
+    #!/bin/bash
+    # Install necessary packages
 
-# output "ec2_host" {
-#   value = aws_eip.spaceaffairs_ec2_eip.public_dns
-#   description = "The endpoint of the EC2 instance"
-# }
+    # Setup Systemd Service
+
+    # Setup nginx proxy
+    mkdir -p /etc/nginx/conf.d
+    file="/etc/nginx/conf.d/proxy.conf"
+
+    echo "server {" > $file
+    echo "  listen 80;" >> $file
+    echo "  server_name *.amazonaws.com;" >> $file
+    echo "  location / {" >> $file
+    echo "    proxy_pass http://localhost:8080;" >> $file
+    echo "    proxy_set_header Host \$host;" >> $file
+    echo "    proxy_set_header X-Real-IP \$remote_addr;" >> $file
+    echo "  }" >> $file
+    echo "}" >> $file
+
+    systemctl enable nginx
+    systemctl start nginx
+
+    EOF
+}
+
+resource "aws_eip" "spaceaffairs_ec2_eip" {
+  instance = aws_instance.spaceaffairs_ec2_instance.id
+  domain   = "vpc"
+}
+
+output "ec2_host" {
+  value = aws_eip.spaceaffairs_ec2_eip.public_dns
+  description = "The endpoint of the EC2 instance"
+}
