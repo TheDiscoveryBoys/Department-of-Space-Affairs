@@ -1,0 +1,66 @@
+name: "Deployment pipeline"
+
+on:
+  push:
+    branches:
+      - main
+      - development
+
+jobs:
+  terraform:
+    permissions:
+      id-token: write
+      contents: read
+    name: "Manage AWS Resources"
+    runs-on: ubuntu-latest
+    outputs:
+      dbhost: ${{ steps.tf_outputs.outputs.dbhost }}
+      # ec2host: ${{ steps.tf_outputs.outputs.ec2host }}
+    env:
+      TF_VAR_db_password: ${{ secrets.TF_VAR_DB_PASSWORD }}
+      TF_VAR_db_username: ${{ secrets.TF_VAR_DB_USERNAME }}
+      #TF_VAR_key_name: spaceaffairskey
+    defaults:
+      run:
+        working-directory: terraform
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.IAM_USER_ID }}:role/gh-actions-role
+          aws-region: af-south-1
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.0.1
+          terraform_wrapper: false
+
+      - name: Terraform Init
+        id: init
+        run: terraform init"
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
+
+      - name: Capture Terraform Outputs
+        id: tf_outputs
+        run: |
+          echo "dbhost=$(terraform output -raw db_host)" >> $GITHUB_OUTPUT
+          
+  flyway:
+    needs:
+      - terraform
+      - release
+    name: Flyway Migrations
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Run Flyway Migrations
+        run: |
+          docker run --rm --volume ${{ github.workspace }}/migrations:/flyway/sql:ro redgate/flyway -url="jdbc:postgresql://${{ needs.terraform.outputs.dbhost }}/spaceaffairsdb" -user="${{ secrets.TF_VAR_DB_USERNAME }}" -password="${{ secrets.TF_VAR_DB_PASSWORD }}" migrate
