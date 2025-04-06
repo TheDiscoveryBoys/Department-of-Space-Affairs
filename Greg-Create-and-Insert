@@ -1,7 +1,4 @@
-Change controller to minimal api.
-Rename entity properties to ensure it matches the DB.
-Make controller and repo for passport application documents.
-Add controller + repo for status?
+
 
 Here are some scripts I used. Currently only works with api/passport because of entity name mismatches.
 
