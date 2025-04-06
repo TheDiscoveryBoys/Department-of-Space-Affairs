@@ -69,7 +69,7 @@ jobs:
           dotnet-version: '9.0.200'
 
       - name: Restore packages
-        run: dotnet restore DOSA-Client.csproj
+        run: dotnet restore DOSA-Client.csproj -p:SelfContained=true
       
       - name: Build Application
         run: dotnet build DOSA-Client.csproj -c Release --no-restore
