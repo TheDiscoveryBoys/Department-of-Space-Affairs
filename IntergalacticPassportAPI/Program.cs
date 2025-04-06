@@ -18,7 +18,8 @@ builder.Services.AddScoped<PassportDocumentRepository>();
 builder.Services.AddScoped<PassportService>();
 builder.Services.AddScoped<VisaService>();
 builder.Services.AddScoped<PassportDocumentService>();
-
+builder.Services.AddScoped<StatusService>();
+builder.Services.AddScoped<StatusRepository>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(async options =>
