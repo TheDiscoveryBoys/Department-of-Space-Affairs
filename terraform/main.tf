@@ -67,8 +67,13 @@ output "db_host" {
   description = "The endpoint of the Postgres Server RDS instance"
 }
 
+resource "aws_s3_bucket" "testspaceaffairsbucket123" {
+  bucket = "testspaceaffairsbucket123"
+
+}
+
 resource "aws_security_group" "ec2_security_group" {
-  name_prefix = "fupboard_api_sg"
+  name_prefix = "spaceaffairs_api_sg"
 
   ingress {
     from_port   = 22
@@ -97,38 +102,13 @@ resource "aws_security_group" "ec2_security_group" {
 }
 
 resource "aws_instance" "spaceaffairs_ec2_instance" {
-  ami           = "ami-00d6d5db7a745ff3f"
+  ami           = "ami-036e83870e09b7396"
   instance_type = "t3.micro"
   tags = {
     Name = "spaceaffairs_ec2_instance"
   }
 
   vpc_security_group_ids = [ aws_security_group.ec2_security_group.id ]
-
-  user_data = <<-EOF
-    #!/bin/bash
-    # Install necessary packages
-
-    # Setup Systemd Service
-
-    # Setup nginx proxy
-    mkdir -p /etc/nginx/conf.d
-    file="/etc/nginx/conf.d/proxy.conf"
-
-    echo "server {" > $file
-    echo "  listen 80;" >> $file
-    echo "  server_name *.amazonaws.com;" >> $file
-    echo "  location / {" >> $file
-    echo "    proxy_pass http://localhost:8080;" >> $file
-    echo "    proxy_set_header Host \$host;" >> $file
-    echo "    proxy_set_header X-Real-IP \$remote_addr;" >> $file
-    echo "  }" >> $file
-    echo "}" >> $file
-
-    systemctl enable nginx
-    systemctl start nginx
-
-    EOF
 }
 
 resource "aws_eip" "spaceaffairs_ec2_eip" {

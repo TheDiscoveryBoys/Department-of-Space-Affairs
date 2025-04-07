@@ -16,11 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       dbhost: ${{ steps.tf_outputs.outputs.dbhost }}
-      # ec2host: ${{ steps.tf_outputs.outputs.ec2host }}
-    env:
-      TF_VAR_db_password: ${{ secrets.TF_VAR_DB_PASSWORD }}
-      TF_VAR_db_username: ${{ secrets.TF_VAR_DB_USERNAME }}
-      #TF_VAR_key_name: spaceaffairskey
+      ec2host: ${{ steps.tf_outputs.outputs.ec2host }}
     defaults:
       run:
         working-directory: terraform
@@ -29,10 +25,13 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: arn:aws:iam::${{ secrets.IAM_USER_ID }}:role/gh-actions-role
           aws-region: af-south-1
+          secret-ids: |
+                postgresuser
+                postgrespass
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
@@ -51,11 +50,13 @@ jobs:
         id: tf_outputs
         run: |
           echo "dbhost=$(terraform output -raw db_host)" >> $GITHUB_OUTPUT
-
-  release:
-    name: Build & Release
+  
+  release-front-end:
+    name: Build & Release Front-End
     runs-on: windows-latest
-    needs: terraform
+    needs: 
+      - terraform
+      - release-api
     env: 
       PROJECT_PATH: DOSA-Client.csproj
     defaults:
@@ -85,7 +86,7 @@ jobs:
             echo "VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
         shell: pwsh
 
-      - name: Create Release
+      - name: Create Front-End Release
         uses: softprops/action-gh-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -97,10 +98,43 @@ jobs:
           prerelease: false
           files: DOSA-Client/bin/Release/net9.0-windows/win-x64/publish/*.exe
 
+  # release-api:
+  #   name: Build & Release Front-End
+  #   runs-on: windows-latest
+  #   needs: terraform
+  #   env: 
+  #     PROJECT_PATH: IntergalacticPassportAPI.csproj
+  #   defaults:
+  #     run:
+  #       working-directory: IntergalacticPassportAPI
+  #   steps:
+  #   - name: Checkout
+  #     uses: actions/checkout@v4
+    
+  #   - name: Install Dotnet
+  #     uses: actions/setup-dotnet@v4
+  #     with:
+  #       dotnet-version: '9.0.x'
+
+  #   - name: Restore packages
+  #     run: dotnet restore ${{ env.PROJECT_PATH }} -p:SelfContained=true
+    
+  #   - name: Build API
+  #     run: dotnet build ${{ env.PROJECT_PATH }} -c Release --self-contained --no-restore
+
+  #   - name: Publish API
+  #     run: dotnet publish ${{ env.PROJECT_PATH }} -c Release --self-contained -r win-x64 -p:PublishSingleFile=true --no-build
+    
+  #   - name: Deploy to EC2
+  #     run: |
+  #       # Copy exe to location on windows server ec2 instance
+  #       # Run the exe as a service using sc 
+
   flyway:
     needs:
       - terraform
-      - release
+      - release-front-end
+      - release-api
     name: Flyway Migrations
     runs-on: ubuntu-latest
     steps:
@@ -109,4 +143,4 @@ jobs:
 
       - name: Run Flyway Migrations
         run: |
-          docker run --rm --volume ${{ github.workspace }}/migrations:/flyway/sql:ro redgate/flyway -url="jdbc:postgresql://${{ needs.terraform.outputs.dbhost }}/spaceaffairsdb" -user="${{ secrets.TF_VAR_DB_USERNAME }}" -password="${{ secrets.TF_VAR_DB_PASSWORD }}" migrate
+          docker run --rm --volume ${{ github.workspace }}/migrations:/flyway/sql:ro redgate/flyway -url="jdbc:postgresql://${{ needs.terraform.outputs.dbhost }}/spaceaffairsdb" -user="${{ env.POSTGRESUSER }}" -password="${{ env.POSTGRESPASS }}" migrate
