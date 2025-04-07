@@ -1,6 +1,7 @@
 <UserControl x:Class="DOSA_Client.Views.UploadPassportDocumentsPageView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:DOSA_Client.Controls">
 
     <Grid Background="White">
         <Grid.RowDefinitions>
@@ -11,13 +12,7 @@
         </Grid.RowDefinitions>
 
         <!-- Title and Horizontal Line -->
-        <StackPanel Orientation="Vertical" Margin="30,20,30,20">
-            <TextBlock Text="{Binding Title}"
-                       FontSize="26"
-                       FontWeight="Bold"
-                       HorizontalAlignment="Left" />
-            <Border Height="1" Background="#3B82F6" />
-        </StackPanel>
+        <controls:HeaderRibbon DataContext="{Binding}" />
 
         <!-- Upload Section -->
         <StackPanel Grid.Row="1"

@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:controls="clr-namespace:DOSA_Client.Controls"
              mc:Ignorable="d"
              Background="White"
              HorizontalAlignment="Stretch"
@@ -19,14 +20,7 @@
         </Grid.RowDefinitions>
 
         <!-- Title and Horizontal Line -->
-        <StackPanel Orientation="Vertical" Margin="30,20,30,20">
-            <TextBlock Text="{Binding Title}"
-                       FontSize="26"
-                       FontWeight="Bold"
-                       HorizontalAlignment="Left" />
-            <!-- Border for Horizontal Line -->
-            <Border Height="1" Background="#3B82F6" />
-        </StackPanel>
+        <controls:HeaderRibbon DataContext="{Binding}" />
 
         <!-- Headers -->
         <Grid Grid.Row="1" Margin="30,0,30,10">
