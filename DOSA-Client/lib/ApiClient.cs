@@ -42,7 +42,7 @@ namespace DOSA_Client.lib
 
         public static List<Role> GetRoles(string googleId){
             return new List<Role>{
-                new Role{id = 1, role="APPLICANT"}
+                new Role{id = 1, role="OFFICER"}
             };
         }
 
