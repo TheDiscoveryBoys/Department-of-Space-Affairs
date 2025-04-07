@@ -18,8 +18,8 @@ namespace DOSA_Client.lib
             var passport2 = new Application(new Status("APPROVED"), DateTime.Now.AddDays(-1), ApplicationType.Passport);
             var visa1 = new Application(new Status("PENDING"), DateTime.Now, ApplicationType.Visa);
             applications.Add(passport1);
-            //applications.Add(passport2);
-            //applications.Add(visa1);
+            applications.Add(passport2);
+            applications.Add(visa1);
 
             return applications.OrderByDescending(app => app.SubmittedAt).ToList();
         }

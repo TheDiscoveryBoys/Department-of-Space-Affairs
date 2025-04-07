@@ -5,98 +5,113 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="clr-namespace:DOSA_Client.Controls"
              mc:Ignorable="d"
-             Background="White"
              HorizontalAlignment="Stretch"
              VerticalAlignment="Stretch">
 
-    <Grid Background="White">
+    <Grid Background="#ECEFF1">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <!-- Title -->
+            <RowDefinition Height="*" />
+            <!-- Content -->
             <RowDefinition Height="Auto"/>
-            <!-- Headers -->
-            <RowDefinition Height="*"/>
-            <!-- List -->
         </Grid.RowDefinitions>
 
         <!-- Title and Horizontal Line -->
         <controls:HeaderRibbon DataContext="{Binding}" />
 
-        <!-- Headers -->
-        <Grid Grid.Row="1" Margin="30,0,30,10">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*" />
-                <!-- Document Type -->
-                <ColumnDefinition Width="2*" />
-                <!-- Date -->
-                <ColumnDefinition Width="2*" />
-                <!-- Status -->
-                <ColumnDefinition Width="3*" />
-                <!-- Reason -->
-            </Grid.ColumnDefinitions>
-
-            <TextBlock Grid.Column="0" Text="Document Type" FontWeight="Bold" />
-            <TextBlock Grid.Column="1" Text="Application Date" FontWeight="Bold" />
-            <TextBlock Grid.Column="2" Text="Status" FontWeight="Bold" />
-            <TextBlock Grid.Column="3" Text="Reason" FontWeight="Bold" />
-        </Grid>
+        <Grid Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="30,10,30,20">
+            <Border Background="White"
+                    CornerRadius="10"
+                    Padding="40"
+                    VerticalAlignment="Stretch">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <!-- Title -->
+                        <RowDefinition Height="Auto"/>
+                        <!-- Headers -->
+                        <RowDefinition Height="*"/>
+                        <!-- List -->
+                    </Grid.RowDefinitions>
 
 
-        <!-- Application List -->
-        <ScrollViewer Grid.Row="2" Margin="30,0,30,30">
-            <ItemsControl ItemsSource="{Binding Applications}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Grid Margin="0 5">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*" />
-                                <!-- Document Type -->
-                                <ColumnDefinition Width="2*" />
-                                <!-- Date -->
-                                <ColumnDefinition Width="2*" />
-                                <!-- Status -->
-                                <ColumnDefinition Width="3*" />
-                                <!-- Reason -->
-                            </Grid.ColumnDefinitions>
 
+                    <!-- Headers -->
+                    <Grid Grid.Row="1" Margin="30,0,30,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*" />
                             <!-- Document Type -->
-                            <TextBlock Grid.Column="0"
-                                       Text="{Binding ApplicationType}" />
-
+                            <ColumnDefinition Width="2*" />
                             <!-- Date -->
-                            <TextBlock Grid.Column="1"
-                                       Text="{Binding SubmittedAt, StringFormat={}{0:MM/dd/yyyy}}" />
-
+                            <ColumnDefinition Width="2*" />
                             <!-- Status -->
-                            <TextBlock Grid.Column="2"
-                                       FontWeight="Bold"
-                                       Text="{Binding Status.Name}">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Foreground" Value="Black"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Status.Name}" Value="REJECTED">
-                                                <Setter Property="Foreground" Value="Red"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding Status.Name}" Value="PENDING">
-                                                <Setter Property="Foreground" Value="DarkOrange"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding Status.Name}" Value="APPROVED">
-                                                <Setter Property="Foreground" Value="Green"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-
+                            <ColumnDefinition Width="3*" />
                             <!-- Reason -->
-                            <TextBlock Grid.Column="3"
-                                       Text="{Binding Status.Reason, TargetNullValue='-'}"
-                                       TextWrapping="Wrap" />
-                        </Grid>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </ScrollViewer>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" Text="Document Type" FontWeight="Bold" />
+                        <TextBlock Grid.Column="1" Text="Application Date" FontWeight="Bold" />
+                        <TextBlock Grid.Column="2" Text="Status" FontWeight="Bold" />
+                        <TextBlock Grid.Column="3" Text="Reason" FontWeight="Bold" />
+                    </Grid>
+
+
+                    <!-- Application List -->
+                    <ScrollViewer Grid.Row="2" Margin="30,0,30,30">
+                        <ItemsControl ItemsSource="{Binding Applications}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="#B0BEC5" BorderThickness="0,0,0,1" Padding="0,5">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*" />
+                                                <ColumnDefinition Width="2*" />
+                                                <ColumnDefinition Width="2*" />
+                                                <ColumnDefinition Width="3*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <!-- Document Type -->
+                                            <TextBlock Grid.Column="0" Text="{Binding ApplicationType}" />
+
+                                            <!-- Date -->
+                                            <TextBlock Grid.Column="1"
+                                                       Text="{Binding SubmittedAt, StringFormat={}{0:MM/dd/yyyy}}" />
+
+                                            <!-- Status -->
+                                            <TextBlock Grid.Column="2"
+                                                       FontWeight="Bold"
+                                                       Text="{Binding Status.Name}">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="Foreground" Value="Black"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Status.Name}" Value="REJECTED">
+                                                                <Setter Property="Foreground" Value="Red"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Status.Name}" Value="PENDING">
+                                                                <Setter Property="Foreground" Value="DarkOrange"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Status.Name}" Value="APPROVED">
+                                                                <Setter Property="Foreground" Value="Green"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+
+                                            <!-- Reason -->
+                                            <TextBlock Grid.Column="3"
+                                                       Text="{Binding Status.Reason, TargetNullValue='-'}"
+                                                       TextWrapping="Wrap" />
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+        </Grid>
     </Grid>
 </UserControl>
