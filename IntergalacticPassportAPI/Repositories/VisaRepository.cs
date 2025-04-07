@@ -22,14 +22,15 @@ namespace IntergalacticPassportAPI.Data
         public async Task<IEnumerable<Visa>> GetAllAsync()
         {
             using var connection = CreateConnection();
-            return await connection.QueryAsync<Visa>("SELECT * FROM visa ORDER BY id;");
+            return await connection.QueryAsync<Visa>("SELECT * FROM visa_applications ORDER BY id;");
+
         }
 
         public async Task<Visa?> GetByIdAsync(int id)
         {
             using var connection = CreateConnection();
             return await connection.QueryFirstOrDefaultAsync<Visa>(
-                "SELECT * FROM visa WHERE id = @Id;", new { Id = id });
+                "SELECT * FROM visa_applications WHERE id = @Id;", new { Id = id });
         }
 
         public async Task<int> CreateAsync(Visa visa)
@@ -37,7 +38,7 @@ namespace IntergalacticPassportAPI.Data
             try
             {
                 using var connection = CreateConnection();
-                var sql = @"INSERT INTO visa (UserId, DestinationPlanet, TravelReason, StartDate, EndDate, StatusId, SubmittedAt, ProcessedAt, OfficerId) 
+                var sql = @"INSERT INTO visa_applications (user_id, destination_planet, travel_reason, start_date, end_date, status_id, submitted_at, processed_at, officer_id) 
                   VALUES (@UserId, @DestinationPlanet, @TravelReason, @StartDate, @EndDate, @StatusId, @SubmittedAt, @ProcessedAt, @OfficerId)
                   RETURNING id;";
                 return await connection.ExecuteScalarAsync<int>(sql, visa);
