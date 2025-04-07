@@ -57,3 +57,4 @@ nunit-*.xml
 *.user
 /.vs/Department-of-Space-Affairs
 /.vs/ProjectEvaluation
+/.vs
