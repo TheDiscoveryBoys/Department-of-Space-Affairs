@@ -128,9 +128,9 @@ jobs:
   #       # Run the exe as a service using sc 
 
   flyway:
-    needs:
-      - terraform
-      - release-front-end
+    # needs:
+      # - terraform
+      # - release-front-end
       # - release-api
     name: Flyway Migrations
     runs-on: ubuntu-latest
