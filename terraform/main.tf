@@ -48,10 +48,6 @@ data "aws_secretsmanager_secret_version" "postgresuser" {
   secret_id = "postgresuser"
 }
 
-output "postgresuservar" {
-  value = data.aws_secretsmanager_secret_version.postgresuser.secret_string
-}
-
 data "aws_secretsmanager_secret_version" "postgrespass" {
   secret_id = "postgrespass"
 }
@@ -65,8 +61,8 @@ resource "aws_db_instance" "spaceaffairsdb" {
   allocated_storage      = 20
   storage_type           = "gp2"
   publicly_accessible    = true
-  username               = data.aws_secretsmanager_secret_version.postgresuser.secret_string
-  password               = data.aws_secretsmanager_secret_version.postgrespass.secret_string
+  username               = jsondecode(data.aws_secretsmanager_secret_version.postgresuser.secret_string)["postgresuser"]
+  password               = jsondecode(data.aws_secretsmanager_secret_version.postgrespass.secret_string)["postgrespass"]
   skip_final_snapshot    = true
   vpc_security_group_ids = [aws_security_group.allow_postgres.id]
   tags = {
