@@ -30,8 +30,6 @@ public partial class App : Application
     try
     {
         base.OnStartup(e);
-        var mainWindow = new MainWindow(); // If you're injecting ViewModels here, it's a common crash point
-        mainWindow.Show();
     }
     catch (Exception ex)
     {
