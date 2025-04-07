@@ -44,6 +44,14 @@ resource "aws_security_group" "allow_postgres" {
   }
 }
 
+data "aws_secretsmanager_secret_version" "postgresuser" {
+  secret_id = "postgresuser"
+}
+
+data "aws_secretsmanager_secret_version" "postgrespass" {
+  secret_id = "postgrespass"
+}
+
 resource "aws_db_instance" "spaceaffairsdb" {
   identifier             = "spaceaffairsdb"
   engine                 = "postgres"
@@ -53,8 +61,8 @@ resource "aws_db_instance" "spaceaffairsdb" {
   allocated_storage      = 20
   storage_type           = "gp2"
   publicly_accessible    = true
-  username               = var.db_username    #TODO - store differently
-  password               = var.db_password    #TODO - store differently
+  username               = data.aws_secretsmanager_secret_version.postgresuser.secret_string
+  password               = data.aws_secretsmanager_secret_version.postgrespass.secret_string
   skip_final_snapshot    = true
   vpc_security_group_ids = [aws_security_group.allow_postgres.id]
   tags = {
