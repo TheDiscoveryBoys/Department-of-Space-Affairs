@@ -38,7 +38,7 @@
                        FontFamily="Segoe UI"/>
 
                     <TextBlock Text="{Binding LoginViewDescription}" 
-                           FontSize="16" 
+                           FontSize="18" 
                            Foreground="#333333"
                            TextAlignment="Center"
                            TextWrapping="Wrap"
