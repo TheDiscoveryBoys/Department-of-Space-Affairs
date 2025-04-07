@@ -153,6 +153,7 @@ jobs:
           secret-ids: |
                 POSTGRES_USER, postgresuser
                 POSTGRES_PASS, postgrespass
+          parse-json-secrets: true
 
       - name: Run Flyway Migrations
         run: |
