@@ -151,8 +151,8 @@ jobs:
         uses: aws-actions/aws-secretsmanager-get-secrets@v2
         with:
           secret-ids: |
-                POSTGRESUSER, postgresuser
-                POSTGRESPASS, postgrespass
+                POSTGRESUSER, aws/secretsmanager/postgresuser
+                POSTGRESPASS, aws/secretsmanager/postgrespass
           parse-json-secrets: true
 
       - name: Run Flyway Migrations
