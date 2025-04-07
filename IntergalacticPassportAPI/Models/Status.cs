@@ -8,12 +8,10 @@ using Dapper;
 namespace IntergalacticPassportAPI.Models
 {
 	[Table("statuses")]
-
 	public class Status
 	{
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		[Key]
-
         [Column("Id")]
         public int Id { get; set; }
 

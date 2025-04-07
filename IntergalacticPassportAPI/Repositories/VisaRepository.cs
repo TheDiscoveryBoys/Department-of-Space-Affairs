@@ -23,7 +23,6 @@ namespace IntergalacticPassportAPI.Data
         {
             using var connection = CreateConnection();
             return await connection.QueryAsync<Visa>("SELECT * FROM visa_applications ORDER BY id;");
-
         }
 
         public async Task<Visa?> GetByIdAsync(int id)
