@@ -48,6 +48,10 @@ data "aws_secretsmanager_secret_version" "postgresuser" {
   secret_id = "postgresuser"
 }
 
+output "postgresuservar" {
+  value = data.aws_secretsmanager_secret_version.postgresuser.secret_string
+}
+
 data "aws_secretsmanager_secret_version" "postgrespass" {
   secret_id = "postgrespass"
 }
