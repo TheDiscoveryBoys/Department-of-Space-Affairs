@@ -53,9 +53,9 @@ CodeCoverage/
 TestResult.xml
 nunit-*.xml
 /IntergalacticPassportApp/.vs
+/IntergalacticPassportAPI/.vs
 /DOSA-Client/.vs
 *.user
-
 
 # Local .terraform directories
 **/.terraform/*
@@ -97,3 +97,7 @@ terraform.rc
 
 .idea
 .vscode
+/.vs/Department-of-Space-Affairs
+/.vs/ProjectEvaluation
+.vs/
+

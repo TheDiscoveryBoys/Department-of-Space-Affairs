@@ -13,11 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace DOSA_Client.Views
+namespace DOSA_Client.Controls
 {
-    public partial class PassportStatusPageView : UserControl
+    /// <summary>
+    /// Interaction logic for HeaderRibbon.xaml
+    /// </summary>
+    public partial class HeaderRibbon : UserControl
     {
-        public PassportStatusPageView()
+        public HeaderRibbon()
         {
             InitializeComponent();
         }

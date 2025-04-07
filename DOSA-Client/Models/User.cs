@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DOSA_Client.Models
 {
-    class User
+    public class User
     {
         public string GoogleId { get; set; }
         public string Email { get; set; }

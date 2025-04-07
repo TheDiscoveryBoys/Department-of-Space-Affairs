@@ -1,121 +1,12 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\bbdnet3320\\Desktop\\C# Level Up\\Department-of-Space-Affairs\\IntergalacticPassportAPI\\",
-  "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{B7A53A6B-36B7-4E0D-E26A-5587AE5C62D1}|IntergalacticPassportAPI.csproj|c:\\users\\bbdnet3320\\desktop\\c# level up\\department-of-space-affairs\\intergalacticpassportapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{B7A53A6B-36B7-4E0D-E26A-5587AE5C62D1}|IntergalacticPassportAPI.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B7A53A6B-36B7-4E0D-E26A-5587AE5C62D1}|IntergalacticPassportAPI.csproj|c:\\users\\bbdnet3320\\desktop\\c# level up\\department-of-space-affairs\\intergalacticpassportapi\\controllers\\visacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B7A53A6B-36B7-4E0D-E26A-5587AE5C62D1}|IntergalacticPassportAPI.csproj|solutionrelative:controllers\\visacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B7A53A6B-36B7-4E0D-E26A-5587AE5C62D1}|IntergalacticPassportAPI.csproj|c:\\users\\bbdnet3320\\desktop\\c# level up\\department-of-space-affairs\\intergalacticpassportapi\\controllers\\passportcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B7A53A6B-36B7-4E0D-E26A-5587AE5C62D1}|IntergalacticPassportAPI.csproj|solutionrelative:controllers\\passportcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B7A53A6B-36B7-4E0D-E26A-5587AE5C62D1}|IntergalacticPassportAPI.csproj|c:\\users\\bbdnet3320\\desktop\\c# level up\\department-of-space-affairs\\intergalacticpassportapi\\intergalacticpassportapi.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}",
-      "RelativeMoniker": "D:0:0:{B7A53A6B-36B7-4E0D-E26A-5587AE5C62D1}|IntergalacticPassportAPI.csproj|solutionrelative:intergalacticpassportapi.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B7A53A6B-36B7-4E0D-E26A-5587AE5C62D1}|IntergalacticPassportAPI.csproj|c:\\users\\bbdnet3320\\desktop\\c# level up\\department-of-space-affairs\\intergalacticpassportapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B7A53A6B-36B7-4E0D-E26A-5587AE5C62D1}|IntergalacticPassportAPI.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    }
-  ],
+  "WorkspaceRootPath": "D:\\C# Level Up\\Department_Of_Space_Affairs\\IntergalacticPassportAPI\\",
+  "Documents": [],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": [
-        {
-          "DockedWidth": 200,
-          "SelectedChildIndex": 6,
-          "Children": [
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:129:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "VisaController.cs",
-              "DocumentMoniker": "C:\\Users\\bbdnet3320\\Desktop\\C# Level Up\\Department-of-Space-Affairs\\IntergalacticPassportAPI\\Controllers\\VisaController.cs",
-              "RelativeDocumentMoniker": "Controllers\\VisaController.cs",
-              "ToolTip": "C:\\Users\\bbdnet3320\\Desktop\\C# Level Up\\Department-of-Space-Affairs\\IntergalacticPassportAPI\\Controllers\\VisaController.cs",
-              "RelativeToolTip": "Controllers\\VisaController.cs",
-              "ViewState": "AgIAAAsAAAAAAAAAAAAAwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-06T18:48:24.598Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "IntergalacticPassportAPI.http",
-              "DocumentMoniker": "C:\\Users\\bbdnet3320\\Desktop\\C# Level Up\\Department-of-Space-Affairs\\IntergalacticPassportAPI\\IntergalacticPassportAPI.http",
-              "RelativeDocumentMoniker": "IntergalacticPassportAPI.http",
-              "ToolTip": "C:\\Users\\bbdnet3320\\Desktop\\C# Level Up\\Department-of-Space-Affairs\\IntergalacticPassportAPI\\IntergalacticPassportAPI.http",
-              "RelativeToolTip": "IntergalacticPassportAPI.http",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003502|",
-              "WhenOpened": "2025-04-06T18:47:33.386Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "C:\\Users\\bbdnet3320\\Desktop\\C# Level Up\\Department-of-Space-Affairs\\IntergalacticPassportAPI\\appsettings.json",
-              "RelativeDocumentMoniker": "appsettings.json",
-              "ToolTip": "C:\\Users\\bbdnet3320\\Desktop\\C# Level Up\\Department-of-Space-Affairs\\IntergalacticPassportAPI\\appsettings.json",
-              "RelativeToolTip": "appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAABtAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-04-06T18:39:19.756Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "PassportController.cs",
-              "DocumentMoniker": "C:\\Users\\bbdnet3320\\Desktop\\C# Level Up\\Department-of-Space-Affairs\\IntergalacticPassportAPI\\Controllers\\PassportController.cs",
-              "RelativeDocumentMoniker": "Controllers\\PassportController.cs",
-              "ToolTip": "C:\\Users\\bbdnet3320\\Desktop\\C# Level Up\\Department-of-Space-Affairs\\IntergalacticPassportAPI\\Controllers\\PassportController.cs",
-              "RelativeToolTip": "Controllers\\PassportController.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAAA4AAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-06T18:37:58.609Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\bbdnet3320\\Desktop\\C# Level Up\\Department-of-Space-Affairs\\IntergalacticPassportAPI\\Program.cs",
-              "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "C:\\Users\\bbdnet3320\\Desktop\\C# Level Up\\Department-of-Space-Affairs\\IntergalacticPassportAPI\\Program.cs",
-              "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAACkAAAAAAAAAAAAAwAQAAAAlAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-06T18:23:14.757Z",
-              "EditorCaption": ""
-            }
-          ]
-        }
-      ]
+      "DocumentGroups": []
     }
   ]
 }

@@ -9,15 +9,42 @@ namespace DOSA_Client.lib
 {
     static class ApiClient
     {
-        public static List<PassportApplication> getPassportApplications(string googleId)
+        // TODO: Probably make this private and change it through a function?
+        public static string jwt{get; set;}
+        public static List<Application> GetApplications(string googleId)
         {
-            var passports = new List<PassportApplication>();
-            var passport1 = new PassportApplication(new Status("PENDING"), DateTime.Now);
-            var passport2 = new PassportApplication(new Status("PENDING"), DateTime.Now.AddDays(-1));
-            passports.Add(passport1);
-            passports.Add(passport2);
+            var applications = new List<Application>();
+            var passport1 = new Application(new Status("REJECTED", "Applicant did not provide the correct documents. Not clear, REJECTED. Applicant did not provide the correct documents. Not clear, REJECTED. Applicant did not provide the correct documents. Not clear, REJECTED. Applicant did not provide the correct documents. Not clear, REJECTED. Applicant did not provide the correct documents. Not clear, REJECTED."), DateTime.Now.AddDays(-2), DateTime.Now, ApplicationType.Passport);
+            var passport2 = new Application(new Status("APPROVED"), DateTime.Now.AddDays(-1), ApplicationType.Passport);
+            var visa1 = new Application(new Status("PENDING"), DateTime.Now, ApplicationType.Visa);
+            applications.Add(passport1);
+            applications.Add(passport2);
+            applications.Add(visa1);
 
-            return passports;
+            return applications.OrderByDescending(app => app.SubmittedAt).ToList();
         }
+
+        public static String ExchangeAuthCodeForJWT(string authCode){
+            return "This is a fake jwt";
+        }
+
+        public static User GetUserProfile(string googleId){
+            return new User{
+                GoogleId = googleId,
+                DateOfBirth = DateTime.Now.AddYears(-1000),
+                Email = "cadesayner@gmail.com",
+                Name = "Cade Sayner",
+                PlanetOfOrigin = "Earth",
+                PrimaryLanguage = "English",
+                Species = "Homo Sapien Sapien"
+            };
+        }
+
+        public static List<Role> GetRoles(string googleId){
+            return new List<Role>{
+                new Role{id = 1, role="APPLICANT"}
+            };
+        }
+
     }
 }
