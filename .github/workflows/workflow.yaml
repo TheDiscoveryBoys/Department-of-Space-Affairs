@@ -56,7 +56,7 @@ jobs:
     runs-on: windows-latest
     needs: 
       - terraform
-      - release-api
+      # - release-api
     env: 
       PROJECT_PATH: DOSA-Client.csproj
     defaults:
@@ -134,7 +134,7 @@ jobs:
     needs:
       - terraform
       - release-front-end
-      - release-api
+      # - release-api
     name: Flyway Migrations
     runs-on: ubuntu-latest
     steps:
