@@ -63,9 +63,20 @@
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <Border BorderThickness="1" BorderBrush="Gray" Padding="10" Margin="5">
-                                                <TextBlock Text="{Binding}" FontSize="14"/>
+                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                    <Button Command="{Binding DataContext.RemoveDocumentCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                            CommandParameter="{Binding}"
+                                                            Width="30" Height="30"
+                                                            Margin="0,0,10,0"
+                                                            Background="Transparent"
+                                                            BorderBrush="{x:Null}">
+                                                        <Image Source="/Assets/bin_icon.png" Width="20" Height="20"/>
+                                                    </Button>
+                                                    <TextBlock Text="{Binding}" FontSize="14" VerticalAlignment="Center"/>
+                                                </StackPanel>
                                             </Border>
                                         </DataTemplate>
+
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
                             </ScrollViewer>

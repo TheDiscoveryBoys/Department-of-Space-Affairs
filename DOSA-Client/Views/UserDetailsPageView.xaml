@@ -127,10 +127,11 @@
                         </Grid>
 
                         <!-- Done Button -->
-                        <Button Content="Done"
+                        <Button Content="Save Details"
                                 Command="{Binding onNextButtonClickedCommand}"
                                 CommandParameter="Upload Passport Documents Page"
                                 HorizontalAlignment="Right"
+                                VerticalAlignment="Bottom"
                                 Width="180"
                                 Height="40"
                                 Background="#7F5AF0"

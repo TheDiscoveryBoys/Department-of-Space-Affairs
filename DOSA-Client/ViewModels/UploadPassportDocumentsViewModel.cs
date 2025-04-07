@@ -14,12 +14,14 @@ namespace DOSA_Client.ViewModels
         public ObservableCollection<string> UploadedDocuments { get; } = new ObservableCollection<string>();
         public ICommand submitDocumentsCommand { get; }
         public ICommand uploadDocumentCommand { get; }
+        public ICommand RemoveDocumentCommand { get; }
 
         public UploadPassportDocumentsViewModel(PageManager pageManager)
         {
             PageManager = pageManager;
             submitDocumentsCommand = new RelayCommand(OnSubmitDocuments);
             uploadDocumentCommand = new RelayCommand(OnUploadDocument);
+            RemoveDocumentCommand = new DelegateCommand<string>(OnRemoveDocument);
         }
 
         public PageManager PageManager { get; set; }
@@ -46,6 +48,16 @@ namespace DOSA_Client.ViewModels
                     // For now, just store the file name
                     UploadedDocuments.Add(Path.GetFileName(file));
                 }
+            }
+        }
+
+        public void OnRemoveDocument(string documentName)
+        {
+            Console.WriteLine(documentName);
+            if (UploadedDocuments.Contains(documentName))
+            {
+                Console.WriteLine("removing");
+                UploadedDocuments.Remove(documentName);
             }
         }
     }
