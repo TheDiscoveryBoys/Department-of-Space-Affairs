@@ -52,3 +52,8 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+/IntergalacticPassportApp/.vs
+/DOSA-Client/.vs
+*.user
+/.vs/Department-of-Space-Affairs
+/.vs/ProjectEvaluation
