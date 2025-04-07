@@ -7,12 +7,14 @@
              Background="White"
              HorizontalAlignment="Stretch"
              VerticalAlignment="Stretch">
-    <Grid Background="White">
+
+    <Grid Background="#ECEFF1">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <!-- Title -->
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="*" />
             <!-- Content -->
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <!-- Title and Horizontal Line -->
@@ -21,125 +23,132 @@
                        FontSize="26"
                        FontWeight="Bold"
                        HorizontalAlignment="Left" />
-            <Border Height="1" Background="Gray" />
+            <!-- Border for Horizontal Line -->
+            <Border Height="1" Background="#3B82F6" />
         </StackPanel>
 
-        <!-- Form Content -->
-        <ScrollViewer Grid.Row="1" Margin="30,0,30,30">
-            <StackPanel HorizontalAlignment="Stretch" Width="600">
-                <!-- Form Fields -->
-                <Grid Margin="0,10,0,20">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="180"/>
-                        <!-- Labels -->
-                        <ColumnDefinition Width="*"/>
-                        <!-- Input Fields -->
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
+        <!-- Layer 2: Centered content in a card -->
+        <Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="800">
+            <Border Background="White"
+                    CornerRadius="10"
+                    Padding="40"
+                    VerticalAlignment="Stretch">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                        <!-- Form Fields -->
+                        <Grid Margin="0,10,0,20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="180"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
 
-                    <!-- Email -->
-                    <TextBlock Grid.Row="0" Grid.Column="0" 
-                               Text="Email:" 
-                               FontWeight="Bold" 
-                               VerticalAlignment="Center" 
-                               Margin="0,15,10,15"/>
-                    <TextBox Grid.Row="0" Grid.Column="1" 
-                             Height="30" 
-                             FontSize="14" 
-                             VerticalContentAlignment="Center"
-                             Padding="5,0"
-                             Text="{Binding CurrentUser.Email}"
-                             Margin="0,10"/>
+                            <!-- Email -->
+                            <TextBlock Grid.Row="0" Grid.Column="0" 
+                                       Text="Email:" 
+                                       FontWeight="Bold" 
+                                       VerticalAlignment="Center" 
+                                       Margin="0,15,10,15"/>
+                            <TextBox Grid.Row="0" Grid.Column="1" 
+                                     Height="30" 
+                                     FontSize="14" 
+                                     VerticalContentAlignment="Center"
+                                     Padding="5,0"
+                                     Text="{Binding CurrentUser.Email}"
+                                     Margin="0,10"/>
 
-                    <!-- Name -->
-                    <TextBlock Grid.Row="1" Grid.Column="0" 
-                               Text="Name:" 
-                               FontWeight="Bold" 
-                               VerticalAlignment="Center" 
-                               Margin="0,15,10,15"/>
-                    <TextBox Grid.Row="1" Grid.Column="1" 
-                             Height="30" 
-                             FontSize="14"
-                             VerticalContentAlignment="Center"
-                             Padding="5,0"
-                             Text="{Binding CurrentUser.Name }"
-                             Margin="0,10"/>
+                            <!-- Name -->
+                            <TextBlock Grid.Row="1" Grid.Column="0" 
+                                       Text="Name:" 
+                                       FontWeight="Bold" 
+                                       VerticalAlignment="Center" 
+                                       Margin="0,15,10,15"/>
+                            <TextBox Grid.Row="1" Grid.Column="1" 
+                                     Height="30" 
+                                     FontSize="14"
+                                     VerticalContentAlignment="Center"
+                                     Padding="5,0"
+                                     Text="{Binding CurrentUser.Name}"
+                                     Margin="0,10"/>
 
-                    <!-- Species -->
-                    <TextBlock Grid.Row="2" Grid.Column="0" 
-                               Text="Species:" 
-                               FontWeight="Bold" 
-                               VerticalAlignment="Center" 
-                               Margin="0,15,10,15"/>
-                    <TextBox Grid.Row="2" Grid.Column="1" 
-                             Height="30" 
-                             FontSize="14"
-                             VerticalContentAlignment="Center"
-                             Padding="5,0"
-                             Text="{Binding CurrentUser.Species}"
-                             Margin="0,10"/>
+                            <!-- Species -->
+                            <TextBlock Grid.Row="2" Grid.Column="0" 
+                                       Text="Species:" 
+                                       FontWeight="Bold" 
+                                       VerticalAlignment="Center" 
+                                       Margin="0,15,10,15"/>
+                            <TextBox Grid.Row="2" Grid.Column="1" 
+                                     Height="30" 
+                                     FontSize="14"
+                                     VerticalContentAlignment="Center"
+                                     Padding="5,0"
+                                     Text="{Binding CurrentUser.Species}"
+                                     Margin="0,10"/>
 
-                    <!-- Planet of Origin -->
-                    <TextBlock Grid.Row="3" Grid.Column="0" 
-                               Text="Planet of Origin:" 
-                               FontWeight="Bold" 
-                               VerticalAlignment="Center" 
-                               Margin="0,15,10,15"/>
-                    <TextBox Grid.Row="3" Grid.Column="1" 
-                             Height="30" 
-                             FontSize="14"
-                             VerticalContentAlignment="Center"
-                             Padding="5,0"
-                             Text="{Binding CurrentUser.PlanetOfOrigin}"
-                             Margin="0,10"/>
+                            <!-- Planet of Origin -->
+                            <TextBlock Grid.Row="3" Grid.Column="0" 
+                                       Text="Planet of Origin:" 
+                                       FontWeight="Bold" 
+                                       VerticalAlignment="Center" 
+                                       Margin="0,15,10,15"/>
+                            <TextBox Grid.Row="3" Grid.Column="1" 
+                                     Height="30" 
+                                     FontSize="14"
+                                     VerticalContentAlignment="Center"
+                                     Padding="5,0"
+                                     Text="{Binding CurrentUser.PlanetOfOrigin}"
+                                     Margin="0,10"/>
 
-                    <!-- Primary Language -->
-                    <TextBlock Grid.Row="4" Grid.Column="0" 
-                               Text="Primary Language:" 
-                               FontWeight="Bold" 
-                               VerticalAlignment="Center" 
-                               Margin="0,15,10,15"/>
-                    <TextBox Grid.Row="4" Grid.Column="1" 
-                             Height="30" 
-                             FontSize="14"
-                             VerticalContentAlignment="Center"
-                             Padding="5,0"
-                             Text="{Binding CurrentUser.PrimaryLanguage}"
-                             Margin="0,10"/>
+                            <!-- Primary Language -->
+                            <TextBlock Grid.Row="4" Grid.Column="0" 
+                                       Text="Primary Language:" 
+                                       FontWeight="Bold" 
+                                       VerticalAlignment="Center" 
+                                       Margin="0,15,10,15"/>
+                            <TextBox Grid.Row="4" Grid.Column="1" 
+                                     Height="30" 
+                                     FontSize="14"
+                                     VerticalContentAlignment="Center"
+                                     Padding="5,0"
+                                     Text="{Binding CurrentUser.PrimaryLanguage}"
+                                     Margin="0,10"/>
 
-                    <!-- Date of Birth -->
-                    <TextBlock Grid.Row="5" Grid.Column="0" 
-                               Text="Date of Birth:" 
-                               FontWeight="Bold" 
-                               VerticalAlignment="Center" 
-                               Margin="0,15,10,15"/>
-                    <DatePicker Grid.Row="5" Grid.Column="1" 
-                                Height="30" 
-                                FontSize="14"
-                                VerticalContentAlignment="Center"
-                                Margin="0,10"/>
-                </Grid>
+                            <!-- Date of Birth -->
+                            <TextBlock Grid.Row="5" Grid.Column="0" 
+                                       Text="Date of Birth:" 
+                                       FontWeight="Bold" 
+                                       VerticalAlignment="Center" 
+                                       Margin="0,15,10,15"/>
+                            <DatePicker Grid.Row="5" Grid.Column="1" 
+                                        Height="30" 
+                                        FontSize="14"
+                                        VerticalContentAlignment="Center"
+                                        Margin="0,10"/>
+                        </Grid>
 
-                <!-- Done Button -->
-                <Button Content="Done"
-                        Command="{Binding onNextButtonClickedCommand}"
-                        CommandParameter="Upload Passport Documents Page"
-                        HorizontalAlignment="Right"
-                        Width="180"
-                        Height="40"
-                        Background="#007ACC"
-                        Foreground="White"
-                        FontWeight="Bold"
-                        FontSize="16"
-                        Margin="0,20,0,0"/>
-            </StackPanel>
-        </ScrollViewer>
+                        <!-- Done Button -->
+                        <Button Content="Done"
+                                Command="{Binding onNextButtonClickedCommand}"
+                                CommandParameter="Upload Passport Documents Page"
+                                HorizontalAlignment="Right"
+                                Width="180"
+                                Height="40"
+                                Background="#7F5AF0"
+                                Foreground="White"
+                                FontWeight="Bold"
+                                FontSize="16"
+                                Margin="0,20,0,0"
+                                Style="{StaticResource RoundedButtonStyle}"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+        </Grid>
     </Grid>
 </UserControl>

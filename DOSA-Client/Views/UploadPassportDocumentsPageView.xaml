@@ -16,7 +16,7 @@
                        FontSize="26"
                        FontWeight="Bold"
                        HorizontalAlignment="Left" />
-            <Border Height="1" Background="Gray" />
+            <Border Height="1" Background="#3B82F6" />
         </StackPanel>
 
         <!-- Upload Section -->
@@ -33,11 +33,12 @@
                         Command="{Binding uploadDocumentCommand}"
                         Width="180"
                         Height="40"
-                        Background="#007ACC"
+                        Background="#7F5AF0"
                         Foreground="White"
                         FontWeight="Bold"
                         FontSize="16"
-                        Margin="0,0,20,0"/>
+                        Margin="0,0,20,0"
+                        Style="{StaticResource RoundedButtonStyle}"/>
 
                 <!-- Submit Button -->
                 <Button Content="Submit Documents"
@@ -45,11 +46,12 @@
                         HorizontalAlignment="Center"
                         Width="180"
                         Height="40"
-                        Background="#007ACC"
+                        Background="#7F5AF0"
                         Foreground="White"
                         FontWeight="Bold"
                         FontSize="16"
-                        Margin="0,0,0,0"/>
+                        Margin="0,0,0,0"
+                        Style="{StaticResource RoundedButtonStyle}"/>
             </StackPanel>
 
             <!-- Uploaded Documents List -->

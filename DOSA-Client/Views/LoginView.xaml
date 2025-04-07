@@ -4,31 +4,59 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d">
-    <Grid Background="#1E1E2F">
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="800" >
-            <TextBlock Text="Welcome to the Department of Galactic Affairs"
+
+    <Grid Background="#ECEFF1">
+        <!-- Layer 1: Accent bar taking 33% -->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="100*" />
+            </Grid.ColumnDefinitions>
+            <Border Grid.Column="0" Background="#3B82F6"/>
+        </Grid>
+
+        <!-- Layer 2: Centered login card -->
+        <Grid HorizontalAlignment="Center"
+          VerticalAlignment="Center">
+            <Border Background="White"
+                CornerRadius="10"
+                Padding="40"
+                Width="600"
+                >
+                <StackPanel>
+                    <TextBlock Text="Welcome to the Department of Galactic Affairs"
                        FontSize="28"
                        FontWeight="Bold"
-                       Foreground="White"
+                       Foreground="#111111"
                        TextAlignment="Center"
-                       Margin="0,0,0,10"/>
-            
-            <TextBlock Text="{Binding LoginViewDescription}" 
-                       FontSize="16" 
-                       Foreground="#CCCCCC"
-                       TextAlignment="Center"
-                       TextWrapping="Wrap"/>
+                       TextWrapping="Wrap"
+                       Margin="0,0,0,10"
+                       FontFamily="Segoe UI"/>
 
-            <Button Content="Login"
-                    Width="120"
-                    Height="40"
-                    FontSize="16"
-                    Command="{Binding LoginCommand}"
-                    HorizontalAlignment="Center"
-                    Margin="0,20,0,0"
-                    Background="#4CAF50"
-                    Foreground="White"
-                    Padding="10,5"/>
-        </StackPanel>
+
+                    <TextBlock Text="{Binding LoginViewDescription}" 
+                           FontSize="16" 
+                           Foreground="#333333"
+                           TextAlignment="Center"
+                           TextWrapping="Wrap"
+                           Margin="0,0,0,10"/>
+
+                    <Button Content="Login via Google"
+                        Width="150"
+                        Height="40"
+                        FontSize="16"
+                        Command="{Binding LoginCommand}"
+                        HorizontalAlignment="Center"
+                        Margin="0,20,0,0"
+                        Background="#7F5AF0"
+                        Foreground="White"
+                        Padding="10,5"
+                        FontFamily="Segoe UI"
+                        Style="{StaticResource RoundedButtonStyle}"/>
+                </StackPanel>
+            </Border>
+        </Grid>
     </Grid>
+
+
 </UserControl>
