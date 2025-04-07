@@ -3,63 +3,78 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:controls="clr-namespace:DOSA_Client.Controls">
 
-    <Grid Background="White">
+    <Grid Background="#ECEFF1">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <!-- Title -->
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="*" />
             <!-- Content -->
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <!-- Title and Horizontal Line -->
         <controls:HeaderRibbon DataContext="{Binding}" />
 
-        <!-- Upload Section -->
-        <StackPanel Grid.Row="1"
-                    VerticalAlignment="Top"
-                    HorizontalAlignment="Center"
-                    Margin="30,20,30,20"
-                    Width="600">
+        <!-- Layer 2: Centered content in a card -->
+        <Grid Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="30,10,30,20">
+            <Border Background="White"
+                    CornerRadius="10"
+                    Padding="40"
+                    VerticalAlignment="Stretch">
+                <!-- Upload Section -->
+                <StackPanel Grid.Row="1"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Stretch"
+                        Margin="30,20,30,20">
 
-            <!-- Button container to align Upload and Submit buttons next to each other -->
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10">
-                <!-- Upload Button -->
-                <Button Content="Upload Document"
-                        Command="{Binding uploadDocumentCommand}"
-                        Width="180"
-                        Height="40"
-                        Background="#7F5AF0"
-                        Foreground="White"
-                        FontWeight="Bold"
-                        FontSize="16"
-                        Margin="0,0,20,0"
-                        Style="{StaticResource RoundedButtonStyle}"/>
+                    <!-- Button container to align Upload and Submit buttons next to each other -->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10">
+                        <!-- Upload Button -->
+                        <Button Content="Upload Document"
+                            Command="{Binding uploadDocumentCommand}"
+                            Width="180"
+                            Height="40"
+                            Background="#7F5AF0"
+                            Foreground="White"
+                            FontWeight="Bold"
+                            FontSize="16"
+                            Margin="0,0,20,0"
+                            Style="{StaticResource RoundedButtonStyle}"/>
 
-                <!-- Submit Button -->
-                <Button Content="Submit Documents"
-                        Command="{Binding submitDocumentsCommand}"
-                        HorizontalAlignment="Center"
-                        Width="180"
-                        Height="40"
-                        Background="#7F5AF0"
-                        Foreground="White"
-                        FontWeight="Bold"
-                        FontSize="16"
-                        Margin="0,0,0,0"
-                        Style="{StaticResource RoundedButtonStyle}"/>
-            </StackPanel>
+                        <!-- Submit Button -->
+                        <Button Content="Submit Documents"
+                            Command="{Binding submitDocumentsCommand}"
+                            HorizontalAlignment="Center"
+                            Width="180"
+                            Height="40"
+                            Background="#7F5AF0"
+                            Foreground="White"
+                            FontWeight="Bold"
+                            FontSize="16"
+                            Margin="0,0,0,0"
+                            Style="{StaticResource RoundedButtonStyle}"/>
+                    </StackPanel>
 
-            <!-- Uploaded Documents List -->
-            <ItemsControl ItemsSource="{Binding UploadedDocuments}" Margin="0,20,0,10">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Border BorderThickness="1" BorderBrush="Gray" Padding="10" Margin="5">
-                            <TextBlock Text="{Binding}" FontSize="14"/>
+                    <!-- Uploaded Documents List with a Border around the scrollable area -->
+                    <Grid Height="650">
+                        <Border BorderBrush="Gray" BorderThickness="2" Margin="0,20,0,10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" VerticalAlignment="Stretch">
+                                <ItemsControl ItemsSource="{Binding UploadedDocuments}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border BorderThickness="1" BorderBrush="Gray" Padding="10" Margin="5">
+                                                <TextBlock Text="{Binding}" FontSize="14"/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
                         </Border>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+                    </Grid>
+                    
 
-        </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
     </Grid>
 </UserControl>
