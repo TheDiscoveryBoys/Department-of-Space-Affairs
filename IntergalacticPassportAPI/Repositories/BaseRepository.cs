@@ -16,25 +16,28 @@ namespace IntergalacticPassportAPI.Data
             return new NpgsqlConnection(_connectionString);
         }
 
-        protected async Task<Model> GetById(string id, string PKIdentifier)
+        public async Task<Model> GetById(string id)
         {
+            string PKIdentifier = tableName.Equals("users") ? "google_id" : "id";
             using var db = CreateDBConnection();
             var sql = $"SELECT * FROM {tableName} WHERE {tableName}.{PKIdentifier} = '{id}'";
             return await db.QueryFirstOrDefaultAsync<Model>(sql);
 
         }
-        protected async Task<IEnumerable<Model>> GetAll()
+        public async Task<IEnumerable<Model>> GetAll()
         {
             using var db = CreateDBConnection();
             var sql = $"SELECT * FROM {tableName}";
             return await db.QueryAsync<Model>(sql);
         }
-        protected async Task<Model> Create(Model model)
+        public async Task<Model> Create(Model model)
         {
             using var db = CreateDBConnection();
             var sql = ModelToSQLInsert(model);
             return await db.QuerySingleAsync<Model>(sql, model);
         }
+
+        public abstract Task<bool> Exists(Model model);
 
         protected string ModelToSQLInsert(Model model)
         {
@@ -55,7 +58,6 @@ namespace IntergalacticPassportAPI.Data
             colNames = colNames[..(colNames.Count() - 2)];
             values = values[..(values.Count() - 2)];
             string sql = $"INSERT INTO {tableName} ({colNames}) VALUES ({values}) RETURNING *";
-            Console.WriteLine(sql);
             return sql;
         }
 

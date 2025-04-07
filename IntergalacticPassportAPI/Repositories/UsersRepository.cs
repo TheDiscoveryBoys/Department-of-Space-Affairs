@@ -1,32 +1,46 @@
+using Dapper;
 using IntergalacticPassportAPI.Models;
 
 namespace IntergalacticPassportAPI.Data
 {
     public class UsersRepository(IConfiguration config) : BaseRepository<Users>(config, "users")
-    {
-        public async Task<Users> RegisterUser(Users user)
+    { 
+        
+        public async Task<IEnumerable<Roles>> GetUserRoles(string googleId)
         {
-            try
-            {
-                return await Create(user);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("An error occurred while creating the user.", ex);
-            }
-
+            using var db = CreateDBConnection();
+            var sql = @"
+                    SELECT r.id, r.role AS role
+                    FROM user_roles ur
+                    JOIN roles r ON ur.role_id = r.id
+                    WHERE ur.user_id = @GoogleId;
+                    ";
+            var roles = await db.QueryAsync<Roles>(sql, new { GoogleId = googleId });
+            return roles;
         }
 
-        public async Task<IEnumerable<Users>> GetAllUsers()
+        public async Task<bool> AssignRoleToUser(string googleId, int roleId)
         {
-            return await GetAll();
+
+            using var db = CreateDBConnection();
+            var sql = @"
+                    INSERT INTO user_roles (user_id, role_id)
+                    VALUES (@UserId, @RoleId)
+                    ON CONFLICT DO NOTHING;
+                ";
+            var rowsAffected = await db.ExecuteAsync(sql, new { UserId = googleId, RoleId = roleId });
+            return rowsAffected > 0;
         }
 
-        public async Task<Users> GetUserByGoogleId(string id)
+        public async override Task<bool> Exists(Users model)
         {
-            return await GetById(id, "google_id");
+             var existingUser = await GetById(model.google_id);
+              if (existingUser == null){
+                    return false;
+              } else{
+                return true;
+              }
         }
-
     }
 }
 
