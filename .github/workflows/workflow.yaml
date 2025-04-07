@@ -132,6 +132,9 @@ jobs:
       # - terraform
       # - release-front-end
       # - release-api
+    permissions:
+      id-token: write
+      contents: read
     name: Flyway Migrations
     runs-on: ubuntu-latest
     steps:
@@ -144,13 +147,13 @@ jobs:
           role-to-assume: arn:aws:iam::${{ secrets.IAM_USER_ID }}:role/gh-actions-role
           aws-region: af-south-1
       
-      # - name: Get secrets from AWS Key Store
-      #   uses: aws-actions/aws-secretsmanager-get-secrets@v2
-      #   with:
-      #     secret-ids: |
-      #           postgresuser
-      #           postgrespass
-      #     parse-json-secrets: true
+      - name: Get secrets from AWS Key Store
+        uses: aws-actions/aws-secretsmanager-get-secrets@v2
+        with:
+          secret-ids: |
+                postgresuser
+                postgrespass
+          parse-json-secrets: true
 
       - name: Run Flyway Migrations
         run: |
