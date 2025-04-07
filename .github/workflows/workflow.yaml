@@ -151,10 +151,10 @@ jobs:
         uses: aws-actions/aws-secretsmanager-get-secrets@v2
         with:
           secret-ids: |
-                postgresuser
-                postgrespass
+                POSTGRESUSER, postgresuser
+                POSTGRESPASS, postgrespass
           parse-json-secrets: true
 
       - name: Run Flyway Migrations
         run: |
-          docker run --rm --volume ${{ github.workspace }}/migrations:/flyway/sql:ro redgate/flyway -url="jdbc:postgresql://${{ needs.terraform.outputs.dbhost }}/spaceaffairsdb" -user="${{ env.postgresuser }}" -password="${{ env.postgrespass }}" migrate
+          docker run --rm --volume ${{ github.workspace }}/migrations:/flyway/sql:ro redgate/flyway -url="jdbc:postgresql://${{ needs.terraform.outputs.dbhost }}/spaceaffairsdb" -user="${{ env.POSTGRESUSER }}" -password="${{ env.POSTGRESPASS }}" migrate
