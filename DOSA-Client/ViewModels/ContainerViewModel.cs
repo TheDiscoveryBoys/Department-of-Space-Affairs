@@ -25,15 +25,15 @@ namespace DOSA_Client.ViewModels
             }
         }
 
-        public void UpdateTabs()
+        public async void UpdateTabs()
         {
             // this function checks the applications for the current user and decides what tabs to show
             User CurrentUser = Context.Get<User>("User");
-            var roles = ApiClient.GetRoles(CurrentUser.GoogleId);
+            var roles = await ApiClient.GetRoles(CurrentUser.GoogleId);
             if (roles.Any(role => role.role == "APPLICANT"))
             {
                 // we have an applicant on our hands so let us check which applications they have right now
-                List<Application> applications = ApiClient.GetApplications(CurrentUser.GoogleId);
+                List<Application> applications = await ApiClient.GetApplications(CurrentUser.GoogleId);
                 if (applications.Any(application => application.Status.Name == "APPROVED" && application.ApplicationType == ApplicationType.Passport))
                 {
                     Console.WriteLine("Made it to the right place");

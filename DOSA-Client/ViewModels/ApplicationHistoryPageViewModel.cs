@@ -22,7 +22,7 @@ namespace DOSA_Client.ViewModels
             onNextButtonClickedCommand = new DelegateCommand<string>(OnNext);
 
             // Call API to get list of passport applications and their statuses
-            Applications = new ObservableCollection<Application>(ApiClient.GetApplications("1"));
+            Applications = new ObservableCollection<Application>(ApiClient.GetApplications("1").GetAwaiter().GetResult());
         }
         public ICommand onNextButtonClickedCommand { get; }
         public void OnNext(String pageName)

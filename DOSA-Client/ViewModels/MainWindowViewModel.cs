@@ -3,10 +3,7 @@ using System.Diagnostics;
 using System.Net;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
-using DOSA_Client;
 using DOSA_Client.lib;
-using DOSA_Client.Models;
-using DOSA_Client.Views;
 
 public class MainWindowViewModel : INotifyPropertyChanged
 {
@@ -79,13 +76,13 @@ public class MainWindowViewModel : INotifyPropertyChanged
         // lekka
 
         // throw the exception deeper in the api itself rather?
-        string jwt = ApiClient.ExchangeAuthCodeForJWT(authCode) ?? throw new Exception("Failed to exchange the jwt");
+        string jwt = await ApiClient.ExchangeAuthCodeForJWT(authCode) ?? throw new Exception("Failed to exchange the jwt");
         // set the jwt on the client
-        ApiClient.jwt = jwt;
+        ApiClient.Jwt = jwt;
         string googleID = JWTHelpers.GetGoogleId(jwt);
 
         // Add the user to context
-        Context.Add("User", ApiClient.GetUserProfile(googleID));
+        Context.Add("User", await ApiClient.GetUserProfile(googleID));
 
         // now hide this page
         toggleLogin();

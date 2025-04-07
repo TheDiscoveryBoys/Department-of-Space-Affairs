@@ -6,27 +6,12 @@ using System.Threading.Tasks;
 
 namespace DOSA_Client.Models
 {
-    public enum ApplicationStatus
-    {
-        Approved,
-        Pending,
-        Rejected,
-        Busy
-    }
-
-    class VisaApplication
-    {
-        public User Applicant { get; set; }
-        public string DestinationPlanet { get; set; }
-        public string TravelReason { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-        public int OfficerId { get; set; }
-        public ApplicationStatus ApplicationStatus { get; set; }
-
-        public VisaApplication()
-        {
-
-        }
-    }
+    public record VisaApplication(
+        string DestinationPlanet,
+        string TravelReason,
+        DateTime StartDate,
+        DateTime EndDate,
+        int? OfficerId,
+        Status Status
+    );
 }
