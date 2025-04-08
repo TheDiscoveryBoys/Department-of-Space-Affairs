@@ -20,6 +20,8 @@ namespace DOSA_Client.ViewModels
         public PageManager PageManager { get; set; }
         public User Officer { get; set; }
 
+        public String Reason {get; set;}
+
         private OfficerVisaApplication _visaApplication;
         public OfficerVisaApplication VisaApplication
         {
@@ -34,13 +36,21 @@ namespace DOSA_Client.ViewModels
         public void RejectApplication()
         {
             // call API to reject application
-            Console.WriteLine("Rejected Application");
+            Console.WriteLine($"Rejected Application with reason {Reason}");
+            Task.Run(async ()=>{
+                await ApiClient.UpdateApplicationStatus(new Status("REJECTED", Reason));
+            });
+            PageManager.NavigateTo("Visa Application Details Page");
         }
 
         public void ApproveApplication()
         {
             // call API to approve application
-            Console.WriteLine("Approved Application");
+            Console.WriteLine($"Approved Application {Reason}");
+            Task.Run(async ()=>{
+                await ApiClient.UpdateApplicationStatus(new Status("APPROVED", Reason));
+            });
+            PageManager.NavigateTo("Visa Application Details Page");
         }
 
         public ProcessVisaApplicationViewModel(PageManager pageManager)

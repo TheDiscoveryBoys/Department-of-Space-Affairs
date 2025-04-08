@@ -78,18 +78,7 @@
                             <TextBlock Grid.Row="7" Grid.Column="1" Text="{Binding VisaApplication.VisaApplication.EndDate}" Margin="0,10"/>
                         </Grid>
 
-                        <Grid Margin="40,20">
-                            <TextBox Name="ReviewerNotesTextBox"
-                                     Height="100"
-                                     FontSize="14"
-                                     Padding="10"
-                                     TextWrapping="Wrap"
-                                     AcceptsReturn="True"
-                                     VerticalScrollBarVisibility="Auto"
-                                     Background="#FAFAFA"
-                                     BorderBrush="#B0BEC5"
-                                     BorderThickness="1"/>
-
+                        <StackPanel Margin="40,0">
                             <TextBlock Text="Enter any relevant notes or instructions here..."
                                        Foreground="Gray"
                                        Margin="14,12,0,0"
@@ -97,25 +86,18 @@
                                        IsHitTestVisible="False"
                                        VerticalAlignment="Top"
                                        x:Name="PlaceholderTextBlock"/>
-
-                            <!-- Visibility binding for placeholder -->
-                            <Grid.Triggers>
-                                <EventTrigger RoutedEvent="TextBox.TextChanged" SourceName="ReviewerNotesTextBox">
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PlaceholderTextBlock"
-                                                       Storyboard.TargetProperty="Visibility">
-                                                <DiscreteObjectKeyFrame KeyTime="0:0:0">
-                                                    <DiscreteObjectKeyFrame.Value>
-                                                        <Visibility>Collapsed</Visibility>
-                                                    </DiscreteObjectKeyFrame.Value>
-                                                </DiscreteObjectKeyFrame>
-                                            </ObjectAnimationUsingKeyFrames>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </EventTrigger>
-                            </Grid.Triggers>
-                        </Grid>
+                            <TextBox Name="ReviewerNotesTextBox"
+                                     Height="100"
+                                     FontSize="14"
+                                     Padding="10"
+                                     TextWrapping="Wrap"
+                                     Text="{Binding Reason}"
+                                     AcceptsReturn="True"
+                                     VerticalScrollBarVisibility="Auto"
+                                     Background="#FAFAFA"
+                                     BorderBrush="#B0BEC5"
+                                     BorderThickness="1"/>
+                        </StackPanel>
                     </StackPanel>
                 </ScrollViewer>
             </Border>
