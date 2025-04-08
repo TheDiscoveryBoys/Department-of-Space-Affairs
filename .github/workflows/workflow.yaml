@@ -47,7 +47,7 @@ jobs:
         id: tf_outputs
         run: |
           echo "dbhost=$(terraform output -raw db_host)" >> $GITHUB_OUTPUT
-  
+          echo "ec2host=$(terraform output -raw ec2_host)" >> $GITHUB_OUTPUT
   # release-front-end:
   #   name: Build & Release Front-End
   #   runs-on: windows-latest
@@ -96,7 +96,7 @@ jobs:
   #         files: DOSA-Client/bin/Release/net9.0-windows/win-x64/publish/*.exe
 
   release-api:
-    name: Build & Release Front-End
+    name: Build & Release API
     runs-on: windows-latest
     needs: terraform
     env: 
