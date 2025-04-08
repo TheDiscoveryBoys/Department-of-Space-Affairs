@@ -16,34 +16,43 @@ namespace IntergalacticPassportAPI.Controllers
         [HttpPost]
         public override async Task<ActionResult<Users>> Create([FromBody] Users user)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var existingUser = await _repo.Exists(user);
-
-            if (!existingUser)
+            return await BaseRequest(async () =>
             {
-                var registeredUser = await _repo.Create(user);
-                return Ok(registeredUser);
-            }
-            else
-            {
-                return Ok(user);
-            }
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
+                var existingUser = await _repo.Exists(user);
+
+                if (!existingUser)
+                {
+                    var registeredUser = await _repo.Create(user);
+                    return Ok(registeredUser);
+                }
+                else
+                {
+                    return Ok(user);
+                }
+            });
+
         }
 
         [HttpGet("{id}/roles")]
         public async Task<ActionResult<IEnumerable<Roles>>> GetUserRoles(string id)
         {
-            var roles = await _repo.GetUserRoles(id);
-            if (roles.Any())
+
+            return await BaseRequest(async () =>
             {
-                return Ok(roles);
-            }
-            else
-            {
-                return NoContent();
-            }
+                var roles = await _repo.GetUserRoles(id);
+                if (roles.Any())
+                {
+                    return Ok(roles);
+                }
+                else
+                {
+                    return NoContent();
+                }
+            });
+
         }
 
         [HttpPost("{userId}/roles/{roleId}")]

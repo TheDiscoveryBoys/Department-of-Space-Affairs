@@ -60,6 +60,36 @@ namespace IntergalacticPassportAPI.Controllers
 
         }
 
+        [HttpPut]
+        public async Task<ActionResult<Model>> Put([FromBody] Model model)
+        {
+            return await BaseRequest(async () =>
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
+                var updatedModel = await _repo.Update(model);
+                if (updatedModel != null)
+                {
+                    return Ok(updatedModel);
+                }
+                else
+                {
+                    return NotFound();
+                }
+            });
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(string id){
+            return await BaseRequest(async () =>
+            {
+                bool deleted = await _repo.Delete(id);
+
+                return deleted ? Ok() : NotFound();
+            });
+        }
+
 
         protected async Task<ActionResult> BaseRequest(Func<Task<ActionResult>> controllerLogic)
         {
