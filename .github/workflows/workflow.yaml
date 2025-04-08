@@ -159,8 +159,10 @@ jobs:
       run: |
         # Create the deployment directory if it doesn't exist
         ssh -o StrictHostKeyChecking=no -i spaceaffairs-key.pem "Administrator@${EC2_HOST}" powershell -Command "
-          if (-Not (Test-Path 'C:\\deploy')) {
-            New-Item -Path 'C:\\deploy' -ItemType Directory
+          $path = "C:\deploy"
+          If(!(test-path -PathType container $path))
+          {
+                New-Item -ItemType Directory -Path $path
           }
         "
         
