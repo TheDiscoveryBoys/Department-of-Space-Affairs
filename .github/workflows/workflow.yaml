@@ -1,0 +1,159 @@
+name: "Deployment pipeline"
+
+on:
+  push:
+    branches:
+      - main
+      - development
+      - pipeline-setup
+
+jobs:
+  terraform:
+    permissions:
+      id-token: write
+      contents: read
+    name: "Manage AWS Resources"
+    runs-on: ubuntu-latest
+    outputs:
+      dbhost: ${{ steps.tf_outputs.outputs.dbhost }}
+      ec2host: ${{ steps.tf_outputs.outputs.ec2host }}
+    defaults:
+      run:
+        working-directory: terraform
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.IAM_USER_ID }}:role/gh-actions-role #This probably doesn't actually need to be a secret - will confirm
+          aws-region: af-south-1
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.0.1
+          terraform_wrapper: false
+
+      - name: Terraform Init
+        id: init
+        run: terraform init -backend-config="bucket=space-affairs-bucket-test" -backend-config="key=terraformstate/terraform.tfstate" -backend-config="region=af-south-1"
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
+
+      - name: Capture Terraform Outputs
+        id: tf_outputs
+        run: |
+          echo "dbhost=$(terraform output -raw db_host)" >> $GITHUB_OUTPUT
+  
+  release-front-end:
+    name: Build & Release Front-End
+    runs-on: windows-latest
+    needs: 
+      - terraform
+      # - release-api
+    env: 
+      PROJECT_PATH: DOSA-Client.csproj
+    defaults:
+      run:
+        working-directory: DOSA-Client
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Install Dotnet
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Restore packages
+        run: dotnet restore ${{ env.PROJECT_PATH }} -p:SelfContained=true
+      
+      - name: Build Application
+        run: dotnet build ${{ env.PROJECT_PATH }} -c Release --self-contained --no-restore
+
+      - name: Publish Application
+        run: dotnet publish ${{ env.PROJECT_PATH }} -c Release --self-contained -r win-x64 -p:PublishSingleFile=true --no-build
+
+      - name: Get Version
+        run: |
+            $version = Get-Date -Format "yyyy.MM.dd-HH.mm.ss"
+            echo "VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+        shell: pwsh
+
+      - name: Create Front-End Release
+        uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ env.VERSION }}
+          name: "Release v${{ env.VERSION }}"
+          body: "Automated release for commit ${{ github.sha }}"
+          draft: false
+          prerelease: false
+          files: DOSA-Client/bin/Release/net9.0-windows/win-x64/publish/*.exe
+
+  # release-api:
+  #   name: Build & Release Front-End
+  #   runs-on: windows-latest
+  #   needs: terraform
+  #   env: 
+  #     PROJECT_PATH: IntergalacticPassportAPI.csproj
+  #   defaults:
+  #     run:
+  #       working-directory: IntergalacticPassportAPI
+  #   steps:
+  #   - name: Checkout
+  #     uses: actions/checkout@v4
+    
+  #   - name: Install Dotnet
+  #     uses: actions/setup-dotnet@v4
+  #     with:
+  #       dotnet-version: '9.0.x'
+
+  #   - name: Restore packages
+  #     run: dotnet restore ${{ env.PROJECT_PATH }} -p:SelfContained=true
+    
+  #   - name: Build API
+  #     run: dotnet build ${{ env.PROJECT_PATH }} -c Release --self-contained --no-restore
+
+  #   - name: Publish API
+  #     run: dotnet publish ${{ env.PROJECT_PATH }} -c Release --self-contained -r win-x64 -p:PublishSingleFile=true --no-build
+    
+  #   - name: Deploy to EC2
+  #     run: |
+  #       # Copy exe to location on windows server ec2 instance
+  #       # Run the exe as a service using sc 
+
+  flyway:
+    needs:
+      - terraform
+      - release-front-end
+      # - release-api
+    permissions:
+      id-token: write
+      contents: read
+    name: Flyway Migrations
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.IAM_USER_ID }}:role/gh-actions-role
+          aws-region: af-south-1
+      
+      - name: Get secrets from AWS Key Store
+        uses: aws-actions/aws-secretsmanager-get-secrets@v2
+        with:
+          secret-ids: |
+                POSTGRES_USER, postgresuser
+                POSTGRES_PASS, postgrespass
+
+      - name: Run Flyway Migrations
+        run: |
+          docker run --rm --volume ${{ github.workspace }}/migrations:/flyway/sql:ro redgate/flyway -url="jdbc:postgresql://${{ needs.terraform.outputs.dbhost }}/spaceaffairsdb" -user="${{ env.POSTGRES_USER }}" -password="${{ env.POSTGRES_PASS }}" migrate

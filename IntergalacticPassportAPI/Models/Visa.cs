@@ -7,6 +7,7 @@ using Dapper;
 
 namespace IntergalacticPassportAPI.Models
 {
+
     [Table("visa_applications")]
     public class Visa
     {
