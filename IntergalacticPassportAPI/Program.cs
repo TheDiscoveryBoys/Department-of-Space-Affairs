@@ -20,6 +20,8 @@ builder.Services.AddScoped<VisaService>();
 builder.Services.AddScoped<PassportDocumentService>();
 builder.Services.AddScoped<StatusService>();
 builder.Services.AddScoped<StatusRepository>();
+builder.Services.AddScoped<UsersRepository>();
+builder.Services.AddScoped<RolesRepository>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(async options =>
@@ -39,7 +41,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 var app = builder.Build();
 
 app.MapControllers();
-app.UseAuthentication();
+//app.UseAuthentication();
 app.Run();
 
 IEnumerable<SecurityKey> getGoogleSecurityKeys(){
