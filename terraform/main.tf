@@ -119,14 +119,16 @@ resource "aws_instance" "spaceaffairs_ec2_instance" {
 
   vpc_security_group_ids = [ aws_security_group.ec2_security_group.id ]
 
-      user_data = <<-EOF
-    <powershell>
-      Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
-      Start-Service sshd
-      Set-Service -Name sshd -StartupType 'Automatic'
-      New-NetFirewallRule -Name sshd -DisplayName 'OpenSSH Server (sshd)' -Enabled True -Direction Inbound -Protocol TCP -Action Allow -LocalPort 22
-    </powershell>
-  EOF
+  user_data = <<-EOF
+        <powershell>
+        $pubkey = "${replace(file("spaceaffairspublic.pub"), "\n", "")}"
+        mkdir "C:\\ProgramData\\ssh"
+        echo $pubkey | Out-File -FilePath "C:\\ProgramData\\ssh\\administrators_authorized_keys" -Encoding ascii
+        icacls "C:\\ProgramData\\ssh\\administrators_authorized_keys" /inheritance:r
+        icacls "C:\\ProgramData\\ssh\\administrators_authorized_keys" /grant "Administrators:F"
+        Restart-Service sshd
+        </powershell>
+        EOF
 }
 
 resource "aws_eip" "spaceaffairs_ec2_eip" {
