@@ -20,7 +20,7 @@
             <views:ApplicationHistoryScreenView Background="#1C1C1C" />
         </DataTemplate>    
         <DataTemplate DataType="{x:Type vm:ProcessPassportApplicationsScreenViewModel}">
-            <views:ProcessPassportApplicationsView Background="#1C1C1C"/>
+            <views:ProcessPassportApplicationScreenView Background="#1C1C1C"/>
         </DataTemplate>
         <DataTemplate DataType="{x:Type vm:ProcessVisaApplicationsScreenViewModel}">
             <views:ProcessVisaApplicationScreenView Background="#1C1C1C"/>
