@@ -1,3 +1,5 @@
+using System.ComponentModel;
+using System.Windows.Documents;
 using DOSA_Client.Models;
 
 public static class RestClient{
@@ -45,5 +47,9 @@ public static class RestClient{
         // hit the endpoint with the file to upload
         await Task.Delay(10);
         Console.WriteLine($"Posting file: {filePath}");
+    }
+
+    public static async Task<VisaApplication> GetOfficerVisaApplicationByGoogleId(string googleId){
+        return new VisaApplication("Hoth", "Need to get a tan out here", DateTime.Now, DateTime.Now.AddDays(3), null, new Status("PENDING", null) , DateTime.Now, DateTime.Now);
     }
 }

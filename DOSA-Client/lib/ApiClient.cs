@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 using DOSA_Client.Models;
 
 namespace DOSA_Client.lib
@@ -47,6 +48,10 @@ namespace DOSA_Client.lib
                 tasks.Add(RestClient.PostFile(file));
             }
             await Task.WhenAll(tasks);
+        }
+
+        public static async Task<VisaApplication> GetVisaApplication(string googleId){
+            return await RestClient.GetOfficerVisaApplicationByGoogleId(googleId);
         }
     }
 }
