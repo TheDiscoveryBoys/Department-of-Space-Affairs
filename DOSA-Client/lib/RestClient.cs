@@ -39,7 +39,7 @@ public static class RestClient{
 
     public static async Task<List<VisaApplication>> GetVisaApplicationsByGoogleId(string googleId){
         await Task.Delay(1000);
-        var visa1 = new VisaApplication("Mars", "Better Jobs", DateTime.Now, DateTime.Now.AddDays(2), null, new Status("PENDING"), DateTime.Now.AddDays(-10), null);
+        var visa1 = new VisaApplication("1", "Mars", "Better Jobs", DateTime.Now, DateTime.Now.AddDays(2), null, new Status("PENDING"), DateTime.Now.AddDays(-10), null);
         return [];
     }
 
@@ -50,6 +50,7 @@ public static class RestClient{
     }
 
     public static async Task<VisaApplication> GetOfficerVisaApplicationByGoogleId(string googleId){
-        return new VisaApplication("Hoth", "Need to get a tan out here", DateTime.Now, DateTime.Now.AddDays(3), null, new Status("PENDING", null) , DateTime.Now, DateTime.Now);
+        await Task.Delay(1000);
+        return new VisaApplication("1", "Hoth", "Need to get a tan out here", DateTime.Now, DateTime.Now.AddDays(3), null, new Status("PENDING", null) , DateTime.Now, DateTime.Now);
     }
 }

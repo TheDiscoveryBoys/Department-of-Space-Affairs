@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace DOSA_Client.Models
 {
     public record VisaApplication(
+        string UserId,
         string DestinationPlanet,
         string TravelReason,
         DateTime StartDate,
@@ -15,5 +16,6 @@ namespace DOSA_Client.Models
         Status Status,
         DateTime SubmittedAt,
         DateTime? ProcessedAt
+        
     );
 }
