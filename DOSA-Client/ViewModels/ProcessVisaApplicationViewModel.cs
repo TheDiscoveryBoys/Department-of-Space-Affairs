@@ -20,19 +20,25 @@ namespace DOSA_Client.ViewModels
 
         public ProcessVisaApplicationViewModel()
         {
-            Officer = ApiClient.GetUserProfile("1").GetAwaiter().GetResult();
+            Task.Run(async ()=>{
+            Officer = await ApiClient.GetUserProfile("1");
+            });
         }
 
         public ProcessVisaApplicationViewModel(PageManager pageManager)
         {
             PageManager = pageManager;
-            Officer = ApiClient.GetUserProfile("1").GetAwaiter().GetResult();
+            Task.Run(async () =>{
+                Officer = await ApiClient.GetUserProfile("1");
+            });
         }
 
         public void  Load(bool visibility)
         {
             // make API call
-            VisaApplication = ApiClient.GetVisaApplication(Officer.GoogleId).GetAwaiter().GetResult();
+            Task.Run(async () => {
+                VisaApplication = await ApiClient.GetVisaApplication(Officer.GoogleId);
+            });
         }
     }
 }
