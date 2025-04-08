@@ -121,7 +121,7 @@ resource "aws_instance" "spaceaffairs_ec2_instance" {
 
   user_data = <<-EOF
         <powershell>
-        $pubkey = "${replace(file("spaceaffairspublic.pub"), "\n", "")}"
+        $pubkey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCq2gjtlds90xSafIAkJzUCXV/9zzYte13pE4yHrsHGUeC5C4hBHM4aw8PzseLTokxxL2rJyQGt87GThRwl9bwC6Z3tA55P6oCcn8m79BanyGfp6xiXT5nreUD3iOJnPXGv0saCrxA5voiIgxObj089cJQ8LYhNOq06y8E7DgsiI/+rL1zaLszh4r7cqrf26EWhxaEI7Kvndy6dOi9pDzbAEm52E8zXoSVRLmj5cSQ3WW0HDo8pgl621zqHapLwns3bfLOQW5wtRXEISZHZvMh8zAp6Q6enwBY/QexyrZlQ7W6DoVukNLyz1ahtVjXjMKmrCfyZYamgN6mq4lZscvk9"
         mkdir "C:\\ProgramData\\ssh"
         echo $pubkey | Out-File -FilePath "C:\\ProgramData\\ssh\\administrators_authorized_keys" -Encoding ascii
         icacls "C:\\ProgramData\\ssh\\administrators_authorized_keys" /inheritance:r
