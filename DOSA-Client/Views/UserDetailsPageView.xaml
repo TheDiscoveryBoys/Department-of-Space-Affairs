@@ -1,0 +1,148 @@
+<UserControl x:Class="DOSA_Client.Views.UserDetailsPageView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:controls="clr-namespace:DOSA_Client.Controls"
+             mc:Ignorable="d"
+             HorizontalAlignment="Stretch"
+             VerticalAlignment="Stretch">
+
+    <Grid Background="#ECEFF1">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Title -->
+            <RowDefinition Height="*" />
+            <!-- Content -->
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Title and Horizontal Line -->
+        <controls:HeaderRibbon DataContext="{Binding}" />
+
+        <!-- Layer 2: Centered content in a card -->
+        <Grid Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="30,10,30,20">
+            <Border Background="White"
+                    CornerRadius="10"
+                    Padding="40"
+                    VerticalAlignment="Stretch">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                        <!-- Form Fields -->
+                        <Grid Margin="100,10,100,20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1.5*"/>
+                                <ColumnDefinition Width="3*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <!-- Email -->
+                            <TextBlock Grid.Row="0" Grid.Column="0" 
+                                       Text="Email:" 
+                                       FontWeight="Bold" 
+                                       VerticalAlignment="Center" 
+                                       Margin="0,15,10,15"/>
+                            <TextBox Grid.Row="0" Grid.Column="1" 
+                                     Height="30" 
+                                     FontSize="14" 
+                                     VerticalContentAlignment="Center"
+                                     Padding="5,0"
+                                     Text="{Binding CurrentUser.Email}"
+                                     Margin="0,10"/>
+
+                            <!-- Name -->
+                            <TextBlock Grid.Row="1" Grid.Column="0" 
+                                       Text="Name:" 
+                                       FontWeight="Bold" 
+                                       VerticalAlignment="Center" 
+                                       Margin="0,15,10,15"/>
+                            <TextBox Grid.Row="1" Grid.Column="1" 
+                                     Height="30" 
+                                     FontSize="14"
+                                     VerticalContentAlignment="Center"
+                                     Padding="5,0"
+                                     Text="{Binding CurrentUser.Name}"
+                                     Margin="0,10"/>
+
+                            <!-- Species -->
+                            <TextBlock Grid.Row="2" Grid.Column="0" 
+                                       Text="Species:" 
+                                       FontWeight="Bold" 
+                                       VerticalAlignment="Center" 
+                                       Margin="0,15,10,15"/>
+                            <TextBox Grid.Row="2" Grid.Column="1" 
+                                     Height="30" 
+                                     FontSize="14"
+                                     VerticalContentAlignment="Center"
+                                     Padding="5,0"
+                                     Text="{Binding CurrentUser.Species}"
+                                     Margin="0,10"/>
+
+                            <!-- Planet of Origin -->
+                            <TextBlock Grid.Row="3" Grid.Column="0" 
+                                       Text="Planet of Origin:" 
+                                       FontWeight="Bold" 
+                                       VerticalAlignment="Center" 
+                                       Margin="0,15,10,15"/>
+                            <TextBox Grid.Row="3" Grid.Column="1" 
+                                     Height="30" 
+                                     FontSize="14"
+                                     VerticalContentAlignment="Center"
+                                     Padding="5,0"
+                                     Text="{Binding CurrentUser.PlanetOfOrigin}"
+                                     Margin="0,10"/>
+
+                            <!-- Primary Language -->
+                            <TextBlock Grid.Row="4" Grid.Column="0" 
+                                       Text="Primary Language:" 
+                                       FontWeight="Bold" 
+                                       VerticalAlignment="Center" 
+                                       Margin="0,15,10,15"/>
+                            <TextBox Grid.Row="4" Grid.Column="1" 
+                                     Height="30" 
+                                     FontSize="14"
+                                     VerticalContentAlignment="Center"
+                                     Padding="5,0"
+                                     Text="{Binding CurrentUser.PrimaryLanguage}"
+                                     Margin="0,10"/>
+
+                            <!-- Date of Birth -->
+                            <TextBlock Grid.Row="5" Grid.Column="0" 
+                                       Text="Date of Birth:" 
+                                       FontWeight="Bold" 
+                                       VerticalAlignment="Center" 
+                                       Margin="0,15,10,15"/>
+                            <DatePicker Grid.Row="5" Grid.Column="1" 
+                                        Height="30" 
+                                        FontSize="14"
+                                        VerticalContentAlignment="Center"
+                                        Margin="0,10"/>
+                        </Grid>
+
+                        <!-- Done Button -->
+                        <Button Content="Save Details"
+                                Command="{Binding onNextButtonClickedCommand}"
+                                CommandParameter="Upload Passport Documents Page"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Bottom"
+                                Width="180"
+                                Height="40"
+                                Background="#7F5AF0"
+                                Foreground="White"
+                                FontWeight="Bold"
+                                FontSize="16"
+                                Margin="100,10,100,20"
+                                Style="{StaticResource RoundedButtonStyle}"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

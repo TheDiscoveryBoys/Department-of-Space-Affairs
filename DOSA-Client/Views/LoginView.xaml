@@ -1,0 +1,63 @@
+<UserControl x:Class="DOSA_Client.Views.LoginView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d">
+
+    <Grid Background="#ECEFF1">
+        <!-- Layer 1: Vertical Blue Stripes (Ribbons) between the left side and the center -->
+        <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20">
+                <!-- First Ribbon (Dark Blue) -->
+                <Rectangle Width="15" Height="200" Fill="#0D47A1" Margin="0,0,0,5"/>
+                <!-- Second Ribbon (Medium Blue) -->
+                <Rectangle Width="15" Height="200" Fill="#1976D2" Margin="0,0,0,5"/>
+                <!-- Third Ribbon (Light Blue) -->
+                <Rectangle Width="15" Height="200" Fill="#42A5F5"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Layer 2: Centered login card -->
+        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Border Background="White"
+                CornerRadius="10"
+                Padding="40"
+                Width="600">
+                <StackPanel>
+                    <TextBlock Text="Welcome to the Department of Galactic Affairs"
+                       FontSize="28"
+                       FontWeight="Bold"
+                       Foreground="#111111"
+                       TextAlignment="Center"
+                       TextWrapping="Wrap"
+                       Margin="0,0,0,10"
+                       FontFamily="Segoe UI"/>
+
+                    <TextBlock Text="{Binding LoginViewDescription}" 
+                           FontSize="18" 
+                           Foreground="#333333"
+                           TextAlignment="Center"
+                           TextWrapping="Wrap"
+                           Margin="0,0,0,10"/>
+
+                    <Button Content="Login via Google"
+                        Width="150"
+                        Height="40"
+                        FontSize="16"
+                        Command="{Binding LoginCommand}"
+                        HorizontalAlignment="Center"
+                        Margin="0,20,0,0"
+                        Background="#7F5AF0"
+                        Foreground="White"
+                        Padding="10,5"
+                        FontFamily="Segoe UI"
+                        Style="{StaticResource RoundedButtonStyle}"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

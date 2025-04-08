@@ -7,11 +7,21 @@ using Dapper;
 
 namespace IntergalacticPassportAPI.Models
 {
+<<<<<<< HEAD
     [Table("visa_applications")]
+=======
+
+    [Table("visa_applications")]
+
+>>>>>>> 7d4a6e4cd5551efdc959a5758855192d918aaa95
     public class Visa
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7d4a6e4cd5551efdc959a5758855192d918aaa95
         [Column("id")]
         public int Id { get; set; }
 
@@ -47,6 +57,10 @@ namespace IntergalacticPassportAPI.Models
         public DateTime? ProcessedAt { get; set; }
 
         [Column("officer_id")]
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7d4a6e4cd5551efdc959a5758855192d918aaa95
         public string? OfficerId { get; set; }
     }
 
