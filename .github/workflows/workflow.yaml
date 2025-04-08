@@ -47,7 +47,7 @@ jobs:
         id: tf_outputs
         run: |
           echo "dbhost=$(terraform output -raw db_host)" >> $GITHUB_OUTPUT
-          echo "ec2host=$(terraform output -raw ec2_host)" >> $
+          echo "ec2host=$(terraform output -raw ec2_host)" >> $GITHUB_OUTPUT
           
   # release-front-end:
   #   name: Build & Release Front-End
@@ -177,7 +177,7 @@ jobs:
     needs:
       - terraform
       # - release-front-end
-      # - release-api
+      - release-api
     permissions:
       id-token: write
       contents: read
