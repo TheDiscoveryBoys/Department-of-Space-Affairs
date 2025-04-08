@@ -12,6 +12,8 @@ namespace DOSA_Client.Models
         DateTime StartDate,
         DateTime EndDate,
         int? OfficerId,
-        Status Status
+        Status Status,
+        DateTime SubmittedAt,
+        DateTime? ProcessedAt
     );
 }

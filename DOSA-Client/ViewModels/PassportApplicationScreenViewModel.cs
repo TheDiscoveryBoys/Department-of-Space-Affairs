@@ -9,15 +9,15 @@ namespace DOSA_Client.ViewModels
     {
         public string Title => "Passport Application";
         public PageManager PageManager { get; set; }
-        public PassportApplicationScreenViewModel(){
+        public PassportApplicationScreenViewModel(Func<Task> updateTabsCallback){
             PageManager = new PageManager();
-            RegisterPages();
+            RegisterPages(updateTabsCallback);
             PageManager.NavigateTo(PageNames.UserDetails);
         }
 
-        public void RegisterPages(){
+        public void RegisterPages(Func<Task> updateTabsCallback){
             PageManager.RegisterPage(PageNames.UserDetails, new UserDetailsPageViewModel(PageManager));
-            PageManager.RegisterPage(PageNames.UploadPassportDocuments, new UploadPassportDocumentsViewModel(PageManager));
+            PageManager.RegisterPage(PageNames.UploadPassportDocuments, new UploadPassportDocumentsViewModel(PageManager, updateTabsCallback));
         }
     }
 }

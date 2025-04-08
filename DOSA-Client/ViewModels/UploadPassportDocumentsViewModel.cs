@@ -16,19 +16,27 @@ namespace DOSA_Client.ViewModels
         public ICommand uploadDocumentCommand { get; }
         public ICommand RemoveDocumentCommand { get; }
 
-        public UploadPassportDocumentsViewModel(PageManager pageManager)
+        Func<Task> UpdateTabsCallback;
+
+        public UploadPassportDocumentsViewModel(PageManager pageManager, Func<Task> updateTabsCallback)
         {
             PageManager = pageManager;
             submitDocumentsCommand = new RelayCommand(OnSubmitDocuments);
             uploadDocumentCommand = new RelayCommand(OnUploadDocument);
             RemoveDocumentCommand = new DelegateCommand<string>(OnRemoveDocument);
+            UpdateTabsCallback = updateTabsCallback;
         }
 
         public PageManager PageManager { get; set; }
 
         public void OnSubmitDocuments()
         {
-            Console.WriteLine("Documents submitted.");
+            Task.Run(async ()=>{
+                RestClient.DynStatus = "PENDING"; // mimic changing the application status to pending
+                await ApiClient.UploadFiles([.. UploadedDocuments]);
+                await UpdateTabsCallback();
+            });
+            Console.WriteLine("Documents submitted successfully.");
         }
 
         public void OnUploadDocument()

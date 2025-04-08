@@ -8,6 +8,8 @@ public static class RestClient{
         ];
     }
 
+    public static string DynStatus = "NOSTATUS";
+
     public static async Task<User> GetUserByGoogleId(string googleId){
         await Task.Delay(1000);
         return new User(
@@ -28,19 +30,20 @@ public static class RestClient{
 
     public static async Task<List<PassportApplication>> GetPassportApplicationsByGoogleId(string googleId){
         await Task.Delay(1000);
-        var passport1 = new PassportApplication(1, "googleID", new Status("PENDING"), DateTime.Now, DateTime.Now.AddDays(-1), null);
-        var passport2 = new PassportApplication(1, "googleID", new Status("APPROVED"), DateTime.Now, DateTime.Now.AddDays(-1), null);
-        return [];
+        var passport1 = new PassportApplication(1, "googleID", new Status(DynStatus), DateTime.Now, DateTime.Now.AddDays(-1), null);
+        // var passport2 = new PassportApplication(1, "googleID", new Status("APPROVED"), DateTime.Now, DateTime.Now.AddDays(-1), null);
+        return DynStatus == "PENDING" ?  [passport1] : [];
     }
 
     public static async Task<List<VisaApplication>> GetVisaApplicationsByGoogleId(string googleId){
         await Task.Delay(1000);
-        var visa1 = new VisaApplication("Mars", "Better Jobs", DateTime.Now, DateTime.Now.AddDays(2), null, new Status("PENDING"));
+        var visa1 = new VisaApplication("Mars", "Better Jobs", DateTime.Now, DateTime.Now.AddDays(2), null, new Status("PENDING"), DateTime.Now.AddDays(-10), null);
         return [];
     }
 
-    public static void PostFile(string filePath){
+    public static async Task PostFile(string filePath){
         // hit the endpoint with the file to upload
+        await Task.Delay(10);
         Console.WriteLine($"Posting file: {filePath}");
     }
 }

@@ -4,6 +4,9 @@ using System.ComponentModel;
 using System.Configuration;
 using System.Data;
 using System.DirectoryServices.ActiveDirectory;
+using System.Security.Cryptography.X509Certificates;
+using System.Text.Json;
+using System.Windows.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using DOSA_Client.lib;
 using DOSA_Client.Models;
@@ -21,11 +24,10 @@ namespace DOSA_Client.ViewModels
             {
                 _tabs = value;
                 OnPropertyChanged(nameof(Tabs));
-                Console.WriteLine("Changing the tabs here");
             }
         }
 
-        public async void UpdateTabs()
+        public async Task UpdateTabs()
         {
             // this function checks the applications for the current user and decides what tabs to show
             User CurrentUser = Context.Get<User>("User");
@@ -36,7 +38,6 @@ namespace DOSA_Client.ViewModels
                 List<Application> applications = await ApiClient.GetApplications(CurrentUser.GoogleId);
                 if (applications.Any(application => application.Status.Name == "APPROVED" && application.ApplicationType == ApplicationType.Passport))
                 {
-                    Console.WriteLine("Made it to the right place");
                     // we have someone who has a passport so they can see their history and the visa application page
                     Tabs = new ObservableCollection<ScreenViewModelBase>(){
                     new VisaApplicationScreenViewModel(),
@@ -55,7 +56,7 @@ namespace DOSA_Client.ViewModels
                     // we have someone who does not have a passport and does not have any current applications for a passport
                     // so we show them the passport applications tab only
                     Tabs = new ObservableCollection<ScreenViewModelBase>(){
-                        new PassportApplicationScreenViewModel()
+                        new PassportApplicationScreenViewModel(() => this.UpdateTabs())
                     };
                 }
             }

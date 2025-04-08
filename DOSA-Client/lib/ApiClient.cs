@@ -14,7 +14,7 @@ namespace DOSA_Client.lib
         public static async Task<List<Application>> GetApplications(string googleId)
         {
             var passportApplicationsTask = RestClient.GetPassportApplicationsByGoogleId(googleId);
-            var visaApplicationsTask = RestClient.GetPassportApplicationsByGoogleId(googleId);
+            var visaApplicationsTask = RestClient.GetVisaApplicationsByGoogleId(googleId);
             await Task.WhenAll(passportApplicationsTask, visaApplicationsTask);
             var passportApplications = passportApplicationsTask.Result;
             var visaApplications = visaApplicationsTask.Result;
@@ -23,8 +23,9 @@ namespace DOSA_Client.lib
                 applications.Add(new Application(passportApplication.Status, passportApplication.SubmittedAt, ApplicationType.Passport, passportApplication.ProcessedAt));
             }
             foreach (var visaApplication in visaApplications){
-                applications.Add(new Application(visaApplication.Status, visaApplication.SubmittedAt, ApplicationType.Passport, visaApplication.ProcessedAt));
+                applications.Add(new Application(visaApplication.Status, visaApplication.SubmittedAt, ApplicationType.Passport, null));
             }
+            Console.WriteLine(applications.Count);
             return applications;
         }
 
@@ -40,10 +41,12 @@ namespace DOSA_Client.lib
             return await RestClient.GetRolesByGoogleId(googleId);
         }
 
-        public static void uploadFiles(List<string> fileNames){
+        public static async Task UploadFiles(List<string> fileNames){
+            List<Task> tasks = [];
             foreach(var file in fileNames){
-                RestClient.PostFile(file);
+                tasks.Add(RestClient.PostFile(file));
             }
+            await Task.WhenAll(tasks);
         }
     }
 }
