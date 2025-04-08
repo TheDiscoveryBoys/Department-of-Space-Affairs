@@ -1,7 +1,7 @@
 <UserControl x:Class="DOSA_Client.Views.VisaApplicationDetailsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="clr-namespace:DOSA_Client.Controls"
              mc:Ignorable="d"
@@ -19,10 +19,13 @@
         </Grid.RowDefinitions>
 
         <!-- Header -->
-        <controls:HeaderRibbon DataContext="{Binding}" />
+        <controls:HeaderRibbon DataContext="{Binding}"/>
 
         <!-- Guidelines Content -->
-        <Grid Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="30,10,30,20">
+        <Grid Grid.Row="1"
+              HorizontalAlignment="Stretch"
+              VerticalAlignment="Stretch"
+              Margin="30,10,30,20">
             <Border Background="White"
                     CornerRadius="10"
                     Padding="40"
@@ -34,31 +37,67 @@
                                    FontWeight="Bold"
                                    Margin="0,0,0,20"/>
 
-                        <TextBlock Text="Duration of Visit: Applications for visits longer than 12 months require additional approval."
-                                   FontSize="14"
-                                   Margin="0,5"/>
-                        <TextBlock Text="Destination Planet: High-risk planets require elevated clearance and background checks."
-                                   FontSize="14"
-                                   Margin="0,5"/>
-                        <TextBlock Text="Applicant Age: Applicants under 18 must be accompanied or have proper guardian authorization."
-                                   FontSize="14"
-                                   Margin="0,5"/>
-                        <TextBlock Text="Application Completeness: All mandatory fields must be filled and verified."
-                                   FontSize="14"
-                                   Margin="0,5"/>
-                        <TextBlock Text="Travel Reason: Purpose of visit must be clear and legitimate (e.g., education, work, tourism)."
-                                   FontSize="14"
-                                   Margin="0,5"/>
-                        <TextBlock Text="Documentation: Valid passport, health certificate, and alien ID (if applicable) are required."
-                                   FontSize="14"
-                                   Margin="0,5"/>
+                        <StackPanel Margin="10,0,0,0">
+                            <TextBlock FontSize="14"
+                                    Margin="0,0,0,10">
+            <Run Text="• "/>
+            <Run Text="Duration of Visit: "
+                                        FontWeight="Bold"/>
+            <Run Text="Applications for visits longer than 12 months require additional approval."/>
+                            </TextBlock>
+
+                            <TextBlock FontSize="14"
+                                    Margin="0,0,0,10">
+            <Run Text="• "/>
+            <Run Text="Destination Planet: "
+                                        FontWeight="Bold"/>
+            <Run Text="High-risk planets require elevated clearance and background checks."/>
+                            </TextBlock>
+
+                            <TextBlock FontSize="14"
+                                    Margin="0,0,0,10">
+            <Run Text="• "/>
+            <Run Text="Applicant Age: "
+                                        FontWeight="Bold"/>
+            <Run Text="Applicants under 18 must be accompanied or have proper guardian authorization."/>
+                            </TextBlock>
+
+                            <TextBlock FontSize="14"
+                                    Margin="0,0,0,10">
+            <Run Text="• "/>
+            <Run Text="Application Completeness: "
+                                        FontWeight="Bold"/>
+            <Run Text="All mandatory fields must be filled and verified."/>
+                            </TextBlock>
+
+                            <TextBlock FontSize="14"
+                                    Margin="0,0,0,10">
+            <Run Text="• "/>
+            <Run Text="Travel Reason: "
+                                        FontWeight="Bold"/>
+            <Run Text="Purpose of visit must be clear and legitimate (e.g., education, work, tourism)."/>
+                            </TextBlock>
+
+                            <TextBlock FontSize="14"
+                                    Margin="0,0,0,10">
+            <Run Text="• "/>
+            <Run Text="Documentation: "
+                                        FontWeight="Bold"/>
+            <Run Text="Valid passport, health certificate, and alien ID (if applicable) are required."/>
+                            </TextBlock>
+                        </StackPanel>
                     </StackPanel>
+
+
+
+
                 </ScrollViewer>
             </Border>
         </Grid>
 
         <!-- Button -->
-        <Grid Grid.Row="2" Margin="30,0,30,20">
+        <Grid Grid.Row="2"
+              Margin="30,0,30,20">
             <Button Content="Get Next Visa Application"
                     Command="{Binding GetNextVisaApplication}"
                     CommandParameter="Process Visa Application Page"

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using DOSA_Client.lib;
@@ -20,7 +14,14 @@ namespace DOSA_Client.ViewModels
         public PageManager PageManager { get; set; }
         public User Officer { get; set; }
 
-        public String Reason {get; set;}
+        private String _reason;
+        public String Reason {
+            get => _reason;
+            set{
+                _reason = value;
+                OnPropertyChanged(nameof(Reason));
+            }
+        }
 
         private OfficerVisaApplication _visaApplication;
         public OfficerVisaApplication VisaApplication
@@ -38,7 +39,9 @@ namespace DOSA_Client.ViewModels
             // call API to reject application
             Console.WriteLine($"Rejected Application with reason {Reason}");
             Task.Run(async ()=>{
-                await ApiClient.UpdateApplicationStatus(new Status("REJECTED", Reason));
+                await ApiClient.UpdateVisaApplicationStatus(new Status("REJECTED", Reason), VisaApplication.VisaApplication.id);
+                Reason = "";
+                VisaApplication = null;
             });
             PageManager.NavigateTo("Visa Application Details Page");
         }
@@ -48,7 +51,10 @@ namespace DOSA_Client.ViewModels
             // call API to approve application
             Console.WriteLine($"Approved Application {Reason}");
             Task.Run(async ()=>{
-                await ApiClient.UpdateApplicationStatus(new Status("APPROVED", Reason));
+                await ApiClient.UpdateVisaApplicationStatus(new Status("APPROVED", Reason), VisaApplication.VisaApplication.id);
+                // Need to delete the bound values here so that when we come back they are refreshed
+                Reason = "";
+                VisaApplication = null;
             });
             PageManager.NavigateTo("Visa Application Details Page");
         }
@@ -70,6 +76,7 @@ namespace DOSA_Client.ViewModels
             // make API call
             Task.Run(async () => {
                 VisaApplication = await ApiClient.GetVisaApplication(Officer.GoogleId);
+                Reason = "";
             });
         }
 

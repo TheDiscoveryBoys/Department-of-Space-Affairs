@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.Net;
 using System.Windows.Documents;
 using System.Windows.Media.Animation;
 using DOSA_Client.Models;
@@ -44,15 +45,21 @@ public static class RestClient{
         return true;
     }
 
-    public static async Task<bool> UpdateApplicationStatus(Status status){
-        Console.WriteLine("Updating application status");
+    public static async Task<bool> UpdateVisaApplicationStatus(Status status, int applicationId){
+        Console.WriteLine("Updating Visa application status");
+        await Task.Delay(1000);
+        return true;
+    }
+
+    public static async Task<bool> UpdatePassportApplicationStatus(Status status, int applicationId ){
+        Console.WriteLine("Updating Passport Application Status");
         await Task.Delay(1000);
         return true;
     }
 
     public static async Task<List<VisaApplication>> GetVisaApplicationsByGoogleId(string googleId){
         await Task.Delay(1000);
-        var visa1 = new VisaApplication("1", "Mars", "Better Jobs", DateTime.Now, DateTime.Now.AddDays(2), null, new Status("PENDING"), DateTime.Now.AddDays(-10), null);
+        var visa1 = new VisaApplication(1, "1", "Mars", "Better Jobs", DateTime.Now, DateTime.Now.AddDays(2), null, new Status("PENDING"), DateTime.Now.AddDays(-10), null);
         return [];
     }
 
@@ -64,11 +71,17 @@ public static class RestClient{
 
     public static async Task<VisaApplication> GetOfficerVisaApplicationByGoogleId(string googleId){
         await Task.Delay(1000);
-        return new VisaApplication("1", "Hoth", "Need to get a tan out here", DateTime.Now, DateTime.Now.AddDays(3), null, new Status("PENDING", null) , DateTime.Now, DateTime.Now);
+        return new VisaApplication(1, "1", "Hoth", "Need to get a tan out here", DateTime.Now, DateTime.Now.AddDays(3), null, new Status("PENDING", null) , DateTime.Now, DateTime.Now);
     }
 
     public static async Task<PassportApplication> GetOfficerPassportApplicationByGoogleId(string officerId){
         await Task.Delay(1000);
         return new PassportApplication(1, "1", new Status("PENDING", null), DateTime.Now, DateTime.Now, null);
+    }
+
+    public static async Task<List<ApplicationDocument>> GetApplicationDocumentsByApplicationId(int applicationId){
+        await Task.Delay(1000);
+        return [new ApplicationDocument(3,"ID Document", "https://google.com", 1) ,
+         new ApplicationDocument(4, "Proof of Address", "https://google.com", 1)];
     }
 }

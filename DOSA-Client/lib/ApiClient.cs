@@ -57,18 +57,23 @@ namespace DOSA_Client.lib
             return new OfficerVisaApplication(visaApplication,user);
         }
 
-        public static async Task<OfficerPassportApplication> GePassportApplication(string officerId){
+        public static async Task<OfficerPassportApplication> GetPassportApplication(string officerId){
             var passportApplication = await RestClient.GetOfficerPassportApplicationByGoogleId(officerId);
             User user = await RestClient.GetUserByGoogleId(passportApplication.UserId);
-            return new OfficerPassportApplication(passportApplication, user);
+            List<ApplicationDocument> documents = await RestClient.GetApplicationDocumentsByApplicationId(passportApplication.Id);
+            
+            return new OfficerPassportApplication(passportApplication, user, documents);
         }
 
-    
+
         public static async Task<bool> UpdateUserDetails(User user){
             return await RestClient.UpdateUserDetails(user);
         }
-        public static async Task<bool> UpdateApplicationStatus (Status status){
-            return await RestClient.UpdateApplicationStatus(status);
+        public static async Task<bool> UpdateVisaApplicationStatus (Status status, int applicationId){
+            return await RestClient.UpdateVisaApplicationStatus(status, applicationId);
+        }
+        public static async Task<bool> UpdatePassportApplicationStatus (Status status, int applicationId){
+            return await RestClient.UpdatePassportApplicationStatus(status, applicationId);
         }
     }
 }

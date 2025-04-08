@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace DOSA_Client.Models
 {
     public record VisaApplication(
+        int id,
         string UserId,
         string DestinationPlanet,
         string TravelReason,

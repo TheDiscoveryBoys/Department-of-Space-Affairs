@@ -19,10 +19,13 @@
         </Grid.RowDefinitions>
 
         <!-- Header -->
-        <controls:HeaderRibbon DataContext="{Binding}" />
+        <controls:HeaderRibbon DataContext="{Binding}"/>
 
         <!-- Content -->
-        <Grid Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="30,10,30,20">
+        <Grid Grid.Row="1"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                Margin="30,10,30,20">
             <Border Background="White"
                     CornerRadius="10"
                     Padding="40"
@@ -34,31 +37,65 @@
                                    FontWeight="Bold"
                                    Margin="0,0,0,20"/>
 
-                        <TextBlock Text="Identity Verification: Ensure the applicant has submitted government-issued ID."
-                                   FontSize="14"
-                                   Margin="0,5"/>
-                        <TextBlock Text="Residency Proof: Must include a valid address and supporting documentation."
-                                   FontSize="14"
-                                   Margin="0,5"/>
-                        <TextBlock Text="Criminal Record: Background check must indicate no major offenses."
-                                   FontSize="14"
-                                   Margin="0,5"/>
-                        <TextBlock Text="Photo Specifications: Passport photo must follow standard biometric guidelines."
-                                   FontSize="14"
-                                   Margin="0,5"/>
-                        <TextBlock Text="Application Completeness: Ensure no mandatory fields are missing or inconsistent."
-                                   FontSize="14"
-                                   Margin="0,5"/>
-                        <TextBlock Text="Supporting Documents: Check for required files (e.g., birth certificate, previous passport)."
-                                   FontSize="14"
-                                   Margin="0,5"/>
+                        <StackPanel Margin="10,0,0,0">
+                            <TextBlock FontSize="14"
+                                    Margin="0,0,0,10">
+            <Run Text="• "/>
+            <Run Text="Identity Verification: "
+                                        FontWeight="Bold"/>
+            <Run Text="Ensure the applicant has submitted government-issued ID."/>
+                            </TextBlock>
+
+                            <TextBlock FontSize="14"
+                                    Margin="0,0,0,10">
+            <Run Text="• "/>
+            <Run Text="Residency Proof: "
+                                        FontWeight="Bold"/>
+            <Run Text="Must include a valid address and supporting documentation."/>
+                            </TextBlock>
+
+                            <TextBlock FontSize="14"
+                                    Margin="0,0,0,10">
+            <Run Text="• "/>
+            <Run Text="Criminal Record: "
+                                        FontWeight="Bold"/>
+            <Run Text="Background check must indicate no major offenses."/>
+                            </TextBlock>
+
+                            <TextBlock FontSize="14"
+                                    Margin="0,0,0,10">
+            <Run Text="• "/>
+            <Run Text="Photo Specifications: "
+                                        FontWeight="Bold"/>
+            <Run Text="Passport photo must follow standard biometric guidelines."/>
+                            </TextBlock>
+
+                            <TextBlock FontSize="14"
+                                    Margin="0,0,0,10">
+            <Run Text="• "/>
+            <Run Text="Application Completeness: "
+                                        FontWeight="Bold"/>
+            <Run Text="Ensure no mandatory fields are missing or inconsistent."/>
+                            </TextBlock>
+
+                            <TextBlock FontSize="14"
+                                    Margin="0,0,0,10">
+            <Run Text="• "/>
+            <Run Text="Supporting Documents: "
+                                        FontWeight="Bold"/>
+            <Run Text="Check for required files (e.g., birth certificate, previous passport)."/>
+                            </TextBlock>
+                        </StackPanel>
                     </StackPanel>
+
+
                 </ScrollViewer>
             </Border>
         </Grid>
 
         <!-- Button -->
-        <Grid Grid.Row="2" Margin="30,0,30,20">
+        <Grid Grid.Row="2"
+                Margin="30,0,30,20">
             <Button Content="Get Next Passport Application"
                     Command="{Binding GetNextPassportApplication}"
                     CommandParameter="Process Passport Application Page"

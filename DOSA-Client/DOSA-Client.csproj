@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <None Remove="Assets\bin_icon.png" />
+    <None Remove="Assets\download.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -23,6 +24,7 @@
 
   <ItemGroup>
     <Resource Include="Assets\bin_icon.png" />
+    <Resource Include="Assets\download.png" />
   </ItemGroup>
 
 </Project>
