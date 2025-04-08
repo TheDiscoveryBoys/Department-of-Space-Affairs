@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Windows.Documents;
+using System.Windows.Media.Animation;
 using DOSA_Client.Models;
 
 public static class RestClient{
@@ -37,6 +38,18 @@ public static class RestClient{
         return DynStatus == "PENDING" ?  [passport1] : [];
     }
 
+    public static async Task<bool> UpdateUserDetails(User user){
+        Console.WriteLine("Updating user details");
+        await Task.Delay(1000);
+        return true;
+    }
+
+    public static async Task<bool> UpdateApplicationStatus(Status status){
+        Console.WriteLine("Updating application status");
+        await Task.Delay(1000);
+        return true;
+    }
+
     public static async Task<List<VisaApplication>> GetVisaApplicationsByGoogleId(string googleId){
         await Task.Delay(1000);
         var visa1 = new VisaApplication("1", "Mars", "Better Jobs", DateTime.Now, DateTime.Now.AddDays(2), null, new Status("PENDING"), DateTime.Now.AddDays(-10), null);
@@ -52,5 +65,10 @@ public static class RestClient{
     public static async Task<VisaApplication> GetOfficerVisaApplicationByGoogleId(string googleId){
         await Task.Delay(1000);
         return new VisaApplication("1", "Hoth", "Need to get a tan out here", DateTime.Now, DateTime.Now.AddDays(3), null, new Status("PENDING", null) , DateTime.Now, DateTime.Now);
+    }
+
+    public static async Task<PassportApplication> GetOfficerPassportApplicationByGoogleId(string officerId){
+        await Task.Delay(1000);
+        return new PassportApplication(1, "1", new Status("PENDING", null), DateTime.Now, DateTime.Now, null);
     }
 }

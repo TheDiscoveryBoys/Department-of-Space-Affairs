@@ -20,8 +20,8 @@ namespace DOSA_Client.ViewModels
         public PageManager PageManager { get; set; }
         public User Officer { get; set; }
 
-        private VisaApplication _visaApplication;
-        public VisaApplication VisaApplication
+        private OfficerVisaApplication _visaApplication;
+        public OfficerVisaApplication VisaApplication
         {
             get => _visaApplication;
             set

@@ -66,16 +66,16 @@
 
                             <!-- Application Info -->
                             <TextBlock Grid.Row="4" Grid.Column="0" Text="Destination Planet:" FontWeight="Bold" Margin="0,10"/>
-                            <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding VisaApplication.DestinationPlanet}" Margin="0,10"/>
+                            <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding VisaApplication.VisaApplication.DestinationPlanet}" Margin="0,10"/>
 
                             <TextBlock Grid.Row="5" Grid.Column="0" Text="Travel Reason:" FontWeight="Bold" Margin="0,10"/>
-                            <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding VisaApplication.TravelReason}" Margin="0,10"/>
+                            <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding VisaApplication.VisaApplication.TravelReason}" Margin="0,10"/>
 
                             <TextBlock Grid.Row="6" Grid.Column="0" Text="Start Date:" FontWeight="Bold" Margin="0,10"/>
-                            <TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding VisaApplication.StartDate}" Margin="0,10"/>
+                            <TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding VisaApplication.VisaApplication.StartDate}" Margin="0,10"/>
 
                             <TextBlock Grid.Row="7" Grid.Column="0" Text="End Date:" FontWeight="Bold" Margin="0,10"/>
-                            <TextBlock Grid.Row="7" Grid.Column="1" Text="{Binding VisaApplication.EndDate}" Margin="0,10"/>
+                            <TextBlock Grid.Row="7" Grid.Column="1" Text="{Binding VisaApplication.VisaApplication.EndDate}" Margin="0,10"/>
                         </Grid>
 
                         <Grid Margin="40,20">

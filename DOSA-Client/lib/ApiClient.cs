@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Formats.Asn1;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,8 +30,8 @@ namespace DOSA_Client.lib
             Console.WriteLine(applications.Count);
             return applications;
         }
-
-        public static async Task<String> ExchangeAuthCodeForJWT(string authCode){
+    
+        public static async Task<string> ExchangeAuthCodeForJWT(string authCode){
             return await RestClient.GetJwt(authCode);
         }
 
@@ -50,8 +51,24 @@ namespace DOSA_Client.lib
             await Task.WhenAll(tasks);
         }
 
-        public static async Task<VisaApplication> GetVisaApplication(string googleId){
-            return await RestClient.GetOfficerVisaApplicationByGoogleId(googleId);
+        public static async Task<OfficerVisaApplication> GetVisaApplication(string googleId){
+            var visaApplication = await RestClient.GetOfficerVisaApplicationByGoogleId(googleId);
+            User user = await RestClient.GetUserByGoogleId(visaApplication.UserId);
+            return new OfficerVisaApplication(visaApplication,user);
+        }
+
+        public static async Task<OfficerPassportApplication> GePassportApplication(string officerId){
+            var passportApplication = await RestClient.GetOfficerPassportApplicationByGoogleId(officerId);
+            User user = await RestClient.GetUserByGoogleId(passportApplication.UserId);
+            return new OfficerPassportApplication(passportApplication, user);
+        }
+
+    
+        public static async Task<bool> UpdateUserDetails(User user){
+            return await RestClient.UpdateUserDetails(user);
+        }
+        public static async Task<bool> UpdateApplicationStatus (Status status){
+            return await RestClient.UpdateApplicationStatus(status);
         }
     }
 }
