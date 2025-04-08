@@ -112,6 +112,7 @@ resource "aws_security_group" "ec2_security_group" {
 resource "aws_instance" "spaceaffairs_ec2_instance" {
   ami           = "ami-036e83870e09b7396"
   instance_type = "t3.micro"
+  key_name      = "spaceaffairs-key"
   tags = {
     Name = "spaceaffairs_ec2_instance"
   }
@@ -120,24 +121,10 @@ resource "aws_instance" "spaceaffairs_ec2_instance" {
 
       user_data = <<-EOF
     <powershell>
-      # Install OpenSSH
       Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
-
-      # Start and enable the SSH service
       Start-Service sshd
       Set-Service -Name sshd -StartupType 'Automatic'
-
-      # Allow SSH through the Windows firewall
-      New-NetFirewallRule -Name sshd -DisplayName 'OpenSSH Server (sshd)' `
-          -Enabled True -Direction Inbound -Protocol TCP `
-          -Action Allow -LocalPort 22
-
-      # Enable password authentication (optional if you're using key-based only)
-      $sshd_config = Get-Content "C:\\ProgramData\\ssh\\sshd_config"
-      $sshd_config = $sshd_config -replace '#PasswordAuthentication yes', 'PasswordAuthentication yes'
-      $sshd_config | Set-Content "C:\\ProgramData\\ssh\\sshd_config"
-
-      Restart-Service sshd
+      New-NetFirewallRule -Name sshd -DisplayName 'OpenSSH Server (sshd)' -Enabled True -Direction Inbound -Protocol TCP -Action Allow -LocalPort 22
     </powershell>
   EOF
 }
