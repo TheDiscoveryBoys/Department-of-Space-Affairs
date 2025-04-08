@@ -47,7 +47,8 @@ jobs:
         id: tf_outputs
         run: |
           echo "dbhost=$(terraform output -raw db_host)" >> $GITHUB_OUTPUT
-          echo "ec2host=$(terraform output -raw ec2_host)" >> $GITHUB_OUTPUT
+          echo "ec2host=$(terraform output -raw ec2_host)" >> $
+          
   # release-front-end:
   #   name: Build & Release Front-End
   #   runs-on: windows-latest
@@ -175,7 +176,7 @@ jobs:
   flyway:
     needs:
       - terraform
-      - release-front-end
+      # - release-front-end
       # - release-api
     permissions:
       id-token: write

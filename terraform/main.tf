@@ -121,7 +121,7 @@ resource "aws_instance" "spaceaffairs_ec2_instance" {
 
   user_data = <<-EOF
         <powershell>
-        $pubkey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCq2gjtlds90xSafIAkJzUCXV/9zzYte13pE4yHrsHGUeC5C4hBHM4aw8PzseLTokxxL2rJyQGt87GThRwl9bwC6Z3tA55P6oCcn8m79BanyGfp6xiXT5nreUD3iOJnPXGv0saCrxA5voiIgxObj089cJQ8LYhNOq06y8E7DgsiI/+rL1zaLszh4r7cqrf26EWhxaEI7Kvndy6dOi9pDzbAEm52E8zXoSVRLmj5cSQ3WW0HDo8pgl621zqHapLwns3bfLOQW5wtRXEISZHZvMh8zAp6Q6enwBY/QexyrZlQ7W6DoVukNLyz1ahtVjXjMKmrCfyZYamgN6mq4lZscvk9"
+        $pubkey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDLissAbEP+9Z3OuSnLmpYk5DMB9DjrR9IDOKAmWgzHWRT8GVz6AqwJPbDo1HpCJ+IJs+bHhvm+YBJbsU36DB9tCYtPs/o7YBhz4B8qdNvBZd8YvT0+OdvLOJcuKedbGg3Hmtwhcp788HFec0ugv9GjNaHFPPD20al4ZRNzBJi5ydYyYroynVekcd7Wag8J8tMANQA2kGdRpS7b3sDwu0d/sEaM/ZxdDta5i5Gjcpg0/11aq5hPprWtaUWCy5Yl9VRuvLvSLJ5fJVGnAZ3ghtXVDATd9bWVVeRwVs6SNUu8aIpg9h8+RC9288TjBA+S5048UxOlWGObEiRiHk84VqW7"
         mkdir "C:\\ProgramData\\ssh"
         echo $pubkey | Out-File -FilePath "C:\\ProgramData\\ssh\\administrators_authorized_keys" -Encoding ascii
         icacls "C:\\ProgramData\\ssh\\administrators_authorized_keys" /inheritance:r
