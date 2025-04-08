@@ -1,7 +1,6 @@
 using System.Security.Cryptography;
 using System.Text;
 using IntergalacticPassportAPI.Data;
-using IntergalacticPassportAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
@@ -15,10 +14,6 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<PassportRepository>();
 builder.Services.AddScoped<VisaRepository>();
 builder.Services.AddScoped<PassportDocumentRepository>();
-builder.Services.AddScoped<PassportService>();
-builder.Services.AddScoped<VisaService>();
-builder.Services.AddScoped<PassportDocumentService>();
-builder.Services.AddScoped<StatusService>();
 builder.Services.AddScoped<StatusRepository>();
 builder.Services.AddScoped<UsersRepository>();
 builder.Services.AddScoped<RolesRepository>();
