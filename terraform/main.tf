@@ -75,8 +75,8 @@ output "db_host" {
   description = "The endpoint of the Postgres Server RDS instance"
 }
 
-resource "aws_s3_bucket" "testspaceaffairsbucket123" {
-  bucket = "testspaceaffairsbucket123"
+resource "aws_s3_bucket" "spaceaffairsdocumentbucket" {
+  bucket = "spaceaffairsdocumentbucket"
 
 }
 

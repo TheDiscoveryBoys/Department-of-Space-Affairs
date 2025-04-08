@@ -38,7 +38,7 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: terraform init -backend-config="bucket=space-affairs-bucket-test" -backend-config="key=terraformstate/terraform.tfstate" -backend-config="region=af-south-1"
+        run: terraform init -backend-config="bucket=spaceaffairsterraform" -backend-config="key=terraformstate/terraform.tfstate" -backend-config="region=af-south-1"
 
       - name: Terraform Apply
         run: terraform apply -auto-approve
@@ -172,33 +172,33 @@ jobs:
           Start-Process 'C:\\deploy\\SpaceAffairsAPI.exe'
         "
 
-  # flyway:
-  #   needs:
-  #     - terraform
-  #     - release-front-end
-  #     # - release-api
-  #   permissions:
-  #     id-token: write
-  #     contents: read
-  #   name: Flyway Migrations
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout repo
-  #       uses: actions/checkout@v4
+  flyway:
+    needs:
+      - terraform
+      - release-front-end
+      # - release-api
+    permissions:
+      id-token: write
+      contents: read
+    name: Flyway Migrations
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-  #     - name: Configure AWS credentials
-  #       uses: aws-actions/configure-aws-credentials@v2
-  #       with:
-  #         role-to-assume: arn:aws:iam::${{ secrets.IAM_USER_ID }}:role/gh-actions-role
-  #         aws-region: af-south-1
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.IAM_USER_ID }}:role/gh-actions-role
+          aws-region: af-south-1
       
-  #     - name: Get secrets from AWS Key Store
-  #       uses: aws-actions/aws-secretsmanager-get-secrets@v2
-  #       with:
-  #         secret-ids: |
-  #               POSTGRES_USER, postgresuser
-  #               POSTGRES_PASS, postgrespass
+      - name: Get secrets from AWS Key Store
+        uses: aws-actions/aws-secretsmanager-get-secrets@v2
+        with:
+          secret-ids: |
+                POSTGRES_USER, postgresuser
+                POSTGRES_PASS, postgrespass
 
-  #     - name: Run Flyway Migrations
-  #       run: |
-  #         docker run --rm --volume ${{ github.workspace }}/migrations:/flyway/sql:ro redgate/flyway -url="jdbc:postgresql://${{ needs.terraform.outputs.dbhost }}/spaceaffairsdb" -user="${{ env.POSTGRES_USER }}" -password="${{ env.POSTGRES_PASS }}" migrate
+      - name: Run Flyway Migrations
+        run: |
+          docker run --rm --volume ${{ github.workspace }}/migrations:/flyway/sql:ro redgate/flyway -url="jdbc:postgresql://${{ needs.terraform.outputs.dbhost }}/spaceaffairsdb" -user="${{ env.POSTGRES_USER }}" -password="${{ env.POSTGRES_PASS }}" migrate
