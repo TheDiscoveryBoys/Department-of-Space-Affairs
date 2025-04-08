@@ -16,6 +16,7 @@ namespace DOSA_Client.Models
 
     class VisaApplication
     {
+        public User Applicant { get; set; }
         public string DestinationPlanet { get; set; }
         public string TravelReason { get; set; }
         public DateTime StartDate { get; set; }

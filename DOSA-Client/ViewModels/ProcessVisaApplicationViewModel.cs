@@ -14,9 +14,25 @@ namespace DOSA_Client.ViewModels
 
         public PageManager PageManager { get; set; }
 
+        VisaApplication VisaApplication { get; set; }
+
+        User Officer { get; set; }
+
+        public ProcessVisaApplicationViewModel()
+        {
+            Officer = ApiClient.GetUserProfile("1");
+        }
+
         public ProcessVisaApplicationViewModel(PageManager pageManager)
         {
             PageManager = pageManager;
+            Officer = ApiClient.GetUserProfile("1");
+        }
+
+        public void Load(bool visibility)
+        {
+            // make API call
+            VisaApplication = ApiClient.GetVisaApplication(Officer.GoogleId);
         }
     }
 }

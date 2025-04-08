@@ -46,5 +46,33 @@ namespace DOSA_Client.lib
             };
         }
 
+        public static VisaApplication GetVisaApplication(string officerId)
+        {
+            // check whether officer has an existing application they are processing
+            // application will be linked to "busy" state and officer id
+
+            // lets say for argument sake that the agent is not working a case atm
+            var applicant = new User
+            {
+                GoogleId = "123",
+                DateOfBirth = DateTime.Now.AddYears(-100), //this is an old lad, which is kinda suss
+                Email = "aurafarmer@gmail.com",
+                Name = "TUNG TUNG TUNG TUNG",
+                PlanetOfOrigin = "The sun",
+                PrimaryLanguage = "Morse Code",
+                Species = "Definetely not Homo Sapien Sapien"
+            };
+
+            return new VisaApplication
+            {
+                Applicant = applicant,
+                DestinationPlanet = "K2-2016-BLG-0005Lb",
+                TravelReason = "Explore the intricacies of the universe",
+                StartDate = DateTime.Now.AddMonths(1),
+                EndDate= DateTime.Now.AddDays(42),
+                ApplicationStatus = ApplicationStatus.Pending
+            };
+        }
+
     }
 }

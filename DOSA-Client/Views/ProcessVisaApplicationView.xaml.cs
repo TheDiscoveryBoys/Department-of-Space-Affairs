@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using DOSA_Client.ViewModels;
 
 namespace DOSA_Client.Views
 {
@@ -23,6 +24,15 @@ namespace DOSA_Client.Views
         public ProcessVisaApplicationView()
         {
             InitializeComponent();
+            this.DataContext = new ProcessVisaApplicationViewModel();
+        }
+
+        private void UserControl_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (DataContext is ProcessVisaApplicationViewModel vm)
+            {
+                vm.Load((bool)e.NewValue);
+            }
         }
     }
 }
