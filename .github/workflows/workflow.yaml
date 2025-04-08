@@ -95,43 +95,43 @@ jobs:
   #         prerelease: false
   #         files: DOSA-Client/bin/Release/net9.0-windows/win-x64/publish/*.exe
 
-  release-api:
-    name: Build & Release API
-    runs-on: windows-latest
-    needs: terraform
-    env: 
-      PROJECT_PATH: IntergalacticPassportAPI.csproj
-    defaults:
-      run:
-        working-directory: IntergalacticPassportAPI
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+  # release-api:
+  #   name: Build & Release API
+  #   runs-on: windows-latest
+  #   needs: terraform
+  #   env: 
+  #     PROJECT_PATH: IntergalacticPassportAPI.csproj
+  #   defaults:
+  #     run:
+  #       working-directory: IntergalacticPassportAPI
+  #   steps:
+  #   - name: Checkout
+  #     uses: actions/checkout@v4
     
-    - name: Install Dotnet
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: '9.0.x'
+  #   - name: Install Dotnet
+  #     uses: actions/setup-dotnet@v4
+  #     with:
+  #       dotnet-version: '9.0.x'
 
-    - name: Restore packages
-      run: dotnet restore ${{ env.PROJECT_PATH }} -p:SelfContained=true
+  #   - name: Restore packages
+  #     run: dotnet restore ${{ env.PROJECT_PATH }} -p:SelfContained=true
     
-    - name: Build API
-      run: dotnet build ${{ env.PROJECT_PATH }} -c Release --self-contained --no-restore
+  #   - name: Build API
+  #     run: dotnet build ${{ env.PROJECT_PATH }} -c Release --self-contained --no-restore
 
-    - name: Publish API
-      run: dotnet publish ${{ env.PROJECT_PATH }} -c Release --self-contained -r win-x64 -p:PublishSingleFile=true --no-build
+  #   - name: Publish API
+  #     run: dotnet publish ${{ env.PROJECT_PATH }} -c Release --self-contained -r win-x64 -p:PublishSingleFile=true --no-build
 
-    - name: Rename API executable
-      run: |
-        Rename-Item -Path "bin\Release\net9.0\win-x64\publish\IntergalacticPassportAPI.exe" -NewName "SpaceAffairsAPI.exe"
-      shell: pwsh
+  #   - name: Rename API executable
+  #     run: |
+  #       Rename-Item -Path "bin\Release\net9.0\win-x64\publish\IntergalacticPassportAPI.exe" -NewName "SpaceAffairsAPI.exe"
+  #     shell: pwsh
 
-    - name: Upload API Artifact for Deployment
-      uses: actions/upload-artifact@v4
-      with:
-        name: SpaceAffairsAPI
-        path: IntergalacticPassportAPI/bin/Release/net9.0/win-x64/publish/SpaceAffairsAPI.exe
+  #   - name: Upload API Artifact for Deployment
+  #     uses: actions/upload-artifact@v4
+  #     with:
+  #       name: SpaceAffairsAPI
+  #       path: IntergalacticPassportAPI/bin/Release/net9.0/win-x64/publish/SpaceAffairsAPI.exe
         
 
   deploy:
@@ -156,9 +156,13 @@ jobs:
       env:
         EC2_HOST: ${{ needs.terraform.outputs.ec2host }}
       run: |
-       # Create the deployment directory if it doesn't exist
-        ssh -o StrictHostKeyChecking=no -i spaceaffairs-key.pem "Administrator@${EC2_HOST}" powershell -Command if (-Not (Test-Path 'C:\\deploy')) {New-Item -Path 'C:\\deploy' -ItemType Directory}
-    
+        # Create the deployment directory if it doesn't exist
+        ssh -o StrictHostKeyChecking=no -i spaceaffairs-key.pem "Administrator@${EC2_HOST}" powershell -Command "
+          if (-Not (Test-Path 'C:\\deploy')) {
+            New-Item -Path 'C:\\deploy' -ItemType Directory
+          }
+        "
+        
         # Upload the .exe to the EC2 instance
         scp -o StrictHostKeyChecking=no -i spaceaffairs-key.pem ./SpaceAffairsAPI.exe "Administrator@${EC2_HOST}:C:/deploy/SpaceAffairsAPI.exe"
 
