@@ -127,6 +127,7 @@ resource "aws_instance" "spaceaffairs_ec2_instance" {
         icacls "C:\\ProgramData\\ssh\\administrators_authorized_keys" /inheritance:r
         icacls "C:\\ProgramData\\ssh\\administrators_authorized_keys" /grant "Administrators:F"
         Restart-Service sshd
+        New-NetFirewallRule -Name sshd -DisplayName 'OpenSSH Server (sshd)' -Enabled True -Direction Inbound -Protocol TCP -Action Allow -LocalPort 22
         </powershell>
         EOF
 }
