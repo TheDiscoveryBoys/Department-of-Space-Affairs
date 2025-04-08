@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,15 +10,24 @@ using DOSA_Client.Models;
 
 namespace DOSA_Client.ViewModels
 {
-    public class ProcessVisaApplicationViewModel : ScreenViewModelBase
+    public class ProcessVisaApplicationViewModel : ScreenViewModelBase, INotifyPropertyChanged
     {
         public string Title => "Process User Visa Application";
 
         public PageManager PageManager { get; set; }
 
-        VisaApplication VisaApplication { get; set; }
+        public User Officer { get; set; }
 
-        User Officer { get; set; }
+        private VisaApplication _visaApplication;
+        public VisaApplication VisaApplication
+        {
+            get => _visaApplication;
+            set
+            {
+                _visaApplication = value;
+                OnPropertyChanged(nameof(VisaApplication));
+            }
+        }
 
         public ProcessVisaApplicationViewModel()
         {
@@ -40,5 +51,9 @@ namespace DOSA_Client.ViewModels
                 VisaApplication = await ApiClient.GetVisaApplication(Officer.GoogleId);
             });
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged(string name) =>
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
 }

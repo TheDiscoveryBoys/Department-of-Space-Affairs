@@ -24,7 +24,6 @@ namespace DOSA_Client.Views
         public ProcessVisaApplicationView()
         {
             InitializeComponent();
-            this.DataContext = new ProcessVisaApplicationViewModel();
         }
 
         private void UserControl_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
