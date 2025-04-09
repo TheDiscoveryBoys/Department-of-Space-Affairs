@@ -114,6 +114,24 @@ jobs:
       with:
         dotnet-version: '9.0.x'
 
+    - name: Create Secrets File
+      working-directory: IntergalacticPassportAPI
+      run: |
+        file=appsettings.json
+        echo "{" > $file
+        echo '  "ConnectionStrings": {' >> $file
+        echo "    \"DefaultConnection\": \"Host=${{ needs.terraform.outputs.dbhost }};Port=5432;Database=spaceaffairsdb;Username=${{ secrets.DB_USERNAME }};Password=${{ secrets.DB_PASSWORD }}\"" >> $file
+        echo "  }," >> $file
+        echo '  "Logging": {' >> $file
+        echo '    "LogLevel": {' >> $file
+        echo '      "Default": "Information",' >> $file
+        echo '      "Microsoft.AspNetCore": "Warning"' >> $file
+        echo '    }' >> $file
+        echo '  },' >> $file
+        echo '  "AllowedHosts": "*"' >> $file
+        echo "}" >> $file
+
+
     - name: Restore packages
       run: dotnet restore ${{ env.PROJECT_PATH }} -p:SelfContained=true
     
