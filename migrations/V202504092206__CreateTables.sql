@@ -20,10 +20,9 @@ CREATE TABLE "roles" (
 );
  
 CREATE TABLE "statuses" (
-  "id" serial,
+  "id" serial PRIMARY KEY,
   "name" varchar(30) NOT NULL,
-  "reason" varchar(255),
-  PRIMARY KEY ("id", "name")
+  "reason" varchar(255)
 );
  
 CREATE TABLE "passport_applications" (
