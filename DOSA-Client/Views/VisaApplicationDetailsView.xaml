@@ -40,57 +40,53 @@
                         <StackPanel Margin="10,0,0,0">
                             <TextBlock FontSize="14"
                                     Margin="0,0,0,10">
-            <Run Text="• "/>
-            <Run Text="Duration of Visit: "
-                                        FontWeight="Bold"/>
-            <Run Text="Applications for visits longer than 12 months require additional approval."/>
+                                <Run Text="# "/>
+                                <Run Text="Duration of Visit: "
+                                     FontWeight="Bold"/>
+                                <Run Text="Applications for visits longer than 12 months require additional approval."/>
                             </TextBlock>
 
                             <TextBlock FontSize="14"
                                     Margin="0,0,0,10">
-            <Run Text="• "/>
-            <Run Text="Destination Planet: "
-                                        FontWeight="Bold"/>
-            <Run Text="High-risk planets require elevated clearance and background checks."/>
+                                <Run Text="# "/>
+                                <Run Text="Destination Planet: "
+                                     FontWeight="Bold"/>
+                                <Run Text="High-risk planets require elevated clearance and background checks."/>
                             </TextBlock>
 
                             <TextBlock FontSize="14"
                                     Margin="0,0,0,10">
-            <Run Text="• "/>
-            <Run Text="Applicant Age: "
-                                        FontWeight="Bold"/>
-            <Run Text="Applicants under 18 must be accompanied or have proper guardian authorization."/>
+                                <Run Text="# "/>
+                                <Run Text="Applicant Age: "
+                                     FontWeight="Bold"/>
+                                <Run Text="Applicants under 18 must be accompanied or have proper guardian authorization."/>
                             </TextBlock>
 
                             <TextBlock FontSize="14"
                                     Margin="0,0,0,10">
-            <Run Text="• "/>
-            <Run Text="Application Completeness: "
-                                        FontWeight="Bold"/>
-            <Run Text="All mandatory fields must be filled and verified."/>
+                                <Run Text="# "/>
+                                <Run Text="Application Completeness: "
+                                     FontWeight="Bold"/>
+                                <Run Text="All mandatory fields must be filled and verified."/>
                             </TextBlock>
 
                             <TextBlock FontSize="14"
                                     Margin="0,0,0,10">
-            <Run Text="• "/>
-            <Run Text="Travel Reason: "
-                                        FontWeight="Bold"/>
-            <Run Text="Purpose of visit must be clear and legitimate (e.g., education, work, tourism)."/>
+                                <Run Text="# "/>
+                                <Run Text="Travel Reason: "
+                                     FontWeight="Bold"/>
+                                <Run Text="Purpose of visit must be clear and legitimate (e.g., education, work, tourism)."/>
                             </TextBlock>
 
                             <TextBlock FontSize="14"
                                     Margin="0,0,0,10">
-            <Run Text="• "/>
-            <Run Text="Documentation: "
-                                        FontWeight="Bold"/>
-            <Run Text="Valid passport, health certificate, and alien ID (if applicable) are required."/>
+                                <Run Text="# "/>
+                                <Run Text="Documentation: "
+                                     FontWeight="Bold"/>
+                                <Run Text="Valid passport, health certificate, and alien ID (if applicable) are required."/>
                             </TextBlock>
                         </StackPanel>
                     </StackPanel>
-
-
-
-
                 </ScrollViewer>
             </Border>
         </Grid>

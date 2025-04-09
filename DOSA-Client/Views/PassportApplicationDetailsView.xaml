@@ -32,7 +32,7 @@
                     VerticalAlignment="Stretch">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <StackPanel>
-                        <TextBlock Text="Passport Application Processing Guidelines"
+                        <TextBlock Text="Intergalactic Passport Application Guidelines"
                                    FontSize="22"
                                    FontWeight="Bold"
                                    Margin="0,0,0,20"/>
@@ -40,55 +40,37 @@
                         <StackPanel Margin="10,0,0,0">
                             <TextBlock FontSize="14"
                                     Margin="0,0,0,10">
-            <Run Text="• "/>
-            <Run Text="Identity Verification: "
-                                        FontWeight="Bold"/>
-            <Run Text="Ensure the applicant has submitted government-issued ID."/>
+                                    <Run Text="# "/>
+                                    <Run Text="Galactic ID: "
+                                         FontWeight="Bold"/>
+                                    <Run Text="Ensure the applicant has submitted a valid Galactic ID (e.g., Earth Driver's License, Moonbase Resident Card)."/>
                             </TextBlock>
 
                             <TextBlock FontSize="14"
                                     Margin="0,0,0,10">
-            <Run Text="• "/>
-            <Run Text="Residency Proof: "
-                                        FontWeight="Bold"/>
-            <Run Text="Must include a valid address and supporting documentation."/>
+                                    <Run Text="# "/>
+                                    <Run Text="Proof of Residence: "
+                                         FontWeight="Bold"/>
+                                    <Run Text="Verify that the applicant has provided valid planetary residency proof (e.g., utility bill, asteroid lease)."/>
                             </TextBlock>
 
                             <TextBlock FontSize="14"
                                     Margin="0,0,0,10">
-            <Run Text="• "/>
-            <Run Text="Criminal Record: "
-                                        FontWeight="Bold"/>
-            <Run Text="Background check must indicate no major offenses."/>
+                                    <Run Text="# "/>
+                                    <Run Text="Starbirth Certificate: "
+                                         FontWeight="Bold"/>
+                                    <Run Text="Ensure the applicant’s Starbirth Certificate matches galactic records and constellation data."/>
                             </TextBlock>
 
                             <TextBlock FontSize="14"
                                     Margin="0,0,0,10">
-            <Run Text="• "/>
-            <Run Text="Photo Specifications: "
-                                        FontWeight="Bold"/>
-            <Run Text="Passport photo must follow standard biometric guidelines."/>
-                            </TextBlock>
-
-                            <TextBlock FontSize="14"
-                                    Margin="0,0,0,10">
-            <Run Text="• "/>
-            <Run Text="Application Completeness: "
-                                        FontWeight="Bold"/>
-            <Run Text="Ensure no mandatory fields are missing or inconsistent."/>
-                            </TextBlock>
-
-                            <TextBlock FontSize="14"
-                                    Margin="0,0,0,10">
-            <Run Text="• "/>
-            <Run Text="Supporting Documents: "
-                                        FontWeight="Bold"/>
-            <Run Text="Check for required files (e.g., birth certificate, previous passport)."/>
+                                    <Run Text="# "/>
+                                    <Run Text="Criminal Record: "
+                                         FontWeight="Bold"/>
+                                    <Run Text="Check for clearance from the Intergalactic Defense Force to ensure no major offenses."/>
                             </TextBlock>
                         </StackPanel>
                     </StackPanel>
-
-
                 </ScrollViewer>
             </Border>
         </Grid>
