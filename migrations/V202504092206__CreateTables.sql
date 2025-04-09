@@ -10,7 +10,7 @@ CREATE TABLE "users" (
  
 CREATE TABLE "user_roles" (
   "id" serial PRIMARY KEY,
-  "user_id" int NOT NULL,
+  "user_id" varchar(30) NOT NULL,
   "role_id" int NOT NULL
 );
  
