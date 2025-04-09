@@ -31,11 +31,11 @@ namespace DOSA_Client.ViewModels
         {
             // this function checks the applications for the current user and decides what tabs to show
             User CurrentUser = Context.Get<User>("User");
-            var roles = await ApiClient.GetRoles(CurrentUser.GoogleId);
+            var roles = await ApiClient.GetRoles(CurrentUser.google_id);
             if (roles.Any(role => role.role == "APPLICANT"))
             {
                 // we have an applicant on our hands so let us check which applications they have right now
-                List<Application> applications = await ApiClient.GetApplications(CurrentUser.GoogleId);
+                List<Application> applications = await ApiClient.GetApplications(CurrentUser.google_id);
                 if (applications.Any(application => application.Status.Name == "APPROVED" && application.ApplicationType == ApplicationType.Passport))
                 {
                     // we have someone who has a passport so they can see their history and the visa application page

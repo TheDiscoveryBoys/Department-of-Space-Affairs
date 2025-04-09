@@ -78,7 +78,7 @@ namespace DOSA_Client.ViewModels
         {
             // make API call
             Task.Run(async () => {
-                PassportApplication = await ApiClient.GetPassportApplication(Officer.GoogleId);
+                PassportApplication = await ApiClient.GetPassportApplication(Officer.google_id);
                 Reason = "";
             });
         }

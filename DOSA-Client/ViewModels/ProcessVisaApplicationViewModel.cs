@@ -91,7 +91,7 @@ namespace DOSA_Client.ViewModels
         {
             // make API call
             Task.Run(async () => {
-                VisaApplication = await ApiClient.GetVisaApplication(Officer.GoogleId);
+                VisaApplication = await ApiClient.GetVisaApplication(Officer.google_id);
                 Reason = "";
             });
         }

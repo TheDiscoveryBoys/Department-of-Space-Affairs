@@ -4,7 +4,8 @@ using System.Net;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using DOSA_Client.lib;
-
+using DOSA_Client.lib.Constants;
+using DOSA_Client.Models;
 public class MainWindowViewModel : INotifyPropertyChanged
 {
     private bool _showContainer;
@@ -79,10 +80,17 @@ public class MainWindowViewModel : INotifyPropertyChanged
         string jwt = await ApiClient.ExchangeAuthCodeForJWT(authCode) ?? throw new Exception("Failed to exchange the jwt");
         // set the jwt on the client
         ApiClient.Jwt = jwt;
-        string googleID = JWTHelpers.GetGoogleId(jwt);
 
+        var claimsDict = JWTHelpers.DecodeClaims(jwt);
+        string googleID = claimsDict["sub"].ToString() ?? throw new Exception("Google ID not found in the jwt");
+        string email = claimsDict["email"].ToString() ?? throw new Exception("Email not present in jwt");
+        string name = claimsDict["name"].ToString() ?? throw new Exception("Name not present in jwt");
+        if(!await ApiClient.CreateUser(googleID, email, name)){
+            Console.WriteLine("Failed to create the user");
+        }
         // Add the user to context
         Context.Add("User", await ApiClient.GetUserProfile(googleID));
+
 
         // now hide this page
         toggleLogin();

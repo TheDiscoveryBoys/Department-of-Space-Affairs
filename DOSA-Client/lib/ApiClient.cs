@@ -35,6 +35,10 @@ namespace DOSA_Client.lib
             return await RestClient.GetJwt(authCode);
         }
 
+        public static async Task<bool> CreateUser(string sub, string email, string name){
+            User user = new User(name, email, sub, null, null,null,null);
+            return await RestClient.CreateUser(user);
+        }
         public static async Task<User> GetUserProfile(string googleId){
             return await RestClient.GetUserByGoogleId(googleId);
         }
