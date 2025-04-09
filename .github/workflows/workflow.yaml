@@ -174,6 +174,8 @@ jobs:
         scp -o StrictHostKeyChecking=no -i spaceaffairs-key.pem ./SpaceAffairsAPI.exe "Administrator@${EC2_HOST}:C:/deploy/SpaceAffairsAPI.exe"
 
     - name: Start up API
+      env:
+        EC2_HOST: ${{ needs.terraform.outputs.ec2host }}
       run: |
           ssh -o StrictHostKeyChecking=no -i spaceaffairs-key.pem "Administrator@${EC2_HOST}" powershell -Command "cd 'C:/deploy'; Start-Process -FilePath .\SpaceAffairsAPI.exe -RedirectStandardOutput 'C:\deploy\SpaceAffairsAPI.log' -RedirectStandardError 'C:\deploy\SpaceAffairsAPI.log' -NoNewWindow"
 
