@@ -133,6 +133,8 @@ resource "aws_instance" "spaceaffairs_ec2_instance" {
         New-NetFirewallRule -Name sshd -DisplayName "OpenSSH Server (sshd)" -Enabled True -Direction Inbound -Protocol TCP -Action Allow -LocalPort 22
 
         Install-WindowsFeature -name Web-Server -IncludeManagementTools
+
+        Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
         choco install nssm -y
         
         mkdir "C:\\deploy"

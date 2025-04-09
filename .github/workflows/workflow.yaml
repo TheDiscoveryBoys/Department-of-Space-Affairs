@@ -179,14 +179,12 @@ jobs:
         EC2_HOST: ${{ needs.terraform.outputs.ec2host }}
       run: |
         ssh -o StrictHostKeyChecking=no -i spaceaffairs-key.pem "Administrator@${EC2_HOST}" powershell -Command "[Environment]::SetEnvironmentVariable('CLIENT_SECRET', '${{ env.GOOGLE_CLIENT_SECRET}}', 'Machine')"
-
-        ssh -o StrictHostKeyChecking=no -i spaceaffairs-key.pem "Administrator@${EC2_HOST}" powershell -Command "if (!(Test-Path 'C:\nssm\nssm.exe')) { Write-Error 'nssm not found at C:\nssm\nssm.exe'; exit 1 }"
     
-        ssh -o StrictHostKeyChecking=no -i spaceaffairs-key.pem "Administrator@${EC2_HOST}" powershell -Command "if (Get-Service -Name 'SpaceAffairsAPI' -ErrorAction SilentlyContinue) { C:\nssm\nssm.exe stop SpaceAffairsAPI; C:\nssm\nssm.exe remove SpaceAffairsAPI confirm }"
+        ssh -o StrictHostKeyChecking=no -i spaceaffairs-key.pem "Administrator@${EC2_HOST}" powershell -Command "if (Get-Service -Name 'SpaceAffairsAPI' -ErrorAction SilentlyContinue) {nssm stop SpaceAffairsAPI; nssm remove SpaceAffairsAPI confirm }"
 
-        ssh -o StrictHostKeyChecking=no -i spaceaffairs-key.pem "Administrator@${EC2_HOST}" powershell -Command "C:\nssm\nssm.exe install SpaceAffairsAPI 'C:\deploy\SpaceAffairsAPI.exe'"
+        ssh -o StrictHostKeyChecking=no -i spaceaffairs-key.pem "Administrator@${EC2_HOST}" powershell -Command "nssm install SpaceAffairsAPI 'C:\deploy\SpaceAffairsAPI.exe'"
 
-        ssh -o StrictHostKeyChecking=no -i spaceaffairs-key.pem "Administrator@${EC2_HOST}" powershell -Command "C:\nssm\nssm.exe start SpaceAffairsAPI"
+        ssh -o StrictHostKeyChecking=no -i spaceaffairs-key.pem "Administrator@${EC2_HOST}" powershell -Command "nssm start SpaceAffairsAPI"
   flyway:
     needs:
       - terraform
