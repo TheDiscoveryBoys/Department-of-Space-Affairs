@@ -87,10 +87,10 @@ public class MainWindowViewModel : INotifyPropertyChanged
         string name = claimsDict["name"].ToString() ?? throw new Exception("Name not present in jwt");
         if(!await ApiClient.CreateUser(googleID, email, name)){
             Console.WriteLine("Failed to create the user");
+            throw new Exception("Something went wrong while trying to login, please try again");
         }
         // Add the user to context
         Context.Add("User", await ApiClient.GetUserProfile(googleID));
-
 
         // now hide this page
         toggleLogin();

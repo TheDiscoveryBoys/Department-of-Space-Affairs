@@ -21,10 +21,10 @@ namespace DOSA_Client.ViewModels
         }
 
         public ICommand onNextButtonClickedCommand {get; }
-        public void OnNext(String pageName){
+        public async void OnNext(String pageName){
             // First we send an api request to update the state of the user 
-
-
+            Console.WriteLine(CurrentUser.species);
+            await RestClient.UpdateUser(CurrentUser);
             PageManager.NavigateTo(pageName);
         }
     }

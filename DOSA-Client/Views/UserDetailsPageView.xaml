@@ -54,7 +54,7 @@
                                      FontSize="14" 
                                      VerticalContentAlignment="Center"
                                      Padding="5,0"
-                                     Text="{Binding CurrentUser.Email}"
+                                     Text="{Binding CurrentUser.email}"
                                      Margin="0,10"/>
 
                             <!-- Name -->
@@ -68,7 +68,7 @@
                                      FontSize="14"
                                      VerticalContentAlignment="Center"
                                      Padding="5,0"
-                                     Text="{Binding CurrentUser.Name}"
+                                     Text="{Binding CurrentUser.name}"
                                      Margin="0,10"/>
 
                             <!-- Species -->
@@ -82,7 +82,7 @@
                                      FontSize="14"
                                      VerticalContentAlignment="Center"
                                      Padding="5,0"
-                                     Text="{Binding CurrentUser.Species}"
+                                     Text="{Binding CurrentUser.species}"
                                      Margin="0,10"/>
 
                             <!-- Planet of Origin -->
@@ -96,7 +96,7 @@
                                      FontSize="14"
                                      VerticalContentAlignment="Center"
                                      Padding="5,0"
-                                     Text="{Binding CurrentUser.PlanetOfOrigin}"
+                                     Text="{Binding CurrentUser.planet_of_origin}"
                                      Margin="0,10"/>
 
                             <!-- Primary Language -->
@@ -110,7 +110,7 @@
                                      FontSize="14"
                                      VerticalContentAlignment="Center"
                                      Padding="5,0"
-                                     Text="{Binding CurrentUser.PrimaryLanguage}"
+                                     Text="{Binding CurrentUser.primary_language}"
                                      Margin="0,10"/>
 
                             <!-- Date of Birth -->

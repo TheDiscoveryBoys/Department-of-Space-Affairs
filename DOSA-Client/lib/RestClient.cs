@@ -14,26 +14,25 @@ public static class RestClient
     private static HttpClient HttpClient = new HttpClient();
     public static async Task<List<Role>> GetRolesByGoogleId(string googleId)
     {
+        
+
         await Task.Delay(1000);
         return [
-                new Role( 1, "OFFICER")
+                new Role( 1, "APPLICANT")
         ];
     }
 
     public static string DynStatus = "NOSTATUS";
 
-    public static async Task<User> GetUserByGoogleId(string googleId)
+    public static async Task<User?> GetUserByGoogleId(string googleId)
     {
-        await Task.Delay(1000);
-        return new User(
-                googleId,
-                "cadesayner@gmail.com",
-                "Cade Sayner",
-                "Homo Sapien Sapien",
-                "Earth",
-                "English",
-                DateTime.Now.AddYears(-1000)
-        );
+        var response = await HttpClient.GetAsync($"{Constants.BaseURI}api/users/{googleId}");
+        if (response.IsSuccessStatusCode)
+        {
+            var user = await response.Content.ReadFromJsonAsync<User>();
+            return user;
+        }
+        return null;
     }
 
     public static async Task<string?> GetJwt(string googleAuthCode)
@@ -44,7 +43,6 @@ public static class RestClient
         if (response.IsSuccessStatusCode)
         {
             var loginResponse = await response.Content.ReadFromJsonAsync<LoginResponse>();
-            Console.WriteLine("The token" + loginResponse?.Token);
             return loginResponse?.Token;
         }
         return null;
@@ -52,7 +50,16 @@ public static class RestClient
 
     public static async Task<bool> CreateUser(User user){
         var response = await HttpClient.PostAsJsonAsync($"{Constants.BaseURI}api/users", user);
-        Console.WriteLine("The content" + await response.Content.ReadAsStringAsync());
+        if (response.IsSuccessStatusCode)
+        {
+            await response.Content.ReadFromJsonAsync<User>();
+            return true;
+        }
+        return false;
+    }
+
+    public static async Task<bool> UpdateUser(User user){
+        var response = await HttpClient.PutAsJsonAsync($"{Constants.BaseURI}api/users", user);
         if (response.IsSuccessStatusCode)
         {
             await response.Content.ReadFromJsonAsync<User>();

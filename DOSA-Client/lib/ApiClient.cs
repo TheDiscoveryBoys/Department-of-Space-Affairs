@@ -30,13 +30,17 @@ namespace DOSA_Client.lib
             Console.WriteLine(applications.Count);
             return applications;
         }
+
+        public static async Task<bool> UpdateUser(User user){
+            return await RestClient.UpdateUser(user);
+        }
     
         public static async Task<string> ExchangeAuthCodeForJWT(string authCode){
             return await RestClient.GetJwt(authCode);
         }
 
         public static async Task<bool> CreateUser(string sub, string email, string name){
-            User user = new User(name, email, sub, null, null,null,null);
+            User user = new User(sub, email, name, null, null,null,null);
             return await RestClient.CreateUser(user);
         }
         public static async Task<User> GetUserProfile(string googleId){
