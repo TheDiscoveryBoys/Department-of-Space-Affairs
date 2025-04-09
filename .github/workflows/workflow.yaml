@@ -186,7 +186,7 @@ jobs:
               Set-Service -Name $serviceName -StartupType Automatic;
           }
           Start-Service -Name $serviceName
-        }"
+          }"
 
   flyway:
     needs:
