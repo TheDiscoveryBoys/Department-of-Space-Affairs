@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using Dapper;
 
 namespace IntergalacticPassportAPI.Models
 {
@@ -13,7 +9,7 @@ namespace IntergalacticPassportAPI.Models
     public class Visa
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Key]
+        [PrimaryKey]
         [Column("id")]
         public int Id { get; set; }
 

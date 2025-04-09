@@ -18,8 +18,8 @@ namespace IntergalacticPassportAPI.Controllers
         {
             return await BaseRequest(async () =>
             {
-                var user = await _repo.GetById(id);
-                return user == null ? NoContent() : Ok(user);
+                var model = await _repo.GetById(id);
+                return model == null ? NoContent() : Ok(model);
             });
 
         }

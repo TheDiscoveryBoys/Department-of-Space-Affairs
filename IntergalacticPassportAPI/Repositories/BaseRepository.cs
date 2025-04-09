@@ -20,7 +20,7 @@ namespace IntergalacticPassportAPI.Data
         {
             string PKIdentifier = GetPrimaryKeyIdentifier(typeof(Model));
             using var db = CreateDBConnection();
-            var sql = $"SELECT * FROM {tableName} WHERE {tableName}.{PKIdentifier} = '{id}'";
+            var sql = $"SELECT * FROM {tableName} WHERE {tableName}.{CamelToSnake(PKIdentifier)} = '{id}'";
             return await db.QueryFirstOrDefaultAsync<Model>(sql);
 
         }
@@ -46,10 +46,10 @@ namespace IntergalacticPassportAPI.Data
 
             foreach (string column in reflectedAttrubutes)
             {
-                if (!column.Equals(PKIdentifier)) sqlSetCode += column + " = " + "@" + column + ",";
+                if (!column.Equals(PKIdentifier)) sqlSetCode += CamelToSnake(column) + " = " + "@" + column + ",";
             }
 
-            var sql = $"UPDATE {tableName} SET {truncateComma(sqlSetCode)} WHERE {PKIdentifier} = @{PKIdentifier} RETURNING *;";
+            var sql = $"UPDATE {tableName} SET {truncateComma(sqlSetCode)} WHERE {CamelToSnake(PKIdentifier)} = @{PKIdentifier} RETURNING *;";
             Console.WriteLine(sql);
             return await db.QuerySingleOrDefaultAsync<Model>(sql, model);
 
@@ -59,7 +59,8 @@ namespace IntergalacticPassportAPI.Data
         {
             string PKIdentifier = GetPrimaryKeyIdentifier(typeof(Model));
             using var db = CreateDBConnection();
-            var sql = $"DELETE FROM users WHERE {PKIdentifier} = '{id}';";
+            var sql = $"DELETE FROM {tableName} WHERE {CamelToSnake(PKIdentifier)} = '{id}';";
+            Console.WriteLine(sql);
             var rowsAffected = await db.ExecuteAsync(sql);
 
             return rowsAffected > 0;
@@ -77,12 +78,12 @@ namespace IntergalacticPassportAPI.Data
             {
                 if (i == reflectedAttrubutes.Count - 1)
                 {
-                    sqlCols += reflectedAttrubutes.ElementAt(i);
+                    sqlCols += CamelToSnake(reflectedAttrubutes.ElementAt(i));
                     sqlValues += "@" + reflectedAttrubutes.ElementAt(i);
                 }
                 else
                 {
-                    sqlCols += reflectedAttrubutes.ElementAt(i) + ", ";
+                    sqlCols += CamelToSnake(reflectedAttrubutes.ElementAt(i)) + ", ";
                     sqlValues += "@" + reflectedAttrubutes.ElementAt(i) + ", ";
                 }
             }

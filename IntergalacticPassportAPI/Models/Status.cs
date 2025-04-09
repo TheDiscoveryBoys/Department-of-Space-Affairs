@@ -11,7 +11,7 @@ namespace IntergalacticPassportAPI.Models
 	public class Status
 	{
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-		[Key]
+		[PrimaryKey]
         [Column("Id")]
         public int Id { get; set; }
 
