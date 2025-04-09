@@ -6,6 +6,7 @@ on:
       - main
       - development
       - pipeline-setup
+      - pipeline-adjust-linux
 
 jobs:
   terraform:
