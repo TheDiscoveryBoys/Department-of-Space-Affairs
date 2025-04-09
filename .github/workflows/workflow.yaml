@@ -177,15 +177,16 @@ jobs:
       env:
         EC2_HOST: ${{ needs.terraform.outputs.ec2host }}
       run: |
-          ssh -o StrictHostKeyChecking=no -i spaceaffairs-key.pem "Administrator@${EC2_HOST}" powershell -Command ^
-          "$serviceName = 'SpaceAffairsAPI'; ^
-          $exePath = 'C:\\deploy\\SpaceAffairsAPI.exe'; ^
-          if (-Not (Get-Service -Name $serviceName -ErrorAction SilentlyContinue)) { ^
-              New-Service -Name $serviceName -BinaryPathName $exePath -DisplayName 'Space Affairs API' -StartupType Automatic; ^
-          } else { ^
-              Set-Service -Name $serviceName -StartupType Automatic; ^
-          } ^
-          Start-Service -Name $serviceName"
+          ssh -o StrictHostKeyChecking=no -i spaceaffairs-key.pem "Administrator@${EC2_HOST}" powershell -Command "& {
+          $serviceName = 'SpaceAffairsAPI';
+          $exePath = 'C:\\deploy\\SpaceAffairsAPI.exe';
+          if (-Not (Get-Service -Name $serviceName -ErrorAction SilentlyContinue)) {
+              New-Service -Name $serviceName -BinaryPathName $exePath -DisplayName 'Space Affairs API' -StartupType Automatic;
+          } else {
+              Set-Service -Name $serviceName -StartupType Automatic;
+          }
+          Start-Service -Name $serviceName
+        }"
 
   flyway:
     needs:
