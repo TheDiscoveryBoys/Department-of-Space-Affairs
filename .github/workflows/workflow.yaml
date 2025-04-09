@@ -162,7 +162,6 @@ jobs:
 
         # Start API
           ssh -o StrictHostKeyChecking=no -i spaceaffairs-key.pem "Administrator@${EC2_HOST}" powershell -Command "cd 'C:/deploy'; Start-Process .\SpaceAffairsAPI.exe"
-        "
 
   flyway:
     needs:
