@@ -5,7 +5,7 @@ CREATE TABLE "users" (
   "species" varchar(50),
   "planet_of_origin" varchar(50),
   "primary_language" varchar(50),
-  "date_of_birth" datetime
+  "date_of_birth" timestamp
 );
  
 CREATE TABLE "user_roles" (
@@ -47,8 +47,8 @@ CREATE TABLE "visa_applications" (
   "user_id" varchar(30) NOT NULL,
   "destination_planet" varchar(50) NOT NULL,
   "travel_reason" varchar(255) NOT NULL,
-  "start_date" datetime NOT NULL,
-  "end_date" datetime NOT NULL,
+  "start_date" timestamp NOT NULL,
+  "end_date" timestamp NOT NULL,
   "status_id" int NOT NULL,
   "submitted_at" timestamp NOT NULL DEFAULT (now()),
   "processed_at" timestamp,
