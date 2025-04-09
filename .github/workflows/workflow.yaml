@@ -177,16 +177,23 @@ jobs:
       env:
         EC2_HOST: ${{ needs.terraform.outputs.ec2host }}
       run: |
-            ssh -o StrictHostKeyChecking=no -i spaceaffairs-key.pem "Administrator@${EC2_HOST}" powershell -Command "& {
-            \$serviceName = 'SpaceAffairsAPI';
-            \$exePath = 'C:\\deploy\\SpaceAffairsAPI.exe';
-            if (-Not (Get-Service -Name \$serviceName -ErrorAction SilentlyContinue)) {
-              New-Service -Name \$serviceName -BinaryPathName \$exePath -DisplayName 'Space Affairs API' -StartupType Automatic;
-              } else {
-                Set-Service -Name \$serviceName -StartupType Automatic;
-              }
-              Start-Service -Name \$serviceName
-            }"
+            SCRIPT=$(cat <<'EOF'
+            $serviceName = 'SpaceAffairsAPI'
+            $exePath = 'C:\deploy\SpaceAffairsAPI.exe'
+            if (-Not (Get-Service -Name $serviceName -ErrorAction SilentlyContinue)) {
+                New-Service -Name $serviceName -BinaryPathName $exePath -DisplayName 'Space Affairs API' -StartupType Automatic
+            } else {
+                Set-Service -Name $serviceName -StartupType Automatic
+            }
+            Start-Service -Name $serviceName
+            EOF
+            )
+
+            # Encode the PowerShell script in Base64 (UTF-16LE required for PowerShell)
+            ENCODED=$(echo "$SCRIPT" | iconv -f UTF-8 -t UTF-16LE | base64 -w 0)
+
+            # SSH and run the encoded command
+            ssh -o StrictHostKeyChecking=no -i spaceaffairs-key.pem "Administrator@${EC2_HOST}" powershell -EncodedCommand $ENCODED
   flyway:
     needs:
       - terraform
