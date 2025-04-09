@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Documents;
 using DOSA_Client.Models;
+using DOSA_Client.ViewModels;
+using static DOSA_Client.ViewModels.UploadPassportDocumentsViewModel;
 
 namespace DOSA_Client.lib
 {
@@ -51,8 +53,9 @@ namespace DOSA_Client.lib
             return await RestClient.GetRolesByGoogleId(googleId);
         }
 
-        public static async Task UploadFiles(List<string> fileNames){
+        public static async Task UploadFiles(List<LocalFile> fileNames){
             List<Task> tasks = [];
+
             foreach(var file in fileNames){
                 tasks.Add(RestClient.PostFile(file));
             }

@@ -11,12 +11,14 @@ namespace DOSA_Client.ViewModels
     public class UploadPassportDocumentsViewModel : ScreenViewModelBase
     {
         public string Title => "Upload Passport Documents Page";
-        public ObservableCollection<string> UploadedDocuments { get; } = new ObservableCollection<string>();
+        public ObservableCollection<LocalFile> UploadedDocuments { get; } = new ObservableCollection<LocalFile>();
         public ICommand submitDocumentsCommand { get; }
         public ICommand uploadDocumentCommand { get; }
         public ICommand RemoveDocumentCommand { get; }
 
         Func<Task> UpdateTabsCallback;
+
+        public record LocalFile(string FileName, string localFilePath);
 
         public UploadPassportDocumentsViewModel(PageManager pageManager, Func<Task> updateTabsCallback)
         {
@@ -31,7 +33,8 @@ namespace DOSA_Client.ViewModels
 
         public void OnSubmitDocuments()
         {
-            Task.Run(async ()=>{
+            Task.Run(async () =>
+            {
                 RestClient.DynStatus = "PENDING"; // mimic changing the application status to pending
                 await ApiClient.UploadFiles([.. UploadedDocuments]);
                 await UpdateTabsCallback();
@@ -54,18 +57,23 @@ namespace DOSA_Client.ViewModels
                 foreach (var file in openFileDialog.FileNames)
                 {
                     // For now, just store the file name
-                    UploadedDocuments.Add(Path.GetFileName(file));
+                    UploadedDocuments.Add(new LocalFile(Path.GetFileName(file), file));
                 }
             }
         }
 
         public void OnRemoveDocument(string documentName)
         {
-            Console.WriteLine(documentName);
-            if (UploadedDocuments.Contains(documentName))
+
+            var documentToRemove = UploadedDocuments.FirstOrDefault(doc => doc.FileName == documentName);
+
+            if (documentToRemove != null)
             {
-                Console.WriteLine("removing");
-                UploadedDocuments.Remove(documentName);
+                UploadedDocuments.Remove(documentToRemove);
+            }
+            else
+            {
+                Console.WriteLine("Document not found");
             }
         }
     }

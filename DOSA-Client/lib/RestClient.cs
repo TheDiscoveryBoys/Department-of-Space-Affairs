@@ -6,6 +6,8 @@ using DOSA_Client.Models;
 using System.Net.Http;
 using System.Net.Http.Json;
 using DOSA_Client.lib.Constants;
+using System.Configuration;
+using static DOSA_Client.ViewModels.UploadPassportDocumentsViewModel;
 
 
 public static class RestClient
@@ -72,8 +74,8 @@ public static class RestClient
         await Task.Delay(1000);
         var passport1 = new PassportApplication(1, "googleID", new Status(DynStatus), DateTime.Now, DateTime.Now.AddDays(-1), null);
         var passport2 = new PassportApplication(1, "googleID", new Status("APPROVED"), DateTime.Now, DateTime.Now.AddDays(-1), null);
-        return [passport2];
-        // return DynStatus == "PENDING" ? [passport1] : [];
+        //return [passport2];
+         return DynStatus == "PENDING" ? [passport1] : [];
     }
 
     public static async Task<bool> UpdateUserDetails(User user)
@@ -104,9 +106,10 @@ public static class RestClient
         return [];
     }
 
-    public static async Task PostFile(string filePath)
+    public static async Task PostFile(LocalFile filePath)
     {
         // hit the endpoint with the file to upload
+        
         await Task.Delay(10);
         Console.WriteLine($"Posting file: {filePath}");
     }
