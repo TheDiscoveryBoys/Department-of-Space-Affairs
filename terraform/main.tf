@@ -132,6 +132,8 @@ resource "aws_instance" "spaceaffairs_ec2_instance" {
         New-NetFirewallRule -Name https -DisplayName "HTTPS" -Enabled True -Direction Inbound -Protocol TCP -LocalPort 443 -Action Allow
         New-NetFirewallRule -Name sshd -DisplayName "OpenSSH Server (sshd)" -Enabled True -Direction Inbound -Protocol TCP -Action Allow -LocalPort 22
 
+        Install-WindowsFeature -name Web-Server -IncludeManagementTools
+        
         mkdir "C:\\deploy"
         </powershell>
         EOF

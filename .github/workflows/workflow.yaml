@@ -143,6 +143,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        role-to-assume: arn:aws:iam::${{ secrets.IAM_USER_ID }}:role/gh-actions-role
+        aws-region: af-south-1
+    
+    - name: Get secrets from AWS Key Store
+      uses: aws-actions/aws-secretsmanager-get-secrets@v2
+      with:
+        secret-ids: |
+              EC2_PRIV_KEY, ec2privatekey
+          
     - name: Download API Artifact for Deployment
       uses: actions/download-artifact@v4
       with:
@@ -150,18 +162,19 @@ jobs:
 
     - name: Write private key
       run: |
-        echo "${{ secrets.EC2_PRIVATE_KEY }}" > spaceaffairs-key.pem
+        echo "${{ env.EC2_PRIV_KEY }}" > spaceaffairs-key.pem
         chmod 600 spaceaffairs-key.pem
 
     - name: Deploy to EC2
       env:
         EC2_HOST: ${{ needs.terraform.outputs.ec2host }}
+    - name: Upload the API to EC2 instance
       run: |
-        # Upload the .exe to the EC2 instance
         scp -o StrictHostKeyChecking=no -i spaceaffairs-key.pem ./SpaceAffairsAPI.exe "Administrator@${EC2_HOST}:C:/deploy/SpaceAffairsAPI.exe"
 
-        # Start API
-          ssh -o StrictHostKeyChecking=no -i spaceaffairs-key.pem "Administrator@${EC2_HOST}" powershell -Command "cd 'C:/deploy'; Start-Process .\SpaceAffairsAPI.exe"
+    - name: Start up API
+      run: |
+          ssh -o StrictHostKeyChecking=no -i spaceaffairs-key.pem "Administrator@${EC2_HOST}" powershell -Command "cd 'C:/deploy'; Start-Process -FilePath .\SpaceAffairsAPI.exe -RedirectStandardOutput 'C:\deploy\SpaceAffairsAPI.log' -RedirectStandardError 'C:\deploy\SpaceAffairsAPI.log' -NoNewWindow"
 
   flyway:
     needs:
