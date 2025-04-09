@@ -7,6 +7,7 @@ namespace IntergalacticPassportAPI.Controllers
 {
     [ApiController]
     [Route("api/visa")]
+    [Authorize]
     public class VisaController : BaseController<Visa, VisaRepository>
     {
         //private readonly VisaRepository _repo;

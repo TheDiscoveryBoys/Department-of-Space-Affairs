@@ -12,7 +12,7 @@ namespace IntergalacticPassportAPI.Models
 	{
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		[Key]
-        [Column("Id")]
+        [Column("id")]
         public int Id { get; set; }
 
 		[Required]

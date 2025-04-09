@@ -15,15 +15,28 @@ namespace IntergalacticPassportAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Model>> GetById(int id)
+        public async Task<ActionResult<Model>> GetById(string id)
         {
-            return await BaseRequest(async () =>
+
+            if (typeof(Model) == typeof(Users))
             {
-                var model = await _repo.GetById(id);
-                return model == null ? NoContent() : Ok(model);
+                return await BaseRequest(async () =>
+                {
+                    var model = await _repo.GetById(id);
+                    return model == null ? NoContent() : Ok(model);
 
-            });
+                });
+            }
 
+            else 
+            {
+                return await BaseRequest(async () =>
+                {
+                    var model = await _repo.GetById(Int32.Parse(id));
+                    return model == null ? NoContent() : Ok(model);
+
+                });
+            }
         }
 
         [HttpGet]

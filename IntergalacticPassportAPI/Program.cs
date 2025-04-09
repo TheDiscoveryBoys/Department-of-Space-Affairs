@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Microsoft.Extensions.DependencyInjection;
 using Dapper;
+using Swashbuckle.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true; // This line ensures that PascalCase prpoperties are correctly mapped to snake case in the DB.
@@ -33,10 +34,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKeys = getGoogleSecurityKeys()
         };
     });
+
+builder.Services.AddSwaggerGen();
 var app = builder.Build();
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.MapControllers();
-//app.UseAuthentication();
+app.UseAuthentication();
 app.Run();
 
 IEnumerable<SecurityKey> getGoogleSecurityKeys(){
