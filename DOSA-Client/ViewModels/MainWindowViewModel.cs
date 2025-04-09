@@ -42,10 +42,10 @@ public class MainWindowViewModel : INotifyPropertyChanged
         ShowContainer = false;
         ShowLogin = true;
         toggleLoginVisibility = new RelayCommand(toggleLogin);
-        LoginCommand = new RelayCommand(OnLogin);
+        LoginCommand = new RelayCommand(OnLoginAsync);
     }
 
-    public async void OnLogin()
+    public async void OnLoginAsync()
     {
         var listener = new HttpListener();
         listener.Prefixes.Add("http://localhost:3000/");

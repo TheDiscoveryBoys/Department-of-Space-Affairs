@@ -65,7 +65,7 @@ namespace DOSA_Client.ViewModels
 
             RejectCommand = new RelayCommand(RejectApplication);
             ApproveCommand = new RelayCommand(ApproveApplication);
-            DownloadDocumentCommand = new RelayCommand<ApplicationDocument>(DownloadDocument);
+            DownloadDocumentCommand = new RelayCommand<ApplicationDocument>(DownloadDocumentAsync);
 
             Task.Run(async () =>
             {
@@ -112,7 +112,7 @@ namespace DOSA_Client.ViewModels
             PageManager.NavigateTo("Passprot Application Details Page");;
         }
 
-        private async void DownloadDocument(ApplicationDocument doc)
+        private async void DownloadDocumentAsync(ApplicationDocument doc)
         {
            if (doc == null) return; 
            Console.WriteLine("Downloading a file");

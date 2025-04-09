@@ -27,7 +27,7 @@ namespace DOSA_Client.ViewModels
             }
         }
 
-        public async Task UpdateTabs()
+        public async Task UpdateTabsAsync()
         {
             // this function checks the applications for the current user and decides what tabs to show
             User CurrentUser = Context.Get<User>("User");
@@ -56,7 +56,7 @@ namespace DOSA_Client.ViewModels
                     // we have someone who does not have a passport and does not have any current applications for a passport
                     // so we show them the passport applications tab only
                     Tabs = new ObservableCollection<ScreenViewModelBase>(){
-                        new PassportApplicationScreenViewModel(() => this.UpdateTabs())
+                        new PassportApplicationScreenViewModel(() => this.UpdateTabsAsync())
                     };
                 }
             }
@@ -75,7 +75,7 @@ namespace DOSA_Client.ViewModels
             {
                 // the container is now visible after the login flow and the user was successfully logged in so we
                 // can try to update the tabs here
-                UpdateTabs();
+                UpdateTabsAsync();
             }
 
         }
@@ -84,7 +84,7 @@ namespace DOSA_Client.ViewModels
             if (Context.Contains("User"))
             {
                 // we have a logged in user
-                UpdateTabs();
+                UpdateTabsAsync();
             }
             Tabs = new ObservableCollection<ScreenViewModelBase>(){};
         }

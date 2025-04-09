@@ -8,7 +8,7 @@ public static class RestClient{
     public static async Task<List<Role>> GetRolesByGoogleId(string googleId){
         await Task.Delay(1000);
         return [
-                new Role( 1, "OFFICER")
+                new Role( 1, "APPLICANT")
         ];
     }
 
