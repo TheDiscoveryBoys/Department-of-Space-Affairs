@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,11 +11,20 @@ using DOSA_Client.Models;
 
 namespace DOSA_Client.ViewModels
 {
-    class ApplicationHistoryPageViewModel : ScreenViewModelBase
+    class ApplicationHistoryPageViewModel : ScreenViewModelBase, INotifyPropertyChanged
     {
         public string Title => "List of Previous Passport and Visa Applications";
         public PageManager PageManager { get; set; }
-        public ObservableCollection<Application> Applications { get; set; }
+
+        private ObservableCollection<Application> _applications;
+        public ObservableCollection<Application> Applications { 
+            get => _applications;
+        
+            set{
+                _applications = value;
+                OnPropertyChanged(nameof(Applications));
+            }
+        }
 
         public ApplicationHistoryPageViewModel(PageManager pageManager)
         {
@@ -22,12 +32,18 @@ namespace DOSA_Client.ViewModels
             onNextButtonClickedCommand = new DelegateCommand<string>(OnNext);
 
             // Call API to get list of passport applications and their statuses
+            Task.Run(()=>{
             Applications = new ObservableCollection<Application>(ApiClient.GetApplications("1").GetAwaiter().GetResult());
+            });
         }
         public ICommand onNextButtonClickedCommand { get; }
         public void OnNext(String pageName)
         {
             PageManager.NavigateTo(pageName);
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged(string name) =>
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
 }

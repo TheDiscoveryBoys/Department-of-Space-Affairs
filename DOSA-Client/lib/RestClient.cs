@@ -14,15 +14,13 @@ public static class RestClient
     private static HttpClient HttpClient = new HttpClient();
     public static async Task<List<Role>> GetRolesByGoogleId(string googleId)
     {
-        
-
         await Task.Delay(1000);
         return [
                 new Role( 1, "APPLICANT")
         ];
     }
 
-    public static string DynStatus = "NOSTATUS";
+    public static string DynStatus = "APPROVED";
 
     public static async Task<User?> GetUserByGoogleId(string googleId)
     {
@@ -73,8 +71,9 @@ public static class RestClient
     {
         await Task.Delay(1000);
         var passport1 = new PassportApplication(1, "googleID", new Status(DynStatus), DateTime.Now, DateTime.Now.AddDays(-1), null);
-        // var passport2 = new PassportApplication(1, "googleID", new Status("APPROVED"), DateTime.Now, DateTime.Now.AddDays(-1), null);
-        return DynStatus == "PENDING" ? [passport1] : [];
+        var passport2 = new PassportApplication(1, "googleID", new Status("APPROVED"), DateTime.Now, DateTime.Now.AddDays(-1), null);
+        return [passport2];
+        // return DynStatus == "PENDING" ? [passport1] : [];
     }
 
     public static async Task<bool> UpdateUserDetails(User user)
