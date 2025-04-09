@@ -172,7 +172,7 @@ jobs:
       env:
         EC2_HOST: ${{ needs.terraform.outputs.ec2host }}
       run: |
-        scp -o StrictHostKeyChecking=no -i spaceaffairs-key.pem ./SpaceAffairsAPI.exe "Administrator@${EC2_HOST}:/c/deploy/"
+        scp -o StrictHostKeyChecking=no -i spaceaffairs-key.pem ./SpaceAffairsAPI.exe "Administrator@${EC2_HOST}:/deploy"
 
     - name: Start up API
       env:
