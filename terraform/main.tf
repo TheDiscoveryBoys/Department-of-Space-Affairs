@@ -133,6 +133,7 @@ resource "aws_instance" "spaceaffairs_ec2_instance" {
         New-NetFirewallRule -Name sshd -DisplayName "OpenSSH Server (sshd)" -Enabled True -Direction Inbound -Protocol TCP -Action Allow -LocalPort 22
 
         Install-WindowsFeature -name Web-Server -IncludeManagementTools
+        choco install nssm -y
         
         mkdir "C:\\deploy"
         </powershell>

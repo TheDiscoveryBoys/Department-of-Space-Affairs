@@ -177,21 +177,28 @@ jobs:
       env:
         EC2_HOST: ${{ needs.terraform.outputs.ec2host }}
       run: |
-          - name: Start up API
-  env:
-    EC2_HOST: ${{ needs.terraform.outputs.ec2host }}
-  run: |
-        ssh -o StrictHostKeyChecking=no -i spaceaffairs-key.pem "Administrator@${EC2_HOST}" powershell -Command '
-        $serviceName = \"SpaceAffairsAPI\";
-        $exePath = \"C:\\deploy\\SpaceAffairsAPI.exe\";
-        if (-Not (Get-Service -Name $serviceName -ErrorAction SilentlyContinue)) {
-            New-Service -Name $serviceName -BinaryPathName $exePath -DisplayName \"Space Affairs API\" -StartupType Automatic;
-        } else {
-            Set-Service -Name $serviceName -StartupType Automatic;
-        }
-        Start-Service -Name $serviceName
-        '
+        ssh -o StrictHostKeyChecking=no -i spaceaffairs-key.pem "Administrator@${EC2_HOST}" powershell -Command "
+          \$nssmPath = 'C:\\nssm\\nssm.exe'
+          \$serviceName = 'SpaceAffairsAPI'
+          \$exePath = 'C:\\deploy\\SpaceAffairsAPI.exe'
 
+          if (!(Test-Path \$nssmPath)) {
+            Write-Error 'nssm not found. Please install nssm at C:\\nssm\\nssm.exe.'
+            exit 1
+          }
+
+          # Stop service if it already exists
+          if ((Get-Service -Name \$serviceName -ErrorAction SilentlyContinue)) {
+            & \$nssmPath stop \$serviceName
+            & \$nssmPath remove \$serviceName confirm
+          }
+
+          # Install service
+          & \$nssmPath install \$serviceName \$exePath
+
+          # Start the service
+          & \$nssmPath start \$serviceName
+        "
 
   flyway:
     needs:
