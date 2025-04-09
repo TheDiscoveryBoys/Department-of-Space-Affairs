@@ -161,9 +161,7 @@ jobs:
         scp -o StrictHostKeyChecking=no -i spaceaffairs-key.pem ./SpaceAffairsAPI.exe "Administrator@${EC2_HOST}:C:/deploy/SpaceAffairsAPI.exe"
 
         # Start API
-          ssh -o StrictHostKeyChecking=no -i spaceaffairs-key.pem "Administrator@${EC2_HOST}" powershell -Command "
-          cd "C:/deploy"
-          start .\SpaceAffairsAPI.exe
+          ssh -o StrictHostKeyChecking=no -i spaceaffairs-key.pem "Administrator@${EC2_HOST}" powershell -Command "cd 'C:/deploy'; Start-Process .\SpaceAffairsAPI.exe"
         "
 
   flyway:
