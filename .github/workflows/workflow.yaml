@@ -38,7 +38,7 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: terraform init -backend-config="bucket=space-affairs-bucket-test" -backend-config="key=terraformstate/terraform.tfstate" -backend-config="region=af-south-1"
+        run: terraform init -backend-config="bucket=spaceaffairsterraform" -backend-config="key=terraformstate/terraform.tfstate" -backend-config="region=af-south-1"
 
       - name: Terraform Apply
         run: terraform apply -auto-approve
@@ -47,13 +47,14 @@ jobs:
         id: tf_outputs
         run: |
           echo "dbhost=$(terraform output -raw db_host)" >> $GITHUB_OUTPUT
-  
+          echo "ec2host=$(terraform output -raw ec2_host)" >> $GITHUB_OUTPUT
+          
   release-front-end:
     name: Build & Release Front-End
     runs-on: windows-latest
     needs: 
       - terraform
-      # - release-api
+      - release-api
     env: 
       PROJECT_PATH: DOSA-Client.csproj
     defaults:
@@ -95,43 +96,77 @@ jobs:
           prerelease: false
           files: DOSA-Client/bin/Release/net9.0-windows/win-x64/publish/*.exe
 
-  # release-api:
-  #   name: Build & Release Front-End
-  #   runs-on: windows-latest
-  #   needs: terraform
-  #   env: 
-  #     PROJECT_PATH: IntergalacticPassportAPI.csproj
-  #   defaults:
-  #     run:
-  #       working-directory: IntergalacticPassportAPI
-  #   steps:
-  #   - name: Checkout
-  #     uses: actions/checkout@v4
+  release-api:
+    name: Build & Release API
+    runs-on: windows-latest
+    needs: terraform
+    env: 
+      PROJECT_PATH: IntergalacticPassportAPI.csproj
+    defaults:
+      run:
+        working-directory: IntergalacticPassportAPI
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
     
-  #   - name: Install Dotnet
-  #     uses: actions/setup-dotnet@v4
-  #     with:
-  #       dotnet-version: '9.0.x'
+    - name: Install Dotnet
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
 
-  #   - name: Restore packages
-  #     run: dotnet restore ${{ env.PROJECT_PATH }} -p:SelfContained=true
+    - name: Restore packages
+      run: dotnet restore ${{ env.PROJECT_PATH }} -p:SelfContained=true
     
-  #   - name: Build API
-  #     run: dotnet build ${{ env.PROJECT_PATH }} -c Release --self-contained --no-restore
+    - name: Build API
+      run: dotnet build ${{ env.PROJECT_PATH }} -c Release --self-contained --no-restore
 
-  #   - name: Publish API
-  #     run: dotnet publish ${{ env.PROJECT_PATH }} -c Release --self-contained -r win-x64 -p:PublishSingleFile=true --no-build
-    
-  #   - name: Deploy to EC2
-  #     run: |
-  #       # Copy exe to location on windows server ec2 instance
-  #       # Run the exe as a service using sc 
+    - name: Publish API
+      run: dotnet publish ${{ env.PROJECT_PATH }} -c Release --self-contained -r win-x64 -p:PublishSingleFile=true --no-build
+
+    - name: Rename API executable
+      run: |
+        Rename-Item -Path "bin\Release\net9.0\win-x64\publish\IntergalacticPassportAPI.exe" -NewName "SpaceAffairsAPI.exe"
+      shell: pwsh
+
+    - name: Upload API Artifact for Deployment
+      uses: actions/upload-artifact@v4
+      with:
+        name: SpaceAffairsAPI
+        path: IntergalacticPassportAPI/bin/Release/net9.0/win-x64/publish/SpaceAffairsAPI.exe
+        
+
+  deploy:
+    name: Deploy API
+    needs: 
+      - release-api
+      - terraform
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Download API Artifact for Deployment
+      uses: actions/download-artifact@v4
+      with:
+        name: SpaceAffairsAPI
+
+    - name: Write private key
+      run: |
+        echo "${{ secrets.EC2_PRIVATE_KEY }}" > spaceaffairs-key.pem
+        chmod 600 spaceaffairs-key.pem
+
+    - name: Deploy to EC2
+      env:
+        EC2_HOST: ${{ needs.terraform.outputs.ec2host }}
+      run: |
+        # Upload the .exe to the EC2 instance
+        scp -o StrictHostKeyChecking=no -i spaceaffairs-key.pem ./SpaceAffairsAPI.exe "Administrator@${EC2_HOST}:C:/deploy/SpaceAffairsAPI.exe"
+
+        # Start API
+          ssh -o StrictHostKeyChecking=no -i spaceaffairs-key.pem "Administrator@${EC2_HOST}" powershell -Command "cd 'C:/deploy'; Start-Process .\SpaceAffairsAPI.exe"
 
   flyway:
     needs:
       - terraform
-      - release-front-end
-      # - release-api
+      - release-api
     permissions:
       id-token: write
       contents: read

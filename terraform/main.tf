@@ -75,8 +75,8 @@ output "db_host" {
   description = "The endpoint of the Postgres Server RDS instance"
 }
 
-resource "aws_s3_bucket" "testspaceaffairsbucket123" {
-  bucket = "testspaceaffairsbucket123"
+resource "aws_s3_bucket" "spaceaffairsdocumentbucket" {
+  bucket = "spaceaffairsdocumentbucket"
 
 }
 
@@ -112,11 +112,29 @@ resource "aws_security_group" "ec2_security_group" {
 resource "aws_instance" "spaceaffairs_ec2_instance" {
   ami           = "ami-036e83870e09b7396"
   instance_type = "t3.micro"
+  key_name      = "spaceaffairs-key"
   tags = {
     Name = "spaceaffairs_ec2_instance"
   }
 
   vpc_security_group_ids = [ aws_security_group.ec2_security_group.id ]
+
+  user_data = <<-EOF
+        <powershell>
+        $pubkey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDLissAbEP+9Z3OuSnLmpYk5DMB9DjrR9IDOKAmWgzHWRT8GVz6AqwJPbDo1HpCJ+IJs+bHhvm+YBJbsU36DB9tCYtPs/o7YBhz4B8qdNvBZd8YvT0+OdvLOJcuKedbGg3Hmtwhcp788HFec0ugv9GjNaHFPPD20al4ZRNzBJi5ydYyYroynVekcd7Wag8J8tMANQA2kGdRpS7b3sDwu0d/sEaM/ZxdDta5i5Gjcpg0/11aq5hPprWtaUWCy5Yl9VRuvLvSLJ5fJVGnAZ3ghtXVDATd9bWVVeRwVs6SNUu8aIpg9h8+RC9288TjBA+S5048UxOlWGObEiRiHk84VqW7"
+        mkdir "C:\\ProgramData\\ssh"
+        echo $pubkey | Out-File -FilePath "C:\\ProgramData\\ssh\\administrators_authorized_keys" -Encoding ascii
+        icacls "C:\\ProgramData\\ssh\\administrators_authorized_keys" /inheritance:r
+        icacls "C:\\ProgramData\\ssh\\administrators_authorized_keys" /grant "Administrators:F"
+        Restart-Service sshd
+
+        New-NetFirewallRule -Name http -DisplayName "HTTP" -Enabled True -Direction Inbound -Protocol TCP -LocalPort 80 -Action Allow
+        New-NetFirewallRule -Name https -DisplayName "HTTPS" -Enabled True -Direction Inbound -Protocol TCP -LocalPort 443 -Action Allow
+        New-NetFirewallRule -Name sshd -DisplayName "OpenSSH Server (sshd)" -Enabled True -Direction Inbound -Protocol TCP -Action Allow -LocalPort 22
+
+        mkdir "C:\\deploy"
+        </powershell>
+        EOF
 }
 
 resource "aws_eip" "spaceaffairs_ec2_eip" {
