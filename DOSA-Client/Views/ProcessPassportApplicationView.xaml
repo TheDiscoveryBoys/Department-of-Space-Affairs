@@ -129,7 +129,7 @@
                                      FontSize="14"
                                      Padding="10"
                                      TextWrapping="Wrap"
-                                     Text="{Binding Reason}"
+                                     Text="{Binding Reason, UpdateSourceTrigger=PropertyChanged}"
                                      AcceptsReturn="True"
                                      VerticalScrollBarVisibility="Auto"
                                      Background="#FAFAFA"
@@ -149,6 +149,7 @@
                         HorizontalAlignment="Right">
                 <Button Content="Reject"
                         Command="{Binding RejectCommand}"
+                        IsEnabled="{Binding IsRejectEnabled}"
                         Margin="0,0,30,0"
                         Width="150"
                         Height="40"

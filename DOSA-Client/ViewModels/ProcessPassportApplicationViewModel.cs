@@ -32,11 +32,29 @@ namespace DOSA_Client.ViewModels
             }
         }
 
-        private String _reason;
-        public String Reason {
+        private bool _isRejectEnabled;
+        public bool IsRejectEnabled
+        {
+            get => _isRejectEnabled;
+            set
+            {
+                _isRejectEnabled = value;
+                OnPropertyChanged(nameof(IsRejectEnabled));
+            }
+        }
+
+        private string _reason;
+        public string Reason
+        {
             get => _reason;
-            set{
+            set
+            {
                 _reason = value;
+                IsRejectEnabled = string.IsNullOrWhiteSpace(_reason) ? false : true;
+
+                Console.WriteLine($"Enabled: {IsRejectEnabled}");
+                Console.WriteLine($"Reason: '{Reason}'");
+
                 OnPropertyChanged(nameof(Reason));
             }
         }
