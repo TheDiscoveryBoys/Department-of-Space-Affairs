@@ -21,10 +21,7 @@ builder.Services.AddScoped<PassportDocumentService>();
 builder.Services.AddScoped<StatusService>();
 builder.Services.AddScoped<StatusRepository>();
 
-builder.WebHost.ConfigureKestrel(serverOptions =>
-{
-    serverOptions.ListenAnyIP(80); 
-});
+builder.WebHost.UseUrls("http://0.0.0.0:5000");
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(async options =>

@@ -110,7 +110,7 @@ resource "aws_security_group" "ec2_security_group" {
 }
 
 resource "aws_instance" "spaceaffairs_ec2_instance" {
-  ami           = "ami-036e83870e09b7396"
+  ami           = "ami-0b7e05c6022fc830b"
   instance_type = "t3.micro"
   key_name      = "spaceaffairs-key"
   tags = {
@@ -120,25 +120,43 @@ resource "aws_instance" "spaceaffairs_ec2_instance" {
   vpc_security_group_ids = [ aws_security_group.ec2_security_group.id ]
 
   user_data = <<-EOF
-        <powershell>
-        $pubkey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDLissAbEP+9Z3OuSnLmpYk5DMB9DjrR9IDOKAmWgzHWRT8GVz6AqwJPbDo1HpCJ+IJs+bHhvm+YBJbsU36DB9tCYtPs/o7YBhz4B8qdNvBZd8YvT0+OdvLOJcuKedbGg3Hmtwhcp788HFec0ugv9GjNaHFPPD20al4ZRNzBJi5ydYyYroynVekcd7Wag8J8tMANQA2kGdRpS7b3sDwu0d/sEaM/ZxdDta5i5Gjcpg0/11aq5hPprWtaUWCy5Yl9VRuvLvSLJ5fJVGnAZ3ghtXVDATd9bWVVeRwVs6SNUu8aIpg9h8+RC9288TjBA+S5048UxOlWGObEiRiHk84VqW7"
-        mkdir "C:\\ProgramData\\ssh"
-        echo $pubkey | Out-File -FilePath "C:\\ProgramData\\ssh\\administrators_authorized_keys" -Encoding ascii
-        icacls "C:\\ProgramData\\ssh\\administrators_authorized_keys" /inheritance:r
-        icacls "C:\\ProgramData\\ssh\\administrators_authorized_keys" /grant "Administrators:F"
-        Restart-Service sshd
+        sudo wget https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh
+        sudo chmod +x ./dotnet-install.sh
 
-        New-NetFirewallRule -Name http -DisplayName "HTTP" -Enabled True -Direction Inbound -Protocol TCP -LocalPort 80 -Action Allow
-        New-NetFirewallRule -Name https -DisplayName "HTTPS" -Enabled True -Direction Inbound -Protocol TCP -LocalPort 443 -Action Allow
-        New-NetFirewallRule -Name sshd -DisplayName "OpenSSH Server (sshd)" -Enabled True -Direction Inbound -Protocol TCP -Action Allow -LocalPort 22
+        ./dotnet-install.sh --channel 9.0
 
-        # Install-WindowsFeature -name Web-Server -IncludeManagementTools
+        echo 'export PATH=$PATH:/home/ubuntu/.dotnet' >> ~/.bashrc
+        source ~/.bashrc
 
-        Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
-        choco install nssm -y
-        
-        mkdir "C:\\deploy"
-        </powershell>
+        # Setup Systemd Service
+        file="/etc/systemd/system/spaceaffairs.service"
+
+        echo [Unit] > $file
+        echo Description=spaceaffairs >> $file
+        echo [Service] >> $file
+
+        echo ExecStart="dotnet SpaceAffairsAPI.dll /home/ubuntu/SpaceAffairsAPI.dll" >> $file
+        echo WorkingDirectory=/home/ubuntu >> $file
+
+        systemctl enable spaceaffairs.service
+
+          # Setup nginx proxy
+          mkdir -p /etc/nginx/conf.d
+          file="/etc/nginx/conf.d/proxy.conf"
+
+          echo "server {" > $file
+          echo "  listen 80;" >> $file
+          echo "  server_name *.amazonaws.com;" >> $file
+          echo "  location / {" >> $file
+          echo "    proxy_pass http://localhost:5000;" >> $file
+          echo "    proxy_set_header Host \$host;" >> $file
+          echo "    proxy_set_header X-Real-IP \$remote_addr;" >> $file
+          echo "  }" >> $file
+          echo "}" >> $file
+
+          systemctl enable nginx
+          systemctl start nginx
+
         EOF
 }
 
