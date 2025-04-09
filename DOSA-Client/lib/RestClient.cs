@@ -71,7 +71,7 @@ public static class RestClient{
 
     public static async Task<VisaApplication> GetOfficerVisaApplicationByGoogleId(string googleId){
         await Task.Delay(1000);
-        return new VisaApplication(1, "1", "Hoth", "Need to get a tan out here", DateTime.Now, DateTime.Now.AddDays(3), null, new Status("PENDING", null) , DateTime.Now, DateTime.Now);
+        return new VisaApplication(1, "1", "Hoth", "Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here ", DateTime.Now, DateTime.Now.AddDays(3), null, new Status("PENDING", null) , DateTime.Now, DateTime.Now);
     }
 
     public static async Task<PassportApplication> GetOfficerPassportApplicationByGoogleId(string officerId){

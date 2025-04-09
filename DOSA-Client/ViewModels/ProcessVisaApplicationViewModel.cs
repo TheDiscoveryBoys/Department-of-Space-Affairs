@@ -8,7 +8,7 @@ namespace DOSA_Client.ViewModels
 {
     public class ProcessVisaApplicationViewModel : ScreenViewModelBase, INotifyPropertyChanged
     {
-        public string Title => "Process User Visa Application";
+        public string Title => "Visa Application";
         public ICommand RejectCommand { get; }
         public ICommand ApproveCommand { get; }
         public PageManager PageManager { get; set; }

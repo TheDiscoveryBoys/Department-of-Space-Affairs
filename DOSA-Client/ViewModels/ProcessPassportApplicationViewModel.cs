@@ -14,7 +14,7 @@ namespace DOSA_Client.ViewModels
 {
     public class ProcessPassportApplicationViewModel : ScreenViewModelBase, INotifyPropertyChanged
     {
-        public string Title => "Process Passport Application";
+        public string Title => "Passport Application";
         public ICommand RejectCommand { get; }
         public ICommand ApproveCommand { get; }
         public ICommand DownloadDocumentCommand { get; }
