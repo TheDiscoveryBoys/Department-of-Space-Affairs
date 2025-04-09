@@ -156,6 +156,7 @@ jobs:
       with:
         secret-ids: |
               EC2_PRIV_KEY, ec2privatekey
+              GOOGLE_CLIENT_SECRET, googleclientsecret
           
     - name: Download API Artifact for Deployment
       uses: actions/download-artifact@v4
@@ -167,7 +168,7 @@ jobs:
         echo "${{ env.EC2_PRIV_KEY }}" > spaceaffairs-key.pem
         chmod 600 spaceaffairs-key.pem
 
-    - name: Deploy to EC2
+    - name: Deploy to EC2 and set Environment Variables
       env:
         EC2_HOST: ${{ needs.terraform.outputs.ec2host }}
       run: |
@@ -177,28 +178,7 @@ jobs:
       env:
         EC2_HOST: ${{ needs.terraform.outputs.ec2host }}
       run: |
-        ssh -o StrictHostKeyChecking=no -i spaceaffairs-key.pem "Administrator@${EC2_HOST}" powershell -Command "
-          \$nssmPath = 'C:\\nssm\\nssm.exe'
-          \$serviceName = 'SpaceAffairsAPI'
-          \$exePath = 'C:\\deploy\\SpaceAffairsAPI.exe'
-
-          if (!(Test-Path \$nssmPath)) {
-            Write-Error 'nssm not found. Please install nssm at C:\\nssm\\nssm.exe.'
-            exit 1
-          }
-
-          # Stop service if it already exists
-          if ((Get-Service -Name \$serviceName -ErrorAction SilentlyContinue)) {
-            & \$nssmPath stop \$serviceName
-            & \$nssmPath remove \$serviceName confirm
-          }
-
-          # Install service
-          & \$nssmPath install \$serviceName \$exePath
-
-          # Start the service
-          & \$nssmPath start \$serviceName
-        "
+        ssh -o StrictHostKeyChecking=no -i spaceaffairs-key.pem "Administrator@${EC2_HOST}" powershell -Command "[Environment]::SetEnvironmentVariable('CLIENT_SECRET', '${{ env.GOOGLE_CLIENT_SECRET}}', 'Machine')"
 
   flyway:
     needs:
