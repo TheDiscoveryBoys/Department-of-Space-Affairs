@@ -42,7 +42,7 @@ namespace IntergalacticPassportAPI.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Citizen")]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<Model>>> GetAll()
         {
             return await BaseRequest(async () =>
