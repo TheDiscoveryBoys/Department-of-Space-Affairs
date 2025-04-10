@@ -45,6 +45,7 @@ namespace IntergalacticPassportportAPI.Controllers
         // TODO: AUTHORIZE
         public async Task<ActionResult<int>> Create(PassportDocument passportDocument)
         {
+			
             var newId = await _service.CreateAsync(passportDocument);
             return CreatedAtAction(nameof(GetById), new { id = newId }, newId);
         }

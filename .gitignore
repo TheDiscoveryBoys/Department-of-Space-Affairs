@@ -101,3 +101,4 @@ terraform.rc
 /.vs/ProjectEvaluation
 .vs/
 
+IntergalacticPassportAPI/appsettings.json

@@ -12,11 +12,11 @@ namespace IntergalacticPassportAPI.Models
 
         public string name { get; set; }
 
-        public string species { get; set; }
+        public string? species { get; set; }
 
-        public string planet_of_origin { get; set; }
+        public string? planet_of_origin { get; set; }
 
-        public string primary_language { get; set; }
+        public string? primary_language { get; set; }
 
         public DateTime? date_of_birth { get; set; }
     }
