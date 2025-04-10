@@ -189,7 +189,7 @@ jobs:
 
       - name: Load Docker image
         run: |
-          gunzip -c space-affairs-api-image.tar.gz | docker load
+          gunzip -c space-affairs-api-image.tar.gz | sudo docker load
 
       - name: Delete old container
         run: sudo docker rm -f space-affairs-api-container
