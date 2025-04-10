@@ -5,21 +5,10 @@
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": false,
-      "applicationUrl": "http://localhost:5187",
-        "environmentVariables": {
-            "ASPNETCORE_ENVIRONMENT": "Development",
-            "CLIENT_SECRET": "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"
-        }
-    },
-    "https": {
-      "commandName": "Project",
-      "dotnetRunMessages": true,
-      "launchBrowser": false,
-      "applicationUrl": "https://localhost:7046;http://localhost:5187",
-        "environmentVariables": {
-            "ASPNETCORE_ENVIRONMENT": "Development",
-            "CLIENT_SECRET": "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"
-        }
+      "applicationUrl": "http://localhost:5000",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
     }
   }
 }
