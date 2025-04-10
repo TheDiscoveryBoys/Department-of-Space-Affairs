@@ -11,17 +11,16 @@ namespace IntergalacticPassportAPI.Models
     public class Passport
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Key]
+        [PrimaryKey]
         [Column("id")]
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
         [Required]
         [Column("user_id")]
         public string UserId { get; set; }
 
-        [Required]
         [Column("status_id")]
-        public int StatusId{ get; set; }
+        public int? StatusId{ get; set; }
 
         [Required]
         [Column("submitted_at")]

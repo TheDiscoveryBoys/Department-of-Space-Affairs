@@ -8,12 +8,14 @@ using System.Net.Http.Json;
 using DOSA_Client.lib.Constants;
 using System.Configuration;
 using static DOSA_Client.ViewModels.UploadPassportDocumentsViewModel;
+using System.IO;
+using System.Net.Http.Headers;
 
 
 public static class RestClient
 {
 
-    private static HttpClient HttpClient = new HttpClient();
+    public static HttpClient HttpClient = new HttpClient();
     public static async Task<List<Role>> GetRolesByGoogleId(string googleId)
     {
         await Task.Delay(1000);
@@ -48,6 +50,7 @@ public static class RestClient
         return null;
     }
 
+    // TODO Change to return user
     public static async Task<bool> CreateUser(User user){
         var response = await HttpClient.PostAsJsonAsync($"{Constants.BaseURI}api/users", user);
         if (response.IsSuccessStatusCode)
@@ -55,6 +58,7 @@ public static class RestClient
             await response.Content.ReadFromJsonAsync<User>();
             return true;
         }
+        Console.WriteLine(await response.Content.ReadAsStringAsync());
         return false;
     }
 
@@ -72,10 +76,8 @@ public static class RestClient
     public static async Task<List<PassportApplication>> GetPassportApplicationsByGoogleId(string googleId)
     {
         await Task.Delay(1000);
-        var passport1 = new PassportApplication(1, "googleID", new Status(DynStatus), DateTime.Now, DateTime.Now.AddDays(-1), null);
-        var passport2 = new PassportApplication(1, "googleID", new Status("APPROVED"), DateTime.Now, DateTime.Now.AddDays(-1), null);
         //return [passport2];
-         return DynStatus == "PENDING" ? [passport1] : [];
+        return [];
     }
 
     public static async Task<bool> UpdateUserDetails(User user)
@@ -106,12 +108,32 @@ public static class RestClient
         return [];
     }
 
-    public static async Task PostFile(LocalFile filePath)
+    public static async Task<bool?> PostFile(LocalFile filePath, int applicationId)
     {
+        using var form = new MultipartFormDataContent();
+        // Add the file content
+        using var fileStream = File.OpenRead(filePath.localFilePath);
+        var fileContent = new StreamContent(fileStream);
+        fileContent.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+        form.Add(fileContent, "file", Path.GetFileName(filePath.localFilePath)); // name="file"
+
+        // Add additional metadata
+        form.Add(new StringContent(filePath.FileName), "filename"); // name="description"
+        form.Add(new StringContent(applicationId.ToString()), "application_id"); // name="description"
+
         // hit the endpoint with the file to upload
-        
-        await Task.Delay(10);
-        Console.WriteLine($"Posting file: {filePath}");
+        var response = await HttpClient.PostAsync($"{Constants.BaseURI}api/passport-documents", form);
+
+        if (response.IsSuccessStatusCode)
+        {
+            // we succeeded here
+            Console.WriteLine("YAYYYY WE MADE IT");
+            Console.WriteLine(await response.Content.ReadAsStringAsync());
+            return true;
+        }
+        //we failed here
+        Console.WriteLine(await response.Content.ReadAsStringAsync());
+        return false;
     }
 
     public static async Task<VisaApplication> GetOfficerVisaApplicationByGoogleId(string googleId)
@@ -120,10 +142,25 @@ public static class RestClient
         return new VisaApplication(1, "1", "Hoth", "Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here ", DateTime.Now, DateTime.Now.AddDays(3), null, new Status("PENDING", null), DateTime.Now, DateTime.Now);
     }
 
-    public static async Task<PassportApplication> GetOfficerPassportApplicationByGoogleId(string officerId)
+    public static async Task<PassportApplication?> GetOfficerPassportApplicationByGoogleId(string officerId)
     {
         await Task.Delay(1000);
-        return new PassportApplication(1, "1", new Status("PENDING", null), DateTime.Now, DateTime.Now, null);
+        return null;
+    }
+
+    public static async Task<PassportApplication?> CreatePassportApplication(PassportApplication passportApplication){
+        var response = await HttpClient.PostAsJsonAsync($"{Constants.BaseURI}api/passport", passportApplication );
+        if (response.IsSuccessStatusCode)
+        {  
+            try{
+            return await response.Content.ReadFromJsonAsync<PassportApplication>();
+            }catch(Exception e){
+                Console.WriteLine(e);
+                Console.WriteLine("Failed to deserialise");
+            }
+        }
+        Console.WriteLine(await response.Content.ReadAsStringAsync());
+        return null;
     }
 
     public static async Task<List<ApplicationDocument>> GetApplicationDocumentsByApplicationId(int applicationId)

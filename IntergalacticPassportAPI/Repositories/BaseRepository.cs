@@ -1,8 +1,10 @@
 using System.Data;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using System.ComponentModel.DataAnnotations;
 using Dapper;
 using Npgsql;
+using IntergalacticPassportAPI.Models;
 
 namespace IntergalacticPassportAPI.Data
 {
@@ -16,11 +18,11 @@ namespace IntergalacticPassportAPI.Data
             return new NpgsqlConnection(_connectionString);
         }
 
-        public async Task<Model> GetById(string id)
+        public async Task<Model> GetById(object id) // Object to handle string or int ids.
         {
             string PKIdentifier = GetPrimaryKeyIdentifier(typeof(Model));
             using var db = CreateDBConnection();
-            var sql = $"SELECT * FROM {tableName} WHERE {tableName}.{PKIdentifier} = '{id}'";
+            var sql = $"SELECT * FROM {tableName} WHERE {tableName}.{CamelToSnake(PKIdentifier)} = '{id}'";
             return await db.QueryFirstOrDefaultAsync<Model>(sql);
 
         }
@@ -41,25 +43,26 @@ namespace IntergalacticPassportAPI.Data
         {
             string PKIdentifier = GetPrimaryKeyIdentifier(typeof(Model));
             using var db = CreateDBConnection();
-            List<string> reflectedAttrubutes = GetPropertyNamesFromModel(model);
+            List<string> reflectedAttributes = GetPropertyNamesFromModel(model);
             string sqlSetCode = "";
 
-            foreach (string column in reflectedAttrubutes)
+            foreach (string column in reflectedAttributes)
             {
-                if (!column.Equals(PKIdentifier)) sqlSetCode += column + " = " + "@" + column + ",";
+                if (!column.Equals(PKIdentifier)) sqlSetCode += CamelToSnake(column) + " = " + "@" + column + ",";
             }
 
-            var sql = $"UPDATE {tableName} SET {truncateComma(sqlSetCode)} WHERE {PKIdentifier} = @{PKIdentifier} RETURNING *;";
+            var sql = $"UPDATE {tableName} SET {truncateComma(sqlSetCode)} WHERE {CamelToSnake(PKIdentifier)} = @{PKIdentifier} RETURNING *;";
             Console.WriteLine(sql);
             return await db.QuerySingleOrDefaultAsync<Model>(sql, model);
 
         }
 
-        public async Task<bool> Delete(string id)
+        public async Task<bool> Delete(string id) 
         {
             string PKIdentifier = GetPrimaryKeyIdentifier(typeof(Model));
             using var db = CreateDBConnection();
-            var sql = $"DELETE FROM users WHERE {PKIdentifier} = '{id}';";
+            var sql = $"DELETE FROM {tableName} WHERE {CamelToSnake(PKIdentifier)} = '{id}';";
+            Console.WriteLine(sql);
             var rowsAffected = await db.ExecuteAsync(sql);
 
             return rowsAffected > 0;
@@ -67,23 +70,22 @@ namespace IntergalacticPassportAPI.Data
 
         public abstract Task<bool> Exists(Model model);
 
-        protected string ModelToSQLInsert(Model model)
+        protected virtual string ModelToSQLInsert(Model model)
         {
-            List<string> reflectedAttrubutes = GetPropertyNamesFromModel(model);
-
+            List<string> reflectedAttributes = GetPropertyNamesFromModel(model);
             string sqlCols = "";
             string sqlValues = "";
-            for (int i = 0; i < reflectedAttrubutes.Count; i++)
+            for (var i = 0; i < reflectedAttributes.Count; i++)
             {
-                if (i == reflectedAttrubutes.Count - 1)
+                if (i == reflectedAttributes.Count - 1)
                 {
-                    sqlCols += reflectedAttrubutes.ElementAt(i);
-                    sqlValues += "@" + reflectedAttrubutes.ElementAt(i);
+                    sqlCols += CamelToSnake(reflectedAttributes.ElementAt(i));
+                    sqlValues += "@" + reflectedAttributes.ElementAt(i);
                 }
                 else
                 {
-                    sqlCols += reflectedAttrubutes.ElementAt(i) + ", ";
-                    sqlValues += "@" + reflectedAttrubutes.ElementAt(i) + ", ";
+                    sqlCols += CamelToSnake(reflectedAttributes.ElementAt(i)) + ", ";
+                    sqlValues += "@" + reflectedAttributes.ElementAt(i) + ", ";
                 }
             }
             string sql = $"INSERT INTO {tableName} ({sqlCols}) VALUES ({sqlValues}) RETURNING *";
@@ -118,6 +120,7 @@ namespace IntergalacticPassportAPI.Data
             foreach (PropertyInfo property in properties)
             {
                 string propertyName = property.Name;
+                //var pkAttr = property.GetCustomAttribute<PrimaryKeyAttribute>();
                 var pkAttr = property.GetCustomAttribute<PrimaryKeyAttribute>();
                 if (pkAttr != null)
                 {

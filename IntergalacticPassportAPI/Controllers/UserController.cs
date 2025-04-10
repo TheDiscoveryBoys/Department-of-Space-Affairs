@@ -1,15 +1,14 @@
 using IntergalacticPassportAPI.Data;
 using IntergalacticPassportAPI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IntergalacticPassportAPI.Controllers
 {
     [ApiController]
     [Route("api/users")]
-
     public class UserController : BaseController<Users, UsersRepository>
     {
-
         public UserController(UsersRepository repo) : base(repo) { }
 
 

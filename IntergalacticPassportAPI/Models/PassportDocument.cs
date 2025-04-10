@@ -11,13 +11,17 @@ namespace IntergalacticPassportAPI.Models
     public class PassportDocument 
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Key]
+        [PrimaryKey]
         [Column("id")]
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
         [Required]
         [Column("filename")]
         public string Filename { get; set; }
+
+        [Required]
+        [Column("s3_url")]
+        public string S3Url {get; set;}
 
         [Required]
         [Column("passport_application_id")]

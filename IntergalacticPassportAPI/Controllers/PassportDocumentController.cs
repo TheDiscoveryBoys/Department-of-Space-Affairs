@@ -1,55 +1,57 @@
-﻿using IntergalacticPassportAPI.Data;
+﻿using IntergalacticPassportAPI.Controllers;
+using IntergalacticPassportAPI.Data;
 using IntergalacticPassportAPI.Models;
-using IntergalacticPassportAPI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using IntergalacticPassportAPI.lib.S3Helpers;
 
 namespace IntergalacticPassportportAPI.Controllers
 {
 	[ApiController]
 	[Route("api/passport-documents")]
-	public class PassportDocumentController : ControllerBase
+	public class PassportDocumentController : BaseController<PassportDocument, PassportDocumentRepository>
 	{
 
-		private readonly PassportDocumentService _service;
-
-		public PassportDocumentController(PassportDocumentService service)
-		{
-			_service = service;
-		}
+		public PassportDocumentController(PassportDocumentRepository repo) : base(repo) { }
 
 		[HttpGet("passport-application/{id}")]
 		// TODO: Add authorization.
 		public async Task<ActionResult<IEnumerable<PassportDocument>>> GetByPassportApplicationId(int id)
-		{ 
-			var passportApplicationDocuments = await _service.GetByPassportApplicationIdAsync(id);
-			return Ok(passportApplicationDocuments);
+		{
+			return await BaseRequest(async () =>
+			{
+				var passportApplicationDocuments = await _repo.GetByPassportApplicationIdAsync(id);
+
+				if (passportApplicationDocuments.Any())
+				{
+					return Ok(passportApplicationDocuments);
+				}
+				else
+				{
+					return NoContent();
+				}
+			});
 		}
 
-		[HttpGet]
-		// TODO: Add authorization
-		public async Task<ActionResult<IEnumerable<PassportDocument>>> GetAll()
-		{ 
-			var passportApplicationDocuments = await _service.GetAllAsync();
-			return Ok(passportApplicationDocuments);
+		[HttpPost]
+		public async Task<ActionResult<PassportDocument>> CreateDocument(IFormFile file, [FromForm] string filename, [FromForm] int application_id)
+		{
+			Console.WriteLine("Trying to upload a file");
+			if (file == null || file.Length == 0)
+			{
+				return BadRequest("No file uploaded.");
+			}
+			// get application for the application id
+			//get the primary key
+			// Log metadata
+			Console.WriteLine($"Description: {filename }");
+			Console.WriteLine($"File name: {file.FileName}");
+			var fileUrl = await S3Helpers.UploadFileAsync(file, $"{filename} ({application_id})") ?? throw new Exception("Could not upload the file to S3");
+			var doc = new PassportDocument{Filename = filename, PassportApplicationId=application_id, S3Url = fileUrl};
+			// Optional: save to disk or process
+			await _repo.Create(doc);
+			return Ok(new { message = "File uploaded successfully!" });
 		}
-
-		[HttpGet("{id}")]
-        public async Task<ActionResult<IEnumerable<PassportDocument>>> GetById(int id)
-        {
-            var passportApplicationDocuments = await _service.GetByIdAsync(id);
-            return Ok(passportApplicationDocuments);
-        }
-
-        [HttpPost]
-        // TODO: AUTHORIZE
-        public async Task<ActionResult<int>> Create(PassportDocument passportDocument)
-        {
-			
-            var newId = await _service.CreateAsync(passportDocument);
-            return CreatedAtAction(nameof(GetById), new { id = newId }, newId);
-        }
-    }
-
+	}
 }
 

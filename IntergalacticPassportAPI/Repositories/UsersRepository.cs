@@ -28,13 +28,15 @@ namespace IntergalacticPassportAPI.Data
                     VALUES (@UserId, @RoleId)
                     ON CONFLICT DO NOTHING;
                 ";
+            Console.WriteLine(sql);
             var rowsAffected = await db.ExecuteAsync(sql, new { UserId = googleId, RoleId = roleId });
             return rowsAffected > 0;
         }
 
         public async override Task<bool> Exists(Users model)
         {
-             var existingUser = await GetById(model.google_id);
+             var existingUser = await GetById(model.google_id ?? throw new Exception("No google id"));
+             
               if (existingUser == null){
                     return false;
               } else{

@@ -1,6 +1,5 @@
 using IntergalacticPassportAPI.Data;
 using IntergalacticPassportAPI.Models;
-using IntergalacticPassportAPI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,35 +7,23 @@ namespace IntergalacticPassportAPI.Controllers
 {
     [ApiController]
     [Route("api/passport")]
-    public class PassportController : ControllerBase
+    public class PassportController : BaseController<Passport, PassportRepository>
     {
-        private readonly PassportService _service;
+        StatusRepository statusRepo;
+        public PassportController(PassportRepository repo, StatusRepository statusRepo) : base(repo) {
+            this.statusRepo = statusRepo;
+         }
 
-        public PassportController(PassportService service)
-        {
-            _service = service;
-        }
-
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Passport>>> GetAll()
-        {
-            var passports = await _service.GetAllAsync();
-            return Ok(passports);
-        }
-
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Passport>> GetById(int id)
-        {
-            var passport = await _service.GetByIdAsync(id);
-            return passport == null ? NotFound() : Ok(passport);
-        }
-
-        [Authorize]
         [HttpPost]
-        public async Task<ActionResult<int>> Create(Passport passport)
-        {
-            var newId = await _service.CreateAsync(passport);
-            return CreatedAtAction(nameof(GetById), new { id = newId }, newId);
+        public  override async Task<ActionResult<Passport>> Create(Passport passport){
+            Console.WriteLine($"Trying to create passport");
+            var status = await statusRepo.Create(new Status("PENDING", null));
+            passport.StatusId = status.Id;
+            var passportDB = await _repo.Create(passport);
+            Console.WriteLine($"Successfully created passport with id {passportDB}");
+            return passportDB;
         }
     }
+
+    
 }

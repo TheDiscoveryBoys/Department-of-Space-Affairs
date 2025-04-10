@@ -19,7 +19,7 @@ namespace DOSA_Client.lib
         {
             var passportApplicationsTask = RestClient.GetPassportApplicationsByGoogleId(googleId);
             var visaApplicationsTask = RestClient.GetVisaApplicationsByGoogleId(googleId);
-            await Task.WhenAll(passportApplicationsTask, visaApplicationsTask);
+            await Task.WhenAll(visaApplicationsTask);
             var passportApplications = passportApplicationsTask.Result;
             var visaApplications = visaApplicationsTask.Result;
             var applications = new List<Application>();
@@ -31,10 +31,16 @@ namespace DOSA_Client.lib
             }
             Console.WriteLine(applications.Count);
             return applications;
+            await Task.Delay(100);
+            return [];
         }
 
         public static async Task<bool> UpdateUser(User user){
             return await RestClient.UpdateUser(user);
+        }
+
+        public static async Task<PassportApplication> CreatePassportApplication(PassportApplication passportApplication){
+            return await RestClient.CreatePassportApplication(passportApplication);
         }
     
         public static async Task<string> ExchangeAuthCodeForJWT(string authCode){
@@ -53,11 +59,11 @@ namespace DOSA_Client.lib
             return await RestClient.GetRolesByGoogleId(googleId);
         }
 
-        public static async Task UploadFiles(List<LocalFile> fileNames){
+        public static async Task UploadFiles(List<LocalFile> fileNames, int applicationID){
             List<Task> tasks = [];
 
             foreach(var file in fileNames){
-                tasks.Add(RestClient.PostFile(file));
+                tasks.Add(RestClient.PostFile(file, applicationID));
             }
             await Task.WhenAll(tasks);
         }
@@ -71,7 +77,7 @@ namespace DOSA_Client.lib
         public static async Task<OfficerPassportApplication> GetPassportApplication(string officerId){
             var passportApplication = await RestClient.GetOfficerPassportApplicationByGoogleId(officerId);
             User user = await RestClient.GetUserByGoogleId(passportApplication.UserId);
-            List<ApplicationDocument> documents = await RestClient.GetApplicationDocumentsByApplicationId(passportApplication.Id);
+            List<ApplicationDocument> documents = await RestClient.GetApplicationDocumentsByApplicationId(passportApplication.Id ?? 0);
             
             return new OfficerPassportApplication(passportApplication, user, documents);
         }

@@ -5,6 +5,8 @@ using Microsoft.Win32;
 using DOSA_Client.lib;
 using DOSA_Client.ViewModels;
 using CommunityToolkit.Mvvm.Input;
+using System.Windows;
+using DOSA_Client.Models;
 
 namespace DOSA_Client.ViewModels
 {
@@ -35,11 +37,10 @@ namespace DOSA_Client.ViewModels
         {
             Task.Run(async () =>
             {
-                RestClient.DynStatus = "PENDING"; // mimic changing the application status to pending
-                await ApiClient.UploadFiles([.. UploadedDocuments]);
+                var passportApplication = await ApiClient.CreatePassportApplication(new PassportApplication(null, Context.Get<User>("User").google_id, null, DateTime.Now, null, null)) ?? throw new Exception("Failed to create an application");
+                await ApiClient.UploadFiles([.. UploadedDocuments], passportApplication.Id ?? throw new Exception("Something diabolical has occurred"));
                 await UpdateTabsCallback();
             });
-            Console.WriteLine("Documents submitted successfully.");
         }
 
         public void OnUploadDocument()

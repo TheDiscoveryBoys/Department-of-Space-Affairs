@@ -91,7 +91,8 @@ public class MainWindowViewModel : INotifyPropertyChanged
         }
         // Add the user to context
         Context.Add("User", await ApiClient.GetUserProfile(googleID));
-
+        Console.WriteLine(jwt);
+        RestClient.HttpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", ApiClient.Jwt);
         // now hide this page
         toggleLogin();
 

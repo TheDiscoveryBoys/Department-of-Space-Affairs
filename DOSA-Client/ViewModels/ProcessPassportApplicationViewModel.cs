@@ -94,7 +94,7 @@ namespace DOSA_Client.ViewModels
             // call API to reject application
             Console.WriteLine($"Rejected Application with reason {Reason}");
             Task.Run(async ()=>{
-                await ApiClient.UpdatePassportApplicationStatus(new Status("REJECTED", Reason), PassportApplication.PassportApplication.Id);
+                // await ApiClient.UpdatePassportApplicationStatus(new Status("REJECTED", Reason), PassportApplication.PassportApplication.Id);
                 Reason = "";
                 PassportApplication = null;
             });
@@ -105,7 +105,7 @@ namespace DOSA_Client.ViewModels
         {
             Console.WriteLine($"Rejected Application with reason {Reason}");
             Task.Run(async ()=>{
-                await ApiClient.UpdatePassportApplicationStatus(new Status("REJECTED", Reason), PassportApplication.PassportApplication.Id);
+                //await ApiClient.UpdatePassportApplicationStatus(new Status("REJECTED", Reason), PassportApplication.PassportApplication.Id);
                 Reason = "";
                 PassportApplication = null;
             });
