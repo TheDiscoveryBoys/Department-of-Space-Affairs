@@ -9,46 +9,46 @@ on:
       - pipeline-adjust-linux
 
 jobs:
-  # terraform:
-  #   permissions:
-  #     id-token: write
-  #     contents: read
-  #   name: "Manage AWS Resources"
-  #   runs-on: ubuntu-latest
-  #   outputs:
-  #     dbhost: ${{ steps.tf_outputs.outputs.dbhost }}
-  #     ec2host: ${{ steps.tf_outputs.outputs.ec2host }}
-  #   defaults:
-  #     run:
-  #       working-directory: terraform
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v4
+  terraform:
+    permissions:
+      id-token: write
+      contents: read
+    name: "Manage AWS Resources"
+    runs-on: ubuntu-latest
+    outputs:
+      dbhost: ${{ steps.tf_outputs.outputs.dbhost }}
+      ec2host: ${{ steps.tf_outputs.outputs.ec2host }}
+    defaults:
+      run:
+        working-directory: terraform
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-  #     - name: Configure AWS credentials
-  #       uses: aws-actions/configure-aws-credentials@v2
-  #       with:
-  #         role-to-assume: arn:aws:iam::${{ secrets.IAM_USER_ID }}:role/gh-actions-role #This probably doesn't actually need to be a secret - will confirm
-  #         aws-region: af-south-1
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.IAM_USER_ID }}:role/gh-actions-role #This probably doesn't actually need to be a secret - will confirm
+          aws-region: af-south-1
 
-  #     - name: Setup Terraform
-  #       uses: hashicorp/setup-terraform@v3
-  #       with:
-  #         terraform_version: 1.0.1
-  #         terraform_wrapper: false
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.0.1
+          terraform_wrapper: false
 
-  #     - name: Terraform Init
-  #       id: init
-  #       run: terraform init -backend-config="bucket=spaceaffairsterraform" -backend-config="key=terraformstate/terraform.tfstate" -backend-config="region=af-south-1"
+      - name: Terraform Init
+        id: init
+        run: terraform init -backend-config="bucket=spaceaffairsterraform" -backend-config="key=terraformstate/terraform.tfstate" -backend-config="region=af-south-1"
 
-  #     - name: Terraform Apply
-  #       run: terraform apply -auto-approve
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
 
-  #     - name: Capture Terraform Outputs
-  #       id: tf_outputs
-  #       run: |
-  #         echo "dbhost=$(terraform output -raw db_host)" >> $GITHUB_OUTPUT
-  #         echo "ec2host=$(terraform output -raw ec2_host)" >> $GITHUB_OUTPUT
+      - name: Capture Terraform Outputs
+        id: tf_outputs
+        run: |
+          echo "dbhost=$(terraform output -raw db_host)" >> $GITHUB_OUTPUT
+          echo "ec2host=$(terraform output -raw ec2_host)" >> $GITHUB_OUTPUT
           
   # release-front-end:
   #   name: Build & Release Front-End
