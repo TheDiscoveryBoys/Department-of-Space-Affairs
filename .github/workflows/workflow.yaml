@@ -138,14 +138,13 @@ jobs:
     - name: Rename API dll
       run: |
           cd bin/Release/net9.0/publish
-          ls
-          # mv IntergalacticPassportAPI.dll SpaceAffairsAPI.dll
+          mv IntergalacticPassportAPI.dll SpaceAffairsAPI.dll
 
     - name: Upload API Artifact for Deployment
       uses: actions/upload-artifact@v4
       with:
         name: SpaceAffairsAPI
-        path: IntergalacticPassportAPI/bin/Release/net9.0/win-x64/publish/SpaceAffairsAPI.dll
+        path: bin/Release/net9.0/publish/SpaceAffairsAPI.dll
         
 
   deploy:
