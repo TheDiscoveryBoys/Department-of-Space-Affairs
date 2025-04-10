@@ -157,7 +157,7 @@ jobs:
 
       - name: SSH into EC2 and Install Docker
         run: |
-          ssh -o StrictHostKeyChecking=no -i spaceaffairs-key.pem ubuntu@${{ secrets.EC2_HOST }} "sudo apt update && sudo apt install docker.io -y"
+          ssh -o StrictHostKeyChecking=no -i spaceaffairs-key.pem ubuntu@${{ needs.terraform.outputs.ec2host }} "sudo apt update && sudo apt install docker.io -y"
 
       - name: Set Environment Variables
         run: |
