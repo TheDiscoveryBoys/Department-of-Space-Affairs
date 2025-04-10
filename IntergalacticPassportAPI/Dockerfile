@@ -41,5 +41,6 @@ RUN dotnet publish "IntergalacticPassportAPI.csproj" -c $BUILD_CONFIGURATION -o 
 
 FROM base AS final
 WORKDIR /app
+COPY IntergalacticPassportAPI/appsettings.Production.json ./appsettings.json
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "IntergalacticPassportAPI.dll"]
