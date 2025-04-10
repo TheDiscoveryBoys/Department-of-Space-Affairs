@@ -185,7 +185,23 @@ jobs:
         EC2_HOST=${{ needs.terraform.outputs.ec2host }}
 
         scp -o StrictHostKeyChecking=no -i spaceaffairs-key.pem ./SpaceAffairsAPI.dll "ubuntu@$EC2_HOST:SpaceAffairsAPI.dll"
-        ssh -o StrictHostKeyChecking=no -i spaceaffairs-key.pem "ubuntu@$EC2_HOST" "sudo systemctl restart spaceaffairs.service"
+        
+        # Create the systemd service and start it
+        ssh -o StrictHostKeyChecking=no -i spaceaffairs-key.pem "ubuntu@$EC2_HOST" << 'EOF'
+          # Setup systemd service
+          sudo bash -c 'echo "[Unit]" > /etc/systemd/system/spaceaffairs.service'
+          sudo bash -c 'echo "Description=SpaceAffairs API" >> /etc/systemd/system/spaceaffairs.service'
+          sudo bash -c 'echo "[Service]" >> /etc/systemd/system/spaceaffairs.service'
+          sudo bash -c 'echo "ExecStart=/usr/bin/dotnet /home/ubuntu/SpaceAffairsAPI.dll" >> /etc/systemd/system/spaceaffairs.service'
+          sudo bash -c 'echo "WorkingDirectory=/home/ubuntu" >> /etc/systemd/system/spaceaffairs.service'
+          sudo bash -c 'echo "[Install]" >> /etc/systemd/system/spaceaffairs.service'
+          sudo bash -c 'echo "WantedBy=multi-user.target" >> /etc/systemd/system/spaceaffairs.service'
+
+          # Enable and start the systemd service
+          sudo systemctl daemon-reload
+          sudo systemctl enable spaceaffairs.service
+          sudo systemctl start spaceaffairs.service
+        EOF
         
 
   flyway:
