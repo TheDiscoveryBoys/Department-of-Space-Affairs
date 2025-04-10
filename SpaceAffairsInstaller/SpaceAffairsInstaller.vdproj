@@ -303,6 +303,20 @@
         }
         "Shortcut"
         {
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_6054A9518BFD412FB9444841D65E69FE"
+            {
+            "Name" = "8:Space Affairs"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_E44EC29E13F84097B876848CA021181C"
+            "Folder" = "8:_D522606290024262B69D4BA6EBADA679"
+            "WorkingFolder" = "8:_DA08560128F244C78E344CE9D75A948C"
+            "Icon" = "8:"
+            "Feature" = "8:"
+            }
         }
         "UserInterface"
         {
