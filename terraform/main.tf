@@ -134,17 +134,21 @@ resource "aws_instance" "spaceaffairs_ec2_instance" {
         chmod 700 /home/ubuntu/.ssh
         chmod 600 /home/ubuntu/.ssh/authorized_keys
 
-        # Setup Systemd Service
-        file="/etc/systemd/system/spaceaffairs.service"
+        cat <<EOL | sudo tee /etc/systemd/system/spaceaffairs.service
+        [Unit]
+        Description=spaceaffairs
 
-        echo [Unit] > $file
-        echo Description=spaceaffairs >> $file
-        echo [Service] >> $file
+        [Service]
+        ExecStart=/home/ubuntu/.dotnet/dotnet /home/ubuntu/SpaceAffairsAPI.dll
+        WorkingDirectory=/home/ubuntu
+        Restart=always
+        RestartSec=5
 
-        echo ExecStart="dotnet SpaceAffairsAPI.dll /home/ubuntu/SpaceAffairsAPI.dll" >> $file
-        echo WorkingDirectory=/home/ubuntu >> $file
+        [Install]
+        WantedBy=multi-user.target
+        EOL
 
-        systemctl enable spaceaffairs.service
+        sudo systemctl enable spaceaffairs.service
 
           # Setup nginx proxy
           mkdir -p /etc/nginx/conf.d
