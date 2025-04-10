@@ -5,7 +5,6 @@ on:
     branches:
       - main
       - development
-      - pipeline-setup
       - pipeline-adjust-linux
 
 jobs:
@@ -50,60 +49,50 @@ jobs:
           echo "dbhost=$(terraform output -raw db_host)" >> $GITHUB_OUTPUT
           echo "ec2host=$(terraform output -raw ec2_host)" >> $GITHUB_OUTPUT
           
-  # release-front-end:
-  #   name: Build & Release Front-End
-  #   runs-on: windows-latest
-  #   needs: 
-  #     - terraform
-  #     - release-api
-  #   env: 
-  #     PROJECT_PATH: DOSA-Client.csproj
-  #   defaults:
-  #     run:
-  #       working-directory: DOSA-Client
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v4
+  release-front-end:
+    name: Build & Release Front-End
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup MSBuild.exe
+        uses: microsoft/setup-msbuild@v1.0.2
+
+      - name: Setup VS Dev Environment
+        uses: seanmiddleditch/gha-setup-vsdevenv@v4
+
+      - name: Restore NuGet Packages
+        run: msbuild /t:Restore
+
+      - name: Build the application
+        run: msbuild /t:Build /p:Configuration=Release
+
+      - name: Disable Out of Process Building
+        run: .\DisableOutOfProcBuild.exe
+        working-directory: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\VSI\DisableOutOfProcBuild
       
-  #     - name: Install Dotnet
-  #       uses: actions/setup-dotnet@v4
-  #       with:
-  #         dotnet-version: '9.0.x'
+      - name: Build the Installer
+        run: DevEnv DOSA-Client.sln /build Release
+        working-directory: DOSA-Client
 
-  #     - name: Restore packages
-  #       run: dotnet restore ${{ env.PROJECT_PATH }} -p:SelfContained=true
-      
-  #     - name: Build Application
-  #       run: dotnet build ${{ env.PROJECT_PATH }} -c Release --self-contained --no-restore
+      - name: Get Version
+        run: |
+            $version = Get-Date -Format "yyyy.MM.dd-HH.mm.ss"
+            echo "VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+        shell: pwsh
 
-  #     - name: Publish Application
-  #       run: dotnet publish ${{ env.PROJECT_PATH }} -c Release --self-contained -r win-x64 -p:PublishSingleFile=true --no-build
-
-  #     - name: Get Version
-  #       run: |
-  #           $version = Get-Date -Format "yyyy.MM.dd-HH.mm.ss"
-  #           echo "VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-  #       shell: pwsh
-
-  #     - name: Create Front-End Release
-  #       uses: softprops/action-gh-release@v2
-  #       env:
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #       with:
-  #         tag_name: v${{ env.VERSION }}
-  #         name: "Release v${{ env.VERSION }}"
-  #         body: "Automated release for commit ${{ github.sha }}"
-  #         draft: false
-  #         prerelease: false
-  #         files: DOSA-Client/bin/Release/net9.0-windows/win-x64/publish/*.exe
-
-
-  #     - name: Update Ubuntu
-  #       run:   ssh -o StrictHostKeyChecking=no -i spaceaffairs-key.pem "ubuntu@$EC2_HOST" "sudo apt update"
-
-  #     - name: Install Docker
-  #       run: apt install docker.io -y
-
+      - name: Create Front-End Release
+        uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ env.VERSION }}
+          name: "Release v${{ env.VERSION }}"
+          body: "Automated release for commit ${{ github.sha }}"
+          draft: false
+          prerelease: false
+          files: SpaceAffairsInstaller/Release/*.msi
   
   build-api:
     name: Build API
