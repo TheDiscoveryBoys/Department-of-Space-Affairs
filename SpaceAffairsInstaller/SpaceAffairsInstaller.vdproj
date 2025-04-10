@@ -15,7 +15,7 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_130A02C1E69E492C8C741D0F4DC130D9"
+        "MsmKey" = "8:_571694C6FB3D40C7AE36274A463646B7"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -132,10 +132,10 @@
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_130A02C1E69E492C8C741D0F4DC130D9"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_571694C6FB3D40C7AE36274A463646B7"
             {
-            "SourcePath" = "8:..\\..\\..\\..\\Downloads\\astronomy_saturn_galaxy_planet_space_system_universe_icon_156874.ico"
-            "TargetName" = "8:astronomy_saturn_galaxy_planet_space_system_universe_icon_156874.ico"
+            "SourcePath" = "8:..\\..\\..\\..\\Downloads\\planet_icon.ico"
+            "TargetName" = "8:planet_icon.ico"
             "Tag" = "8:"
             "Folder" = "8:_DA08560128F244C78E344CE9D75A948C"
             "Condition" = "8:"
@@ -209,7 +209,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:SpaceAffairs"
         "ProductCode" = "8:{2D065B0A-D43B-4E22-BDB8-2980D62F9150}"
-        "PackageCode" = "8:{6D7FA25C-A47C-4481-B3A2-519144034857}"
+        "PackageCode" = "8:{0C04FF80-49D9-4595-AEED-4798E5DF2977}"
         "UpgradeCode" = "8:{032365B4-915C-4585-967E-4D290E637728}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
@@ -340,7 +340,7 @@
             "Target" = "8:_E44EC29E13F84097B876848CA021181C"
             "Folder" = "8:_D522606290024262B69D4BA6EBADA679"
             "WorkingFolder" = "8:_DA08560128F244C78E344CE9D75A948C"
-            "Icon" = "8:_130A02C1E69E492C8C741D0F4DC130D9"
+            "Icon" = "8:_571694C6FB3D40C7AE36274A463646B7"
             "Feature" = "8:"
             }
         }
