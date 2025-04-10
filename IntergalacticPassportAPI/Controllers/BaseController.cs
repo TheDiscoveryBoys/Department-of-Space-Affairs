@@ -15,13 +15,12 @@ namespace IntergalacticPassportAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Model>> GetById(int id)
+        public async Task<ActionResult<Model>> GetById(string id)
         {
             return await BaseRequest(async () =>
             {
                 var model = await _repo.GetById(id);
                 return model == null ? NoContent() : Ok(model);
-
             });
 
         }
@@ -82,7 +81,7 @@ namespace IntergalacticPassportAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id){ // Account for int or string id
+        public async Task<ActionResult> Delete(string id){ // Account for int or string id
             return await BaseRequest(async () =>
             {
                 bool deleted = await _repo.Delete(id);

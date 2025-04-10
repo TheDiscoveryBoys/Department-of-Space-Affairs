@@ -11,7 +11,7 @@ namespace IntergalacticPassportAPI.Models
     public class Passport
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Key]
+        [PrimaryKey]
         [Column("id")]
         public int Id { get; set; }
 
@@ -31,6 +31,7 @@ namespace IntergalacticPassportAPI.Models
         public DateTime? ProcessedAt { get; set; }
 
         [Column("officer_id")]
+      
         public string? OfficerId { get; set; }
     }
 }

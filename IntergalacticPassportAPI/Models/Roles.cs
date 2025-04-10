@@ -10,8 +10,7 @@ namespace IntergalacticPassportAPI.Models
 {
     public class Roles
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Key]
+        [PrimaryKey]
         [Column("id")]
         public int Id { get; set; }
         [Column("role")]

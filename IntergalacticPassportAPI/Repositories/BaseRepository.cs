@@ -22,10 +22,8 @@ namespace IntergalacticPassportAPI.Data
         {
             string PKIdentifier = GetPrimaryKeyIdentifier(typeof(Model));
             using var db = CreateDBConnection();
-            
-            var sql = $"SELECT * FROM {tableName} WHERE {tableName}.{CamelToSnake(PKIdentifier)} = @id";
-            Console.WriteLine(sql);
-            return await db.QueryFirstOrDefaultAsync<Model>(sql, new { id });
+            var sql = $"SELECT * FROM {tableName} WHERE {tableName}.{CamelToSnake(PKIdentifier)} = '{id}'";
+            return await db.QueryFirstOrDefaultAsync<Model>(sql);
 
         }
         public async Task<IEnumerable<Model>> GetAll()
@@ -71,8 +69,9 @@ namespace IntergalacticPassportAPI.Data
         {
             string PKIdentifier = GetPrimaryKeyIdentifier(typeof(Model));
             using var db = CreateDBConnection();
-            var sql = $"DELETE FROM {tableName} WHERE {CamelToSnake(PKIdentifier)} = @id;";
-            var rowsAffected = await db.ExecuteAsync(sql, new { id });
+            var sql = $"DELETE FROM {tableName} WHERE {CamelToSnake(PKIdentifier)} = '{id}';";
+            Console.WriteLine(sql);
+            var rowsAffected = await db.ExecuteAsync(sql);
 
             return rowsAffected > 0;
         }
@@ -93,13 +92,13 @@ namespace IntergalacticPassportAPI.Data
             {
                 if (i == reflectedAttributes.Count - 1)
                 {
-                    sqlCols += CamelToSnake(reflectedAttributes.ElementAt(i));
-                    sqlValues += "@" + reflectedAttributes.ElementAt(i);
+                    sqlCols += CamelToSnake(reflectedAttrubutes.ElementAt(i));
+                    sqlValues += "@" + reflectedAttrubutes.ElementAt(i);
                 }
                 else
                 {
-                    sqlCols += CamelToSnake(reflectedAttributes.ElementAt(i)) + ", ";
-                    sqlValues += "@" + reflectedAttributes.ElementAt(i) + ", ";
+                    sqlCols += CamelToSnake(reflectedAttrubutes.ElementAt(i)) + ", ";
+                    sqlValues += "@" + reflectedAttrubutes.ElementAt(i) + ", ";
                 }
             }
             string sql = $"INSERT INTO {tableName} ({sqlCols}) VALUES ({sqlValues}) RETURNING *";

@@ -7,66 +7,53 @@ namespace IntergalacticPassportAPI.Data
 {
     public class PassportDocumentRepository(IConfiguration config) : BaseRepository<PassportDocument>(config, "passport_application_documents")
     {
-        public async override Task<bool> Exists(PassportDocument doc)
+
+        // private IDbConnection CreateConnection()
+        // {
+        //     return new NpgsqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+        // }
+
+        // public async Task<IEnumerable<PassportDocument>> GetAllAsync()
+        // {
+        //     using var connection = CreateConnection();
+        //     return await connection.QueryAsync<PassportDocument>("SELECT * FROM passport_application_documents ORDER BY id;");
+        // }
+
+        // public async Task<PassportDocument?> GetByIdAsync(int id)
+        // {
+        //     using var connection = CreateConnection();
+        //     return await connection.QueryFirstOrDefaultAsync<PassportDocument>(
+        //         "SELECT * FROM passport_application_documents WHERE id = @Id;", new { Id = id });
+        // }
+
+        public async Task<IEnumerable<PassportDocument>> GetByPassportApplicationIdAsync(int id)
         {
-            var existingDoc = await GetById((doc.Id).ToString());
-            if (existingDoc == null)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            using var connection = CreateDBConnection();
+            return await connection.QueryAsync<PassportDocument>(
+                "SELECT * FROM passport_application_documents WHERE passport_application_id = @Id;", new { Id = id });
         }
-        //    private readonly IConfiguration _configuration;
 
-        //    public PassportDocumentRepository(IConfiguration configuration)
-        //    {
-        //        _configuration = configuration;
-        //    }
+        // public async Task<int> CreateAsync(PassportDocument passportDocument)
+        // {
+        //     try
+        //     {
+        //         using var connection = CreateConnection();
+        //         var sql = @"INSERT INTO passport_application_documents (id, filename, passport_application_id)
+        //                 VALUES (@Id, @Filename, @PassportApplicationId)
+        //                 RETURNING id;";
+        //         return await connection.ExecuteScalarAsync<int>(sql, passportDocument);
+        //     }
 
-        //    private IDbConnection CreateConnection()
-        //    {
-        //        return new NpgsqlConnection(_configuration.GetConnectionString("DefaultConnection"));
-        //    }
+        //     catch (Exception ex)
+        //     {
+        //         throw new Exception("An error occurred while creating the passport application document.", ex);
+        //     }
 
-        //    public async Task<IEnumerable<PassportDocument>> GetAllAsync()
-        //    {
-        //        using var connection = CreateConnection();
-        //        return await connection.QueryAsync<PassportDocument>("SELECT * FROM passport_application_documents ORDER BY id;");
-        //    }
-
-        //    public async Task<PassportDocument?> GetByIdAsync(int id)
-        //    {
-        //        using var connection = CreateConnection();
-        //        return await connection.QueryFirstOrDefaultAsync<PassportDocument>(
-        //            "SELECT * FROM passport_application_documents WHERE id = @Id;", new { Id = id });
-        //    }
-
-        //    public async Task<IEnumerable<PassportDocument>> GetByPassportApplicationIdAsync(int id)
-        //    {
-        //        using var connection = CreateConnection();
-        //        return await connection.QueryAsync<PassportDocument>(
-        //            "SELECT * FROM passport_application_documents WHERE passport_application_id = @Id;", new { Id = id });
-        //    }
-
-        //    public async Task<int> CreateAsync(PassportDocument passportDocument)
-        //    {
-        //        try
-        //        {
-        //            using var connection = CreateConnection();
-        //            var sql = @"INSERT INTO passport_application_documents (id, filename, passport_application_id)
-        //                    VALUES (@Id, @Filename, @PassportApplicationId)
-        //                    RETURNING id;";
-        //            return await connection.ExecuteScalarAsync<int>(sql, passportDocument);
-        //        }
-
-        //        catch (Exception ex)
-        //        {
-        //            throw new Exception("An error occurred while creating the passport application document.", ex);
-        //        }
-
-        //    }
+        // }
+        public override async Task<bool> Exists(PassportDocument model)
+        {
+            var existingRoles = await GetAll();
+            return existingRoles.Any(r => r.Id == model.Id);
+        }
     }
 }
