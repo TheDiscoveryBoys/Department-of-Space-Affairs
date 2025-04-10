@@ -120,54 +120,49 @@ resource "aws_instance" "spaceaffairs_ec2_instance" {
   vpc_security_group_ids = [ aws_security_group.ec2_security_group.id ]
 
   user_data = <<-EOF
-        sudo wget https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh
-        sudo chmod +x ./dotnet-install.sh
+    sudo wget https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh
+    sudo chmod +x ./dotnet-install.sh
 
-        ./dotnet-install.sh --channel 9.0
+    ./dotnet-install.sh --channel 9.0
 
-        echo 'export PATH=$PATH:/home/ubuntu/.dotnet' >> ~/.bashrc
-        source ~/.bashrc
+    echo 'export PATH=$PATH:/home/ubuntu/.dotnet' >> ~/.bashrc
+    source ~/.bashrc
 
-        mkdir -p /home/ubuntu/.ssh
-        echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDLissAbEP+9Z3OuSnLmpYk5DMB9DjrR9IDOKAmWgzHWRT8GVz6AqwJPbDo1HpCJ+IJs+bHhvm+YBJbsU36DB9tCYtPs/o7YBhz4B8qdNvBZd8YvT0+OdvLOJcuKedbGg3Hmtwhcp788HFec0ugv9GjNaHFPPD20al4ZRNzBJi5ydYyYroynVekcd7Wag8J8tMANQA2kGdRpS7b3sDwu0d/sEaM/ZxdDta5i5Gjcpg0/11aq5hPprWtaUWCy5Yl9VRuvLvSLJ5fJVGnAZ3ghtXVDATd9bWVVeRwVs6SNUu8aIpg9h8+RC9288TjBA+S5048UxOlWGObEiRiHk84VqW7" >> /home/ubuntu/.ssh/authorized_keys
-        chown -R ubuntu:ubuntu /home/ubuntu/.ssh
-        chmod 700 /home/ubuntu/.ssh
-        chmod 600 /home/ubuntu/.ssh/authorized_keys
+    mkdir -p /home/ubuntu/.ssh
+    echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDLissAbEP+9Z3OuSnLmpYk5DMB9DjrR9IDOKAmWgzHWRT8GVz6AqwJPbDo1HpCJ+IJs+bHhvm+YBJbsU36DB9tCYtPs/o7YBhz4B8qdNvBZd8YvT0+OdvLOJcuKedbGg3Hmtwhcp788HFec0ugv9GjNaHFPPD20al4ZRNzBJi5ydYyYroynVekcd7Wag8J8tMANQA2kGdRpS7b3sDwu0d/sEaM/ZxdDta5i5Gjcpg0/11aq5hPprWtaUWCy5Yl9VRuvLvSLJ5fJVGnAZ3ghtXVDATd9bWVVeRwVs6SNUu8aIpg9h8+RC9288TjBA+S5048UxOlWGObEiRiHk84VqW7" >> /home/ubuntu/.ssh/authorized_keys
+    chown -R ubuntu:ubuntu /home/ubuntu/.ssh
+    chmod 700 /home/ubuntu/.ssh
+    chmod 600 /home/ubuntu/.ssh/authorized_keys
 
-        cat <<EOL | sudo tee /etc/systemd/system/spaceaffairs.service
-        [Unit]
-        Description=spaceaffairs
+    # Setup Systemd Service
+    file="/etc/systemd/system/spaceaffairs.service"
 
-        [Service]
-        ExecStart=/home/ubuntu/.dotnet/dotnet /home/ubuntu/SpaceAffairsAPI.dll
-        WorkingDirectory=/home/ubuntu
-        Restart=always
-        RestartSec=5
+    echo [Unit] > $file
+    echo Description=spaceaffairs >> $file
+    echo [Service] >> $file
+    echo ExecStart="dotnet SpaceAffairsAPI.dll /home/ubuntu/SpaceAffairsAPI.dll" >> $file
+    echo WorkingDirectory=/home/ubuntu >> $file
 
-        [Install]
-        WantedBy=multi-user.target
-        EOL
+    systemctl enable spaceaffairs.service
 
-        sudo systemctl enable spaceaffairs.service
+    # Setup nginx proxy
+    mkdir -p /etc/nginx/conf.d
+    file="/etc/nginx/conf.d/proxy.conf"
 
-          # Setup nginx proxy
-          mkdir -p /etc/nginx/conf.d
-          file="/etc/nginx/conf.d/proxy.conf"
+    echo "server {" > $file
+    echo "  listen 80;" >> $file
+    echo "  server_name *.amazonaws.com;" >> $file
+    echo "  location / {" >> $file
+    echo "    proxy_pass http://localhost:5000;" >> $file
+    echo "    proxy_set_header Host \$host;" >> $file
+    echo "    proxy_set_header X-Real-IP \$remote_addr;" >> $file
+    echo "  }" >> $file
+    echo "}" >> $file
 
-          echo "server {" > $file
-          echo "  listen 80;" >> $file
-          echo "  server_name *.amazonaws.com;" >> $file
-          echo "  location / {" >> $file
-          echo "    proxy_pass http://localhost:5000;" >> $file
-          echo "    proxy_set_header Host \$host;" >> $file
-          echo "    proxy_set_header X-Real-IP \$remote_addr;" >> $file
-          echo "  }" >> $file
-          echo "}" >> $file
+    systemctl enable nginx
+    systemctl start nginx
 
-          systemctl enable nginx
-          systemctl start nginx
-
-        EOF
+    EOF
 }
 
 resource "aws_eip" "spaceaffairs_ec2_eip" {
