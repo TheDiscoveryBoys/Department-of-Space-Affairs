@@ -58,15 +58,22 @@ jobs:
       # - release-api
     env: 
       PROJECT_PATH: DOSA-Client.csproj
-    defaults:
-      run:
-        working-directory: DOSA-Client
+
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
       - name: Setup MSBuild.exe
         uses: microsoft/setup-msbuild@v1.0.2
 
       - name: Setup VS Dev Environment
         uses: seanmiddleditch/gha-setup-vsdevenv@v4
+
+      - name: Restore NuGet Packages
+        run: msbuild /t:Restore
+
+      - name: Build the application
+        run: msbuild /t:Build /p:Configuration=Release
 
       - name: Disable Out of Process Building
         run: .\DisableOutOfProcBuild.exe
@@ -74,6 +81,7 @@ jobs:
       
       - name: Build the Installer
         run: DevEnv DOSA-Client.sln /build Release
+        working-directory: DOSA-Client
 
       - name: Get Version
         run: |
