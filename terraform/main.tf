@@ -120,8 +120,9 @@ resource "aws_instance" "spaceaffairs_ec2_instance" {
   vpc_security_group_ids = [ aws_security_group.ec2_security_group.id ]
 
   user_data = <<-EOF
-    sudo apt install docker.io
-    
+    sudo apt update
+    sudo apt install docker.io -y
+
     mkdir -p /home/ubuntu/.ssh
     echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDLissAbEP+9Z3OuSnLmpYk5DMB9DjrR9IDOKAmWgzHWRT8GVz6AqwJPbDo1HpCJ+IJs+bHhvm+YBJbsU36DB9tCYtPs/o7YBhz4B8qdNvBZd8YvT0+OdvLOJcuKedbGg3Hmtwhcp788HFec0ugv9GjNaHFPPD20al4ZRNzBJi5ydYyYroynVekcd7Wag8J8tMANQA2kGdRpS7b3sDwu0d/sEaM/ZxdDta5i5Gjcpg0/11aq5hPprWtaUWCy5Yl9VRuvLvSLJ5fJVGnAZ3ghtXVDATd9bWVVeRwVs6SNUu8aIpg9h8+RC9288TjBA+S5048UxOlWGObEiRiHk84VqW7" >> /home/ubuntu/.ssh/authorized_keys
     chown -R ubuntu:ubuntu /home/ubuntu/.ssh
