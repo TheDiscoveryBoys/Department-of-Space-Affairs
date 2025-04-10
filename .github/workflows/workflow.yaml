@@ -109,7 +109,7 @@ jobs:
         docker push ${{secrets.DOCKER_USERNAME}}/space-affairs:latest
 
   deploy-api:
-     needs: build_api
+     needs: build-api
      runs-on: ec2_api
      steps:
       - name: Prune unused images
