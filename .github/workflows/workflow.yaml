@@ -137,7 +137,7 @@ jobs:
 
     - name: Rename API dll
       run: |
-          cd bin/Release/net9.0
+          cd bin/Release/net9.0/publish
           ls
           # mv IntergalacticPassportAPI.dll SpaceAffairsAPI.dll
 
