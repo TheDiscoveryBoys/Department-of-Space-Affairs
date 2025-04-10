@@ -152,6 +152,9 @@ jobs:
         }
         EOF
 
+    - name: Move config into build context
+      run: mv appsettings.Production.json IntergalacticPassportAPI/
+  
     - name: Login to dockerhub
       run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
     - name: Build
