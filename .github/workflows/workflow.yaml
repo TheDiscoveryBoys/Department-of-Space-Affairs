@@ -137,23 +137,19 @@ jobs:
     - name: Generate appsettings.Production.json
       working-directory: IntergalacticPassportAPI
       run: |
-        cat <<EOF > appsettings.Production.json
-        {
-          "ConnectionStrings": {
-            "DefaultConnection": "Host=${{ needs.terraform.outputs.dbhost }};Port=5432;Database=spaceaffairsdb;Username=${{ secrets.DB_USERNAME }};Password=${{ secrets.DB_PASSWORD }}"
-          },
-          "Logging": {
-            "LogLevel": {
-              "Default": "Information",
-              "Microsoft.AspNetCore": "Warning"
-            }
-          },
-          "AllowedHosts": "*"
-        }
-        EOF
-
-    - name: Move config into build context
-      run: mv appsettings.Production.json IntergalacticPassportAPI/
+        file=appsettings.Production.json
+        echo "{" > $file
+        echo '  "ConnectionStrings": {' >> $file
+        echo "    \"DefaultConnection\": \"Host=${{ needs.terraform.outputs.dbhost }};Port=5432;Database=spaceaffairsdb;Username=${{ secrets.DB_USERNAME }};Password=${{ secrets.DB_PASSWORD }}\"" >> $file
+        echo "  }," >> $file
+        echo '  "Logging": {' >> $file
+        echo '    "LogLevel": {' >> $file
+        echo '      "Default": "Information",' >> $file
+        echo '      "Microsoft.AspNetCore": "Warning"' >> $file
+        echo '    }' >> $file
+        echo '  },' >> $file
+        echo '  "AllowedHosts": "*"' >> $file
+        echo "}" >> $file
   
     - name: Login to dockerhub
       run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
