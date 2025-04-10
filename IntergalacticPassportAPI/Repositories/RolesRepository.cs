@@ -1,6 +1,4 @@
-using System.ComponentModel;
 using IntergalacticPassportAPI.Models;
-using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace IntergalacticPassportAPI.Data
 {
@@ -10,7 +8,7 @@ namespace IntergalacticPassportAPI.Data
         public override async Task<bool> Exists(Roles model)
         {
            var existingRoles = await GetAll();
-            return existingRoles.Any(r => r.role.Equals(model.role, StringComparison.CurrentCultureIgnoreCase));
+            return existingRoles.Any(r => r.Role.Equals(model.Role, StringComparison.CurrentCultureIgnoreCase));
         }
     }
 }

@@ -1,10 +1,17 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace IntergalacticPassportAPI.Models
 {
     public class UserRoles{
-        
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [PrimaryKey]
-        public int id {get; set;}
-        public string user_id {get; set;}
-        public int role_id {get; set;}
+        [Column("id")]
+        public int Id {get; set;}
+        [Column("user_id")]
+        public string UserId {get; set;}
+        [Column("role_id")]
+        public int RoleId {get; set;}
     }
 }

@@ -1,4 +1,6 @@
 using IntergalacticPassportAPI.Data;
+using IntergalacticPassportAPI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IntergalacticPassportAPI.Controllers
@@ -14,18 +16,34 @@ namespace IntergalacticPassportAPI.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "Citizen")]
         public async Task<ActionResult<Model>> GetById(string id)
         {
-            return await BaseRequest(async () =>
-            {
-                var user = await _repo.GetById(id);
-                return user == null ? NoContent() : Ok(user);
-            });
 
+            if (typeof(Model) == typeof(Users))
+            {
+                return await BaseRequest(async () =>
+                {
+                    var model = await _repo.GetById(id);
+                    return model == null ? NoContent() : Ok(model);
+
+                });
+            }
+
+            else 
+            {
+                return await BaseRequest(async () =>
+                {
+                    var model = await _repo.GetById(Int32.Parse(id));
+                    return model == null ? NoContent() : Ok(model);
+
+                });
+            }
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Model>>> GetAllUsers()
+        [AllowAnonymous]
+        public async Task<ActionResult<IEnumerable<Model>>> GetAll()
         {
             return await BaseRequest(async () =>
             {
@@ -54,10 +72,9 @@ namespace IntergalacticPassportAPI.Controllers
                 }
                 else
                 {
-                    return Conflict();
+                    return Conflict($"This {model.GetType().Name} already exists.");
                 }
             });
-
         }
 
         [HttpPut]
@@ -81,7 +98,7 @@ namespace IntergalacticPassportAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(string id){
+        public async Task<ActionResult> Delete(string id){ // Account for int or string id
             return await BaseRequest(async () =>
             {
                 bool deleted = await _repo.Delete(id);

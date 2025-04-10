@@ -1,6 +1,5 @@
 ﻿using IntergalacticPassportAPI.Data;
 using IntergalacticPassportAPI.Models;
-using IntergalacticPassportAPI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,35 +7,19 @@ namespace IntergalacticPassportAPI.Controllers
 {
     [ApiController]
     [Route("api/visa")]
-    public class VisaController : ControllerBase
+    public class VisaController : BaseController<Visa, VisaRepository>
     {
-        private readonly VisaRepository _repo;
 
-        public VisaController(VisaRepository repo)
+        public VisaController(VisaRepository repo) : base(repo) { }
+        
+        [HttpGet("user/{id}")]
+        public async Task<ActionResult<IEnumerable<Visa>>> GetUserVisas(string id)
         {
-            _repo = repo;
-        }
-
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Visa>>> GetAll()
-        {
-            var visas = await _repo.GetAllAsync();
-            return Ok(visas);
-        }
-
-        [HttpGet("{id}")]
-        public async Task<ActionResult<IEnumerable<Visa>>> GetById(int id)
-        {
-            var visa = await _repo.GetByIdAsync(id);
-            return Ok(visa);
-        }
-
-        [HttpPost]
-        // TODO: AUTHORIZE
-        public async Task<ActionResult<int>> Create(Visa visa)
-        {
-            var newId = await _repo.CreateAsync(visa);
-            return CreatedAtAction(nameof(GetById), new { id = newId }, newId);
+            return await BaseRequest(async () =>
+            {
+                var userVisas = await _repo.GetUserVisas(id);
+                return userVisas.Any() ? Ok(userVisas) : NoContent();
+            });
         }
 
     }
