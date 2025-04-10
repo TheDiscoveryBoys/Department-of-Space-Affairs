@@ -1,5 +1,6 @@
 using IntergalacticPassportAPI.Data;
 using IntergalacticPassportAPI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IntergalacticPassportAPI.Controllers
@@ -15,6 +16,7 @@ namespace IntergalacticPassportAPI.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "Citizen")]
         public async Task<ActionResult<Model>> GetById(string id)
         {
 
@@ -40,6 +42,7 @@ namespace IntergalacticPassportAPI.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Officer")]
         public async Task<ActionResult<IEnumerable<Model>>> GetAll()
         {
             return await BaseRequest(async () =>

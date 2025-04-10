@@ -7,6 +7,9 @@ using Newtonsoft.Json;
 using Microsoft.Extensions.DependencyInjection;
 using Dapper;
 using Swashbuckle.AspNetCore;
+using IntergalacticPassportAPI.Data;
+using System.Security.Claims;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true; // This line ensures that PascalCase prpoperties are correctly mapped to snake case in the DB.
@@ -20,61 +23,100 @@ builder.Services.AddScoped<UsersRepository>();
 builder.Services.AddScoped<RolesRepository>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(async options =>
+    .AddJwtBearer(options =>
     {
-        options.Audience = "988182050054-vlcub1cr22892gc1e4uesj5d6sa3ji1v.apps.googleusercontent.com"; 
-
+        options.Authority = "https://accounts.google.com";
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
+            ValidIssuer = "https://accounts.google.com",
+            ValidateLifetime = false,
+            ValidAudience = "988182050054-vlcub1cr22892gc1e4uesj5d6sa3ji1v.apps.googleusercontent.com",
             ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidIssuer = "https://accounts.google.com", 
-            ValidAudience = "988182050054-vlcub1cr22892gc1e4uesj5d6sa3ji1v.apps.googleusercontent.com", 
-            IssuerSigningKeys = getGoogleSecurityKeys()
+        };
+
+        options.Events = new JwtBearerEvents
+        {
+            OnTokenValidated = async context =>
+            {
+                Console.WriteLine("--- All Claims ---");
+                foreach (var claim in context.Principal.Claims)
+                {
+                    Console.WriteLine($"{claim.Type}: {claim.Value}");
+                }
+                Console.WriteLine("------------------");
+
+                var googleId = context.Principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (googleId == null)
+                {
+                    return;
+                }
+
+                // Access the userRepository using HttpContext.RequestServices
+                var userRepository = context.HttpContext.RequestServices.GetRequiredService<UsersRepository>();
+
+                // Fetch the user roles using the googleId
+                var userRoles = await userRepository.GetUserRoles(googleId);
+                Console.WriteLine(userRoles.ElementAt(0));
+
+                // Add roles as Claims
+                var identity = context.Principal.Identity as ClaimsIdentity;
+                foreach (var role in userRoles)
+                {
+                    identity?.AddClaim(new Claim(ClaimTypes.Role, role.Role));  // Assuming role.Role is a string
+                }
+
+                await Task.CompletedTask;
+            }
         };
     });
+builder.Services.AddAuthorization();
 
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Intergalactic Passport API", Version = "v1" });
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header using the Bearer scheme. Example: \"Bearer {token}\"",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT"
+    });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
+});
 var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 
 app.MapControllers();
 app.UseAuthentication();
+app.UseAuthorization();
 app.Run();
 
-IEnumerable<SecurityKey> getGoogleSecurityKeys(){
-    var jwksUri = "https://www.googleapis.com/oauth2/v3/certs";
-    var client = new HttpClient();
-    var response = client.GetFromJsonAsync<Jwks>(jwksUri).Result ?? throw new Exception("Google stopped hosting their keys here"); 
-    var keys = new List<RsaSecurityKey>();
-    
-    foreach(var key in response.Keys){
-        var rsa = new RSACryptoServiceProvider();
-        rsa.ImportParameters(new RSAParameters
-        {
-            Modulus =  Base64UrlDecode(key.N),
-            Exponent = Base64UrlDecode(key.E)
-        });
-        keys.Add(new RsaSecurityKey(rsa));
-    }
-    return keys;
-}
 
-byte[] Base64UrlDecode(string base64Url)
-    {
-        string base64 = base64Url
-            .Replace('-', '+') 
-            .Replace('_', '/'); 
-        
-        switch (base64.Length % 4)
-        {
-            case 2: base64 += "=="; break;
-            case 3: base64 += "="; break;
-        }
+//Task<IEnumerable<Claim>> GetRolesForUser(string googleId) 
+//{
+//    var userRepository = context.HttpContext.RequestServices.GetRequiredService<UsersRepository>();
+//    var userRoles = userRepository.GetUserRoles(googleId);
 
-        return Convert.FromBase64String(base64);
-    }
+//    var roleClaims = userRoles.Select(role => new Claim(ClaimTypes.Role, role.Role));
+
+//    return roleClaims;
+//}
 
 
