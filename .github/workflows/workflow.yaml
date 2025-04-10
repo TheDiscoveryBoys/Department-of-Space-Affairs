@@ -96,14 +96,6 @@ jobs:
   #         draft: false
   #         prerelease: false
   #         files: DOSA-Client/bin/Release/net9.0-windows/win-x64/publish/*.exe
-
-
-  #     - name: Update Ubuntu
-  #       run:   ssh -o StrictHostKeyChecking=no -i spaceaffairs-key.pem "ubuntu@$EC2_HOST" "sudo apt update"
-
-  #     - name: Install Docker
-  #       run: apt install docker.io -y
-
   
   build-api:
     name: Build API
