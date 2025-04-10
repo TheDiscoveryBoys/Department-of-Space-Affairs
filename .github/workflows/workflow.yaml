@@ -185,7 +185,7 @@ jobs:
         EC2_HOST=${{ needs.terraform.outputs.ec2host }}
 
         scp -o StrictHostKeyChecking=no -i spaceaffairs-key.pem ./SpaceAffairsAPI.dll "ubuntu@$EC2_HOST:SpaceAffairsAPI.dll"
-        ssh -o StrictHostKeyChecking=no -i spaceaffairs-key.pem "ec2-user@$EC2_HOST" "sudo systemctl restart spaceaffairs.service"
+        ssh -o StrictHostKeyChecking=no -i spaceaffairs-key.pem "ubuntu@$EC2_HOST" "sudo systemctl restart spaceaffairs.service"
         
 
   flyway:
