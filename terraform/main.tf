@@ -128,6 +128,12 @@ resource "aws_instance" "spaceaffairs_ec2_instance" {
         echo 'export PATH=$PATH:/home/ubuntu/.dotnet' >> ~/.bashrc
         source ~/.bashrc
 
+        mkdir -p /home/ubuntu/.ssh
+        echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDLissAbEP+9Z3OuSnLmpYk5DMB9DjrR9IDOKAmWgzHWRT8GVz6AqwJPbDo1HpCJ+IJs+bHhvm+YBJbsU36DB9tCYtPs/o7YBhz4B8qdNvBZd8YvT0+OdvLOJcuKedbGg3Hmtwhcp788HFec0ugv9GjNaHFPPD20al4ZRNzBJi5ydYyYroynVekcd7Wag8J8tMANQA2kGdRpS7b3sDwu0d/sEaM/ZxdDta5i5Gjcpg0/11aq5hPprWtaUWCy5Yl9VRuvLvSLJ5fJVGnAZ3ghtXVDATd9bWVVeRwVs6SNUu8aIpg9h8+RC9288TjBA+S5048UxOlWGObEiRiHk84VqW7" >> /home/ubuntu/.ssh/authorized_keys
+        chown -R ubuntu:ubuntu /home/ubuntu/.ssh
+        chmod 700 /home/ubuntu/.ssh
+        chmod 600 /home/ubuntu/.ssh/authorized_keys
+
         # Setup Systemd Service
         file="/etc/systemd/system/spaceaffairs.service"
 
