@@ -209,7 +209,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:SpaceAffairs"
         "ProductCode" = "8:{2D065B0A-D43B-4E22-BDB8-2980D62F9150}"
-        "PackageCode" = "8:{0C04FF80-49D9-4595-AEED-4798E5DF2977}"
+        "PackageCode" = "8:{B8FC1220-2334-4B2E-8AEA-2ED1B0752248}"
         "UpgradeCode" = "8:{032365B4-915C-4585-967E-4D290E637728}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
@@ -340,7 +340,7 @@
             "Target" = "8:_E44EC29E13F84097B876848CA021181C"
             "Folder" = "8:_D522606290024262B69D4BA6EBADA679"
             "WorkingFolder" = "8:_DA08560128F244C78E344CE9D75A948C"
-            "Icon" = "8:_571694C6FB3D40C7AE36274A463646B7"
+            "Icon" = "8:"
             "Feature" = "8:"
             }
         }
