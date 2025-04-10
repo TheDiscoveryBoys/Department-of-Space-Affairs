@@ -99,7 +99,7 @@ jobs:
           body: "Automated release for commit ${{ github.sha }}"
           draft: false
           prerelease: false
-          files: SpaceAffairsInstaller/*.msi
+          files: SpaceAffairsInstaller/Release/*.msi
   
   # build-api:
   #   name: Build API
