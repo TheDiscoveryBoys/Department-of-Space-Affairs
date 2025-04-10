@@ -97,31 +97,6 @@ jobs:
   #         prerelease: false
   #         files: DOSA-Client/bin/Release/net9.0-windows/win-x64/publish/*.exe
 
-  # install-docker-ec2:
-  #   runs-on: ubuntu-latest
-  #   steps: 
-
-  #   - name: Configure AWS credentials
-  #     uses: aws-actions/configure-aws-credentials@v2
-  #     with:
-  #       role-to-assume: arn:aws:iam::${{ secrets.IAM_USER_ID }}:role/gh-actions-role
-  #       aws-region: af-south-1
-    
-  #   - name: Get secrets from AWS Key Store
-  #     uses: aws-actions/aws-secretsmanager-get-secrets@v2
-  #     with:
-  #       secret-ids: |
-  #             EC2_PRIV_KEY, ec2privatekey
-  #             GOOGLE_CLIENT_SECRET, googleclientsecret
-
-  #     - name: Write private key
-  #       run: |
-  #         echo "${{ env.EC2_PRIV_KEY }}" > spaceaffairs-key.pem
-  #         chmod 600 spaceaffairs-key.pem
-
-  #     - name: Deploy to EC2
-  #       run: |
-  #         EC2_HOST=${{ needs.terraform.outputs.ec2host }}
 
   #     - name: Update Ubuntu
   #       run:   ssh -o StrictHostKeyChecking=no -i spaceaffairs-key.pem "ubuntu@$EC2_HOST" "sudo apt update"
@@ -179,6 +154,10 @@ jobs:
         run: |
           echo "${{ env.EC2_PRIV_KEY }}" > spaceaffairs-key.pem
           chmod 600 spaceaffairs-key.pem
+
+      - name: SSH into EC2 and Install Docker
+        run: |
+          ssh -o StrictHostKeyChecking=no -i spaceaffairs-key.pem ubuntu@${{ secrets.EC2_HOST }} "sudo apt update && sudo apt install docker.io -y"
 
       - name: Set Environment Variables
         run: |
