@@ -7,7 +7,7 @@ namespace IntergalacticPassportAPI.Controllers
 {
     [ApiController]
     [Route("api/users")]
-
+    [Authorize(Roles ="Officer")]
     public class UserController : BaseController<Users, UsersRepository>
     {
 

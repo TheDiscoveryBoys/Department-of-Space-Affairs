@@ -1,10 +1,8 @@
 using System.Data;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using System.ComponentModel.DataAnnotations;
 using Dapper;
 using Npgsql;
-using IntergalacticPassportAPI.Models;
 
 namespace IntergalacticPassportAPI.Data
 {
@@ -18,7 +16,7 @@ namespace IntergalacticPassportAPI.Data
             return new NpgsqlConnection(_connectionString);
         }
 
-        public async Task<Model> GetById(object id) // Object to handle string or int ids.
+        public async Task<Model> GetById(string id)
         {
             string PKIdentifier = GetPrimaryKeyIdentifier(typeof(Model));
             using var db = CreateDBConnection();
@@ -35,26 +33,18 @@ namespace IntergalacticPassportAPI.Data
         public async Task<Model> Create(Model model)
         {
             using var db = CreateDBConnection();
-            var sql = "";
-            if (typeof(Model) == typeof(Users))
-            {
-                sql = ModelToSQLInsert(model, true);
-            }
-            else 
-            {
-                sql = ModelToSQLInsert(model, false);
-            }
-                return await db.QuerySingleAsync<Model>(sql, model);
+            var sql = ModelToSQLInsert(model);
+            return await db.QuerySingleAsync<Model>(sql, model);
         }
 
         public async Task<Model> Update(Model model)
         {
             string PKIdentifier = GetPrimaryKeyIdentifier(typeof(Model));
             using var db = CreateDBConnection();
-            List<string> reflectedAttributes = GetPropertyNamesFromModel(model);
+            List<string> reflectedAttrubutes = GetPropertyNamesFromModel(model);
             string sqlSetCode = "";
 
-            foreach (string column in reflectedAttributes)
+            foreach (string column in reflectedAttrubutes)
             {
                 if (!column.Equals(PKIdentifier)) sqlSetCode += CamelToSnake(column) + " = " + "@" + column + ",";
             }
@@ -65,7 +55,7 @@ namespace IntergalacticPassportAPI.Data
 
         }
 
-        public async Task<bool> Delete(string id) 
+        public async Task<bool> Delete(string id)
         {
             string PKIdentifier = GetPrimaryKeyIdentifier(typeof(Model));
             using var db = CreateDBConnection();
@@ -78,27 +68,23 @@ namespace IntergalacticPassportAPI.Data
 
         public abstract Task<bool> Exists(Model model);
 
-        protected virtual string ModelToSQLInsert(Model model, Boolean includeId)
+        protected string ModelToSQLInsert(Model model)
         {
-            List<string> reflectedAttributes = GetPropertyNamesFromModel(model);
-            int i = 0;
-            if (!includeId)
-            {
-                i = 1;
-            }
+            List<string> reflectedAttrubutes = GetPropertyNamesFromModel(model);
+
             string sqlCols = "";
             string sqlValues = "";
-            for (; i < reflectedAttributes.Count; i++)
+            for (int i = 0; i < reflectedAttrubutes.Count; i++)
             {
-                if (i == reflectedAttributes.Count - 1)
+                if (i == reflectedAttrubutes.Count - 1)
                 {
-                    sqlCols += CamelToSnake(reflectedAttributes.ElementAt(i));
-                    sqlValues += "@" + reflectedAttributes.ElementAt(i);
+                    sqlCols += CamelToSnake(reflectedAttrubutes.ElementAt(i));
+                    sqlValues += "@" + reflectedAttrubutes.ElementAt(i);
                 }
                 else
                 {
-                    sqlCols += CamelToSnake(reflectedAttributes.ElementAt(i)) + ", ";
-                    sqlValues += "@" + reflectedAttributes.ElementAt(i) + ", ";
+                    sqlCols += CamelToSnake(reflectedAttrubutes.ElementAt(i)) + ", ";
+                    sqlValues += "@" + reflectedAttrubutes.ElementAt(i) + ", ";
                 }
             }
             string sql = $"INSERT INTO {tableName} ({sqlCols}) VALUES ({sqlValues}) RETURNING *";
@@ -133,8 +119,7 @@ namespace IntergalacticPassportAPI.Data
             foreach (PropertyInfo property in properties)
             {
                 string propertyName = property.Name;
-                //var pkAttr = property.GetCustomAttribute<PrimaryKeyAttribute>();
-                var pkAttr = property.GetCustomAttribute<KeyAttribute>();
+                var pkAttr = property.GetCustomAttribute<PrimaryKeyAttribute>();
                 if (pkAttr != null)
                 {
                     return propertyName;
