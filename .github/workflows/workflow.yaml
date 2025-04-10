@@ -203,8 +203,6 @@ jobs:
      needs: build-api
      runs-on: ec2_api
      steps:
-      - name: Set Environment Variables
-        run: xxx
 
       - name: Prune unused images
         run: sudo docker system prune --force
