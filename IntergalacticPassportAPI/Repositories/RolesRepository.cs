@@ -1,6 +1,4 @@
-using System.ComponentModel;
 using IntergalacticPassportAPI.Models;
-using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace IntergalacticPassportAPI.Data
 {

@@ -42,7 +42,7 @@ namespace IntergalacticPassportAPI.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Officer")]
+        [Authorize(Roles = "Citizen")]
         public async Task<ActionResult<IEnumerable<Model>>> GetAll()
         {
             return await BaseRequest(async () =>
@@ -98,7 +98,7 @@ namespace IntergalacticPassportAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id){ // Account for int or string id
+        public async Task<ActionResult> Delete(string id){ // Account for int or string id
             return await BaseRequest(async () =>
             {
                 bool deleted = await _repo.Delete(id);

@@ -22,10 +22,8 @@ namespace IntergalacticPassportAPI.Data
         {
             string PKIdentifier = GetPrimaryKeyIdentifier(typeof(Model));
             using var db = CreateDBConnection();
-            
-            var sql = $"SELECT * FROM {tableName} WHERE {tableName}.{CamelToSnake(PKIdentifier)} = @id";
-            Console.WriteLine(sql);
-            return await db.QueryFirstOrDefaultAsync<Model>(sql, new { id });
+            var sql = $"SELECT * FROM {tableName} WHERE {tableName}.{CamelToSnake(PKIdentifier)} = '{id}'";
+            return await db.QueryFirstOrDefaultAsync<Model>(sql);
 
         }
         public async Task<IEnumerable<Model>> GetAll()
@@ -67,12 +65,13 @@ namespace IntergalacticPassportAPI.Data
 
         }
 
-        public async Task<bool> Delete(int id) 
+        public async Task<bool> Delete(string id) 
         {
             string PKIdentifier = GetPrimaryKeyIdentifier(typeof(Model));
             using var db = CreateDBConnection();
-            var sql = $"DELETE FROM {tableName} WHERE {CamelToSnake(PKIdentifier)} = @id;";
-            var rowsAffected = await db.ExecuteAsync(sql, new { id });
+            var sql = $"DELETE FROM {tableName} WHERE {CamelToSnake(PKIdentifier)} = '{id}';";
+            Console.WriteLine(sql);
+            var rowsAffected = await db.ExecuteAsync(sql);
 
             return rowsAffected > 0;
         }

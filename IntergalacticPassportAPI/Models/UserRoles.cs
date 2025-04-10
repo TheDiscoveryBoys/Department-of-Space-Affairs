@@ -6,12 +6,12 @@ namespace IntergalacticPassportAPI.Models
     public class UserRoles{
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Key]
+        [PrimaryKey]
         [Column("id")]
         public int Id {get; set;}
-        [Column("UserId")]
+        [Column("user_id")]
         public string UserId {get; set;}
-        [Column("RoleId")]
+        [Column("role_id")]
         public int RoleId {get; set;}
     }
 }

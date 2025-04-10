@@ -21,6 +21,9 @@ builder.Services.AddScoped<PassportDocumentRepository>();
 builder.Services.AddScoped<StatusRepository>();
 builder.Services.AddScoped<UsersRepository>();
 builder.Services.AddScoped<RolesRepository>();
+builder.Services.AddScoped<VisaRepository>();
+builder.Services.AddScoped<PassportDocumentRepository>();
+builder.Services.AddScoped<StatusRepository>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -51,19 +54,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 {
                     return;
                 }
-
-                // Access the userRepository using HttpContext.RequestServices
                 var userRepository = context.HttpContext.RequestServices.GetRequiredService<UsersRepository>();
 
-                // Fetch the user roles using the googleId
                 var userRoles = await userRepository.GetUserRoles(googleId);
                 Console.WriteLine(userRoles.ElementAt(0));
 
-                // Add roles as Claims
                 var identity = context.Principal.Identity as ClaimsIdentity;
                 foreach (var role in userRoles)
                 {
-                    identity?.AddClaim(new Claim(ClaimTypes.Role, role.Role));  // Assuming role.Role is a string
+                    identity?.AddClaim(new Claim(ClaimTypes.Role, role.Role));  
                 }
 
                 await Task.CompletedTask;
@@ -108,15 +107,5 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.Run();
 
-
-//Task<IEnumerable<Claim>> GetRolesForUser(string googleId) 
-//{
-//    var userRepository = context.HttpContext.RequestServices.GetRequiredService<UsersRepository>();
-//    var userRoles = userRepository.GetUserRoles(googleId);
-
-//    var roleClaims = userRoles.Select(role => new Claim(ClaimTypes.Role, role.Role));
-
-//    return roleClaims;
-//}
 
 
