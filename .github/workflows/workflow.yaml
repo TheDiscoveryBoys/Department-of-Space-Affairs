@@ -52,7 +52,7 @@ jobs:
           
   release-front-end:
     name: Build & Release Front-End
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     # needs: 
       # - terraform
       # - release-api
@@ -62,21 +62,24 @@ jobs:
       run:
         working-directory: DOSA-Client
     steps:
-      - uses: actions/checkout@v4
-      - uses: cachix/install-nix-action@v26
-      - uses: cachix/cachix-action@v14
-        with:
-          name: devenv
-      - name: Install devenv.sh
-        run: nix profile install nixpkgs#devenv
-      
-      - name: Install Dotnet
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '9.0.x'
+      - name: Setup MSBuild.exe
+        uses: microsoft/setup-msbuild@v1.0.2
 
-      - name: Build Front-End
-        run: devenv DOSA-Client/DOSA-Client.sln /Build Release
+      - name: Setup VS Dev Environment
+        uses: seanmiddleditch/gha-setup-vsdevenv@v4
+      
+      - name: Restore NuGet Packages
+        run: msbuild /t:Restore
+
+      - name: Build the application
+        run: msbuild /t:Build /p:Configuration=Release
+
+      - name: Disable Out of Process Building
+        run: .\DisableOutOfProcBuild.exe
+        working-directory: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\VSI\DisableOutOfProcBuild
+      
+      - name: Build the Installer
+        run: DevEnv DOSA-Client.sln /build Release
 
       - name: Get Version
         run: |
