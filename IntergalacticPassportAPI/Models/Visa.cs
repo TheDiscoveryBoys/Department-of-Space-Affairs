@@ -9,12 +9,10 @@ namespace IntergalacticPassportAPI.Models
 {
 
     [Table("visa_applications")]
-
     public class Visa
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-
         [Column("id")]
         public int Id { get; set; }
 
@@ -50,7 +48,6 @@ namespace IntergalacticPassportAPI.Models
         public DateTime? ProcessedAt { get; set; }
 
         [Column("officer_id")]
-
         public string? OfficerId { get; set; }
     }
 
