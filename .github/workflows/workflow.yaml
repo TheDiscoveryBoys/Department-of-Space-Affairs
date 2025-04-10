@@ -183,11 +183,11 @@ jobs:
       - name: Set Environment Variables
         run: |
           EC2_HOST=${{ needs.terraform.outputs.ec2host }}
-          
+        
           ssh -o StrictHostKeyChecking=no -i spaceaffairs-key.pem "ubuntu@$EC2_HOST" << 'EOF'
-
+           
             echo "export GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> ~/.bashrc
-
+            
             source ~/.bashrc
           EOF
 
