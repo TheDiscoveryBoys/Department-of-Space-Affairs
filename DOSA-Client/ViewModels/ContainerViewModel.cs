@@ -40,7 +40,7 @@ namespace DOSA_Client.ViewModels
                 {
                     // we have someone who has a passport so they can see their history and the visa application page
                     Tabs = new ObservableCollection<ScreenViewModelBase>(){
-                    new VisaApplicationScreenViewModel(),
+                    new VisaApplicationScreenViewModel(() => this.UpdateTabsAsync()),
                     new ApplicationHistoryScreenViewModel()
                     };
                 }

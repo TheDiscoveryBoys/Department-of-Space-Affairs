@@ -42,7 +42,12 @@ namespace DOSA_Client.lib
         public static async Task<PassportApplication> CreatePassportApplication(PassportApplication passportApplication){
             return await RestClient.CreatePassportApplication(passportApplication);
         }
-    
+
+        public static async Task<VisaApplication> CreateVisaApplication(VisaApplication visaApplication)
+        {
+            return await RestClient.CreateVisaApplication(visaApplication);
+        }
+
         public static async Task<string> ExchangeAuthCodeForJWT(string authCode){
             return await RestClient.GetJwt(authCode);
         }

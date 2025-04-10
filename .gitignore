@@ -102,3 +102,4 @@ terraform.rc
 .vs/
 
 IntergalacticPassportAPI/appsettings.json
+/IntergalacticPassportAPI/nuget.config

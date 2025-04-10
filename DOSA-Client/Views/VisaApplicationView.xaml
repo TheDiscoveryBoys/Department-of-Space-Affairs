@@ -51,7 +51,7 @@
                                      FontSize="14"
                                      VerticalContentAlignment="Center"
                                      Padding="5,0"
-                                     Text="{Binding VisaApplication.DestinationPlanet}" 
+                                     Text="{Binding DestinationPlanet}" 
                                      Margin="0,10"/>
 
                             <!-- Travel Reason -->
@@ -67,7 +67,7 @@
                                      TextWrapping="Wrap"
                                      VerticalContentAlignment="Top"
                                      Padding="5"
-                                     Text="{Binding VisaApplication.TravelReason}" 
+                                     Text="{Binding TravelReason}" 
                                      Margin="0,10"/>
 
                             <!-- Start Date -->
@@ -79,7 +79,7 @@
                             <DatePicker Grid.Row="2" Grid.Column="1" 
                                         Height="30" 
                                         FontSize="14"
-                                        SelectedDate="{Binding VisaApplication.StartDate}" 
+                                        SelectedDate="{Binding StartDate}" 
                                         Margin="0,10"/>
 
                             <!-- End Date -->
@@ -91,14 +91,14 @@
                             <DatePicker Grid.Row="3" Grid.Column="1" 
                                         Height="30" 
                                         FontSize="14"
-                                        SelectedDate="{Binding VisaApplication.EndDate}" 
+                                        SelectedDate="{Binding EndDate}" 
                                         Margin="0,10"/>
 
                         </Grid>
 
                         <!-- Submit Button -->
                         <Button Content="Submit Application"
-                                Command="{Binding SubmitVisaCommand}"
+                                Command="{Binding onSubmitVisaCommand}"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom"
                                 Width="200"

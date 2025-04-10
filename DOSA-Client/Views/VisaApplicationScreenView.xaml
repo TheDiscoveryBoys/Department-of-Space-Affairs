@@ -1,0 +1,16 @@
+﻿<UserControl x:Class="DOSA_Client.Views.VisaApplicationScreenView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:DOSA_Client.ViewModels"
+             xmlns:views="clr-namespace:DOSA_Client.Views">
+    <UserControl.Resources>
+        <DataTemplate DataType="{x:Type vm:VisaApplicationViewModel}">
+            <views:VisaApplicationView />
+        </DataTemplate>
+    </UserControl.Resources>
+    
+    <Grid>
+        <ContentControl Content="{Binding PageManager.CurrentPage}"
+                        HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+    </Grid>
+</UserControl>
