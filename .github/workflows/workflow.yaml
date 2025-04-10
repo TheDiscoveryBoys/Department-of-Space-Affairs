@@ -76,7 +76,7 @@ jobs:
           dotnet-version: '9.0.x'
 
       - name: Build Front-End
-        run: devenv DOSA-Client.sln /Build Release
+        run: devenv DOSA-Client/DOSA-Client.sln /Build Release
 
       - name: Get Version
         run: |
