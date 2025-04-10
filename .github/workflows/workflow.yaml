@@ -9,227 +9,238 @@ on:
       - pipeline-adjust-linux
 
 jobs:
-  terraform:
-    permissions:
-      id-token: write
-      contents: read
-    name: "Manage AWS Resources"
-    runs-on: ubuntu-latest
-    outputs:
-      dbhost: ${{ steps.tf_outputs.outputs.dbhost }}
-      ec2host: ${{ steps.tf_outputs.outputs.ec2host }}
-    defaults:
-      run:
-        working-directory: terraform
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+  # terraform:
+  #   permissions:
+  #     id-token: write
+  #     contents: read
+  #   name: "Manage AWS Resources"
+  #   runs-on: ubuntu-latest
+  #   outputs:
+  #     dbhost: ${{ steps.tf_outputs.outputs.dbhost }}
+  #     ec2host: ${{ steps.tf_outputs.outputs.ec2host }}
+  #   defaults:
+  #     run:
+  #       working-directory: terraform
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          role-to-assume: arn:aws:iam::${{ secrets.IAM_USER_ID }}:role/gh-actions-role #This probably doesn't actually need to be a secret - will confirm
-          aws-region: af-south-1
+  #     - name: Configure AWS credentials
+  #       uses: aws-actions/configure-aws-credentials@v2
+  #       with:
+  #         role-to-assume: arn:aws:iam::${{ secrets.IAM_USER_ID }}:role/gh-actions-role #This probably doesn't actually need to be a secret - will confirm
+  #         aws-region: af-south-1
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: 1.0.1
-          terraform_wrapper: false
+  #     - name: Setup Terraform
+  #       uses: hashicorp/setup-terraform@v3
+  #       with:
+  #         terraform_version: 1.0.1
+  #         terraform_wrapper: false
 
-      - name: Terraform Init
-        id: init
-        run: terraform init -backend-config="bucket=spaceaffairsterraform" -backend-config="key=terraformstate/terraform.tfstate" -backend-config="region=af-south-1"
+  #     - name: Terraform Init
+  #       id: init
+  #       run: terraform init -backend-config="bucket=spaceaffairsterraform" -backend-config="key=terraformstate/terraform.tfstate" -backend-config="region=af-south-1"
 
-      - name: Terraform Apply
-        run: terraform apply -auto-approve
+  #     - name: Terraform Apply
+  #       run: terraform apply -auto-approve
 
-      - name: Capture Terraform Outputs
-        id: tf_outputs
-        run: |
-          echo "dbhost=$(terraform output -raw db_host)" >> $GITHUB_OUTPUT
-          echo "ec2host=$(terraform output -raw ec2_host)" >> $GITHUB_OUTPUT
+  #     - name: Capture Terraform Outputs
+  #       id: tf_outputs
+  #       run: |
+  #         echo "dbhost=$(terraform output -raw db_host)" >> $GITHUB_OUTPUT
+  #         echo "ec2host=$(terraform output -raw ec2_host)" >> $GITHUB_OUTPUT
           
-  release-front-end:
-    name: Build & Release Front-End
-    runs-on: windows-latest
-    needs: 
-      - terraform
-      - release-api
-    env: 
-      PROJECT_PATH: DOSA-Client.csproj
-    defaults:
-      run:
-        working-directory: DOSA-Client
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+  # release-front-end:
+  #   name: Build & Release Front-End
+  #   runs-on: windows-latest
+  #   needs: 
+  #     - terraform
+  #     - release-api
+  #   env: 
+  #     PROJECT_PATH: DOSA-Client.csproj
+  #   defaults:
+  #     run:
+  #       working-directory: DOSA-Client
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
       
-      - name: Install Dotnet
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '9.0.x'
+  #     - name: Install Dotnet
+  #       uses: actions/setup-dotnet@v4
+  #       with:
+  #         dotnet-version: '9.0.x'
 
-      - name: Restore packages
-        run: dotnet restore ${{ env.PROJECT_PATH }} -p:SelfContained=true
+  #     - name: Restore packages
+  #       run: dotnet restore ${{ env.PROJECT_PATH }} -p:SelfContained=true
       
-      - name: Build Application
-        run: dotnet build ${{ env.PROJECT_PATH }} -c Release --self-contained --no-restore
+  #     - name: Build Application
+  #       run: dotnet build ${{ env.PROJECT_PATH }} -c Release --self-contained --no-restore
 
-      - name: Publish Application
-        run: dotnet publish ${{ env.PROJECT_PATH }} -c Release --self-contained -r win-x64 -p:PublishSingleFile=true --no-build
+  #     - name: Publish Application
+  #       run: dotnet publish ${{ env.PROJECT_PATH }} -c Release --self-contained -r win-x64 -p:PublishSingleFile=true --no-build
 
-      - name: Get Version
-        run: |
-            $version = Get-Date -Format "yyyy.MM.dd-HH.mm.ss"
-            echo "VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-        shell: pwsh
+  #     - name: Get Version
+  #       run: |
+  #           $version = Get-Date -Format "yyyy.MM.dd-HH.mm.ss"
+  #           echo "VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+  #       shell: pwsh
 
-      - name: Create Front-End Release
-        uses: softprops/action-gh-release@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: v${{ env.VERSION }}
-          name: "Release v${{ env.VERSION }}"
-          body: "Automated release for commit ${{ github.sha }}"
-          draft: false
-          prerelease: false
-          files: DOSA-Client/bin/Release/net9.0-windows/win-x64/publish/*.exe
-
-  release-api:
-    name: Build & Release API
-    runs-on: ubuntu-latest
-    needs: terraform
-    env: 
-      PROJECT_PATH: IntergalacticPassportAPI.csproj
-    defaults:
-      run:
-        working-directory: IntergalacticPassportAPI
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+  #     - name: Create Front-End Release
+  #       uses: softprops/action-gh-release@v2
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #       with:
+  #         tag_name: v${{ env.VERSION }}
+  #         name: "Release v${{ env.VERSION }}"
+  #         body: "Automated release for commit ${{ github.sha }}"
+  #         draft: false
+  #         prerelease: false
+  #         files: DOSA-Client/bin/Release/net9.0-windows/win-x64/publish/*.exe
     
-    - name: Install Dotnet
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: '9.0.x'
-
-    - name: Create Secrets File
-      working-directory: IntergalacticPassportAPI
+  build-api:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Login to dockerhub
+      run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
+    - name: Build
       run: |
-         file=appsettings.json
-          echo "{" > $file
-          echo '  "ConnectionStrings": {' >> $file
-          echo "    \"DefaultConnection\": \"Host=${{ needs.terraform.outputs.dbhost }};Port=5432;Database=spaceaffairsdb;Username=${{ secrets.DB_USERNAME }};Password=${{ secrets.DB_PASSWORD }}\"" >> $file
-          echo "  }," >> $file
-          echo '  "Logging": {' >> $file
-          echo '    "LogLevel": {' >> $file
-          echo '      "Default": "Information",' >> $file
-          echo '      "Microsoft.AspNetCore": "Warning"' >> $file
-          echo '    }' >> $file
-          echo '  },' >> $file
-          echo '  "AllowedHosts": "*"' >> $file
-          echo "}" >> $file
+        docker build -t ${{secrets.DOCKER_USERNAME}}/space-affairs -f IntergalacticPassportAPI/Dockerfile .
+        docker push ${{secrets.DOCKER_USERNAME}}/space-affairs:latest
 
-    - name: Publish API
-      run: dotnet publish --configuration Release
+  # release-api:
+  #   name: Build & Release API
+  #   runs-on: ubuntu-latest
+  #   needs: terraform
+  #   env: 
+  #     PROJECT_PATH: IntergalacticPassportAPI.csproj
+  #   defaults:
+  #     run:
+  #       working-directory: IntergalacticPassportAPI
+  #   steps:
+  #   - name: Checkout
+  #     uses: actions/checkout@v4
+    
+  #   - name: Install Dotnet
+  #     uses: actions/setup-dotnet@v4
+  #     with:
+  #       dotnet-version: '9.0.x'
 
-    - name: Rename API dll
-      run: |
-          cd bin/Release/net9.0/publish
-          mv IntergalacticPassportAPI.dll SpaceAffairsAPI.dll
+  #   - name: Create Secrets File
+  #     working-directory: IntergalacticPassportAPI
+  #     run: |
+  #        file=appsettings.json
+  #         echo "{" > $file
+  #         echo '  "ConnectionStrings": {' >> $file
+  #         echo "    \"DefaultConnection\": \"Host=${{ needs.terraform.outputs.dbhost }};Port=5432;Database=spaceaffairsdb;Username=${{ secrets.DB_USERNAME }};Password=${{ secrets.DB_PASSWORD }}\"" >> $file
+  #         echo "  }," >> $file
+  #         echo '  "Logging": {' >> $file
+  #         echo '    "LogLevel": {' >> $file
+  #         echo '      "Default": "Information",' >> $file
+  #         echo '      "Microsoft.AspNetCore": "Warning"' >> $file
+  #         echo '    }' >> $file
+  #         echo '  },' >> $file
+  #         echo '  "AllowedHosts": "*"' >> $file
+  #         echo "}" >> $file
 
-    - name: Upload API Artifact for Deployment
-      uses: actions/upload-artifact@v4
-      with:
-        name: SpaceAffairsAPI
-        path: IntergalacticPassportAPI/bin/Release/net9.0/publish/SpaceAffairsAPI.dll
+  #   - name: Publish API
+  #     run: dotnet publish --configuration Release
+
+  #   - name: Rename API dll
+  #     run: |
+  #         cd bin/Release/net9.0/publish
+  #         mv IntergalacticPassportAPI.dll SpaceAffairsAPI.dll
+
+  #   - name: Upload API Artifact for Deployment
+  #     uses: actions/upload-artifact@v4
+  #     with:
+  #       name: SpaceAffairsAPI
+  #       path: IntergalacticPassportAPI/bin/Release/net9.0/publish/SpaceAffairsAPI.dll
         
 
-  deploy:
-    name: Deploy API
-    needs: 
-      - release-api
-      - terraform
-    permissions:
-      id-token: write
-      contents: read
-    runs-on: ubuntu-latest
-    steps:
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v2
-      with:
-        role-to-assume: arn:aws:iam::${{ secrets.IAM_USER_ID }}:role/gh-actions-role
-        aws-region: af-south-1
+  # deploy:
+  #   name: Deploy API
+  #   needs: 
+  #     - release-api
+  #     - terraform
+  #   permissions:
+  #     id-token: write
+  #     contents: read
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Configure AWS credentials
+  #     uses: aws-actions/configure-aws-credentials@v2
+  #     with:
+  #       role-to-assume: arn:aws:iam::${{ secrets.IAM_USER_ID }}:role/gh-actions-role
+  #       aws-region: af-south-1
     
-    - name: Get secrets from AWS Key Store
-      uses: aws-actions/aws-secretsmanager-get-secrets@v2
-      with:
-        secret-ids: |
-              EC2_PRIV_KEY, ec2privatekey
-              GOOGLE_CLIENT_SECRET, googleclientsecret
+  #   - name: Get secrets from AWS Key Store
+  #     uses: aws-actions/aws-secretsmanager-get-secrets@v2
+  #     with:
+  #       secret-ids: |
+  #             EC2_PRIV_KEY, ec2privatekey
+  #             GOOGLE_CLIENT_SECRET, googleclientsecret
           
-    - name: Download API Artifact for Deployment
-      uses: actions/download-artifact@v4
-      with:
-        name: SpaceAffairsAPI
+  #   - name: Download API Artifact for Deployment
+  #     uses: actions/download-artifact@v4
+  #     with:
+  #       name: SpaceAffairsAPI
 
-    - name: Write private key
-      run: |
-        echo "${{ env.EC2_PRIV_KEY }}" > spaceaffairs-key.pem
-        chmod 600 spaceaffairs-key.pem
+  #   - name: Write private key
+  #     run: |
+  #       echo "${{ env.EC2_PRIV_KEY }}" > spaceaffairs-key.pem
+  #       chmod 600 spaceaffairs-key.pem
 
-    - name: Deploy to EC2
-      run: |
-        EC2_HOST=${{ needs.terraform.outputs.ec2host }}
+  #   - name: Deploy to EC2
+  #     run: |
+  #       EC2_HOST=${{ needs.terraform.outputs.ec2host }}
 
-        scp -o StrictHostKeyChecking=no -i spaceaffairs-key.pem ./SpaceAffairsAPI.dll "ubuntu@$EC2_HOST:SpaceAffairsAPI.dll"
+  #       scp -o StrictHostKeyChecking=no -i spaceaffairs-key.pem ./SpaceAffairsAPI.dll "ubuntu@$EC2_HOST:SpaceAffairsAPI.dll"
         
-        # Create the systemd service and start it
-        ssh -o StrictHostKeyChecking=no -i spaceaffairs-key.pem "ubuntu@$EC2_HOST" << 'EOF'
-          # Setup systemd service
-          sudo bash -c 'echo "[Unit]" > /etc/systemd/system/spaceaffairs.service'
-          sudo bash -c 'echo "Description=SpaceAffairs API" >> /etc/systemd/system/spaceaffairs.service'
-          sudo bash -c 'echo "[Service]" >> /etc/systemd/system/spaceaffairs.service'
-          sudo bash -c 'echo "ExecStart=/usr/bin/dotnet /home/ubuntu/SpaceAffairsAPI.dll" >> /etc/systemd/system/spaceaffairs.service'
-          sudo bash -c 'echo "WorkingDirectory=/home/ubuntu" >> /etc/systemd/system/spaceaffairs.service'
-          sudo bash -c 'echo "[Install]" >> /etc/systemd/system/spaceaffairs.service'
-          sudo bash -c 'echo "WantedBy=multi-user.target" >> /etc/systemd/system/spaceaffairs.service'
+  #       # Create the systemd service and start it
+  #       ssh -o StrictHostKeyChecking=no -i spaceaffairs-key.pem "ubuntu@$EC2_HOST" << 'EOF'
+  #         # Setup systemd service
+  #         sudo bash -c 'echo "[Unit]" > /etc/systemd/system/spaceaffairs.service'
+  #         sudo bash -c 'echo "Description=SpaceAffairs API" >> /etc/systemd/system/spaceaffairs.service'
+  #         sudo bash -c 'echo "[Service]" >> /etc/systemd/system/spaceaffairs.service'
+  #         sudo bash -c 'echo "ExecStart=/usr/bin/dotnet /home/ubuntu/SpaceAffairsAPI.dll" >> /etc/systemd/system/spaceaffairs.service'
+  #         sudo bash -c 'echo "WorkingDirectory=/home/ubuntu" >> /etc/systemd/system/spaceaffairs.service'
+  #         sudo bash -c 'echo "[Install]" >> /etc/systemd/system/spaceaffairs.service'
+  #         sudo bash -c 'echo "WantedBy=multi-user.target" >> /etc/systemd/system/spaceaffairs.service'
 
-          # Enable and start the systemd service
-          sudo systemctl daemon-reload
-          sudo systemctl enable spaceaffairs.service
-          sudo systemctl start spaceaffairs.service
-        EOF
+  #         # Enable and start the systemd service
+  #         sudo systemctl daemon-reload
+  #         sudo systemctl enable spaceaffairs.service
+  #         sudo systemctl start spaceaffairs.service
+  #       EOF
         
 
-  flyway:
-    needs:
-      - terraform
-      # - release-api
-    permissions:
-      id-token: write
-      contents: read
-    name: Flyway Migrations
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+  # flyway:
+  #   needs:
+  #     - terraform
+  #     # - release-api
+  #   permissions:
+  #     id-token: write
+  #     contents: read
+  #   name: Flyway Migrations
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout repo
+  #       uses: actions/checkout@v4
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          role-to-assume: arn:aws:iam::${{ secrets.IAM_USER_ID }}:role/gh-actions-role
-          aws-region: af-south-1
+  #     - name: Configure AWS credentials
+  #       uses: aws-actions/configure-aws-credentials@v2
+  #       with:
+  #         role-to-assume: arn:aws:iam::${{ secrets.IAM_USER_ID }}:role/gh-actions-role
+  #         aws-region: af-south-1
       
-      - name: Get secrets from AWS Key Store
-        uses: aws-actions/aws-secretsmanager-get-secrets@v2
-        with:
-          secret-ids: |
-                POSTGRES_USER, postgresuser
-                POSTGRES_PASS, postgrespass
+  #     - name: Get secrets from AWS Key Store
+  #       uses: aws-actions/aws-secretsmanager-get-secrets@v2
+  #       with:
+  #         secret-ids: |
+  #               POSTGRES_USER, postgresuser
+  #               POSTGRES_PASS, postgrespass
 
-      - name: Run Flyway Migrations
-        run: |
-          docker run --rm --volume ${{ github.workspace }}/migrations:/flyway/sql:ro redgate/flyway -url="jdbc:postgresql://${{ needs.terraform.outputs.dbhost }}/spaceaffairsdb" -user="${{ env.POSTGRES_USER }}" -password="${{ env.POSTGRES_PASS }}" migrate
+  #     - name: Run Flyway Migrations
+  #       run: |
+  #         docker run --rm --volume ${{ github.workspace }}/migrations:/flyway/sql:ro redgate/flyway -url="jdbc:postgresql://${{ needs.terraform.outputs.dbhost }}/spaceaffairsdb" -user="${{ env.POSTGRES_USER }}" -password="${{ env.POSTGRES_PASS }}" migrate
