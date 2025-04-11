@@ -19,6 +19,12 @@
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
+        "Entry"
+        {
+        "MsmKey" = "8:_FA68A2F7E2824772980EA44E7BCF7DBD"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
     }
     "Configurations"
     {
@@ -126,6 +132,26 @@
         }
         "File"
         {
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_FA68A2F7E2824772980EA44E7BCF7DBD"
+            {
+            "SourcePath" = "8:planet_icon.ico"
+            "TargetName" = "8:planet_icon.ico"
+            "Tag" = "8:"
+            "Folder" = "8:_DA08560128F244C78E344CE9D75A948C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
         }
         "FileType"
         {
@@ -183,7 +209,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:SpaceAffairs"
         "ProductCode" = "8:{2D065B0A-D43B-4E22-BDB8-2980D62F9150}"
-        "PackageCode" = "8:{7B8CFB86-0197-42D0-A0AB-3559F137B596}"
+        "PackageCode" = "8:{5759E34B-D739-42FE-B385-7618344582A2}"
         "UpgradeCode" = "8:{032365B4-915C-4585-967E-4D290E637728}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
@@ -314,7 +340,7 @@
             "Target" = "8:_E44EC29E13F84097B876848CA021181C"
             "Folder" = "8:_D522606290024262B69D4BA6EBADA679"
             "WorkingFolder" = "8:_DA08560128F244C78E344CE9D75A948C"
-            "Icon" = "8:"
+            "Icon" = "8:_FA68A2F7E2824772980EA44E7BCF7DBD"
             "Feature" = "8:"
             }
         }
