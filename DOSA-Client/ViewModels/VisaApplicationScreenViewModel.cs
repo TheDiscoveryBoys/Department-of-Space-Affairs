@@ -1,10 +1,10 @@
-
 using DOSA_Client.lib;
 
 namespace DOSA_Client.ViewModels
 {
-    public class VisaApplicationScreenViewModel : ScreenViewModelBase
+    class VisaApplicationScreenViewModel : ScreenViewModelBase
     {
+        public string Title => "Visa Application";
         public PageManager PageManager { get; set; }
         public VisaApplicationScreenViewModel(Func<Task> updateTabsCallback)
         {

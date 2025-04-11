@@ -98,7 +98,7 @@
 
                         <!-- Submit Button -->
                         <Button Content="Submit Application"
-                                Command="{Binding onSubmitVisaCommand}"
+                                Command="{Binding OnSubmitVisaCommand}"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom"
                                 Width="200"
