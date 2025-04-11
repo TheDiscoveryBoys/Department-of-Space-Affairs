@@ -128,6 +128,7 @@
                                         Height="30" 
                                         FontSize="14"
                                         VerticalContentAlignment="Center"
+                                        SelectedDate="{Binding CurrentUser.date_of_birth}" 
                                         Margin="0,10"/>
                         </Grid>
 
