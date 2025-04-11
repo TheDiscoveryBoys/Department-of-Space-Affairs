@@ -30,6 +30,7 @@ namespace IntergalacticPassportAPI.Models
             this.Name = name;
             this.Reason= reason;
         }
+        public Status(){}
 
 	}
 }

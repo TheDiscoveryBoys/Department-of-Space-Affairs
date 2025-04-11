@@ -15,7 +15,6 @@ namespace DOSA_Client.ViewModels
     {
         public string Title => "List of Previous Passport and Visa Applications";
         public PageManager PageManager { get; set; }
-
         private ObservableCollection<Application> _applications;
         public ObservableCollection<Application> Applications { 
             get => _applications;
@@ -30,10 +29,9 @@ namespace DOSA_Client.ViewModels
         {
             PageManager = pageManager;
             onNextButtonClickedCommand = new DelegateCommand<string>(OnNext);
-
             // Call API to get list of passport applications and their statuses
             Task.Run(async ()=>{
-            Applications = new ObservableCollection<Application>(await ApiClient.GetApplications(Context.Get<User>("User").google_id));
+                Applications = new ObservableCollection<Application>(await ApiClient.GetApplications(Context.Get<User>("User").google_id));
             });
         }
         public ICommand onNextButtonClickedCommand { get; }

@@ -46,10 +46,12 @@ namespace IntergalacticPassportportAPI.Controllers
 			// Log metadata
 			Console.WriteLine($"Description: {filename }");
 			Console.WriteLine($"File name: {file.FileName}");
+			
 			var fileUrl = await S3Helpers.UploadFileAsync(file, $"{filename} ({application_id})") ?? throw new Exception("Could not upload the file to S3");
 			var doc = new PassportDocument{Filename = filename, PassportApplicationId=application_id, S3Url = fileUrl};
 			// Optional: save to disk or process
 			await _repo.Create(doc);
+			Console.WriteLine("Uploaded the file successfully");
 			return Ok(new { message = "File uploaded successfully!" });
 		}
 	}

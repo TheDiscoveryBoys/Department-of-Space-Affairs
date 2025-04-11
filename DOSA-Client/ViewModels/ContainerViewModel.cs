@@ -28,10 +28,14 @@ namespace DOSA_Client.ViewModels
         }
 
         public int _selectedIndex;
-        public int SelectedIndex{get => _selectedIndex; set{
-            _selectedIndex = value;
-            OnPropertyChanged(nameof(SelectedIndex));
-        }}
+        public int SelectedIndex
+        {
+            get => _selectedIndex; set
+            {
+                _selectedIndex = value;
+                OnPropertyChanged(nameof(SelectedIndex));
+            }
+        }
 
         public async Task UpdateTabsAsync()
         {
@@ -42,7 +46,7 @@ namespace DOSA_Client.ViewModels
             {
                 // we have an applicant on our hands so let us check which applications they have right now
                 List<Application> applications = await ApiClient.GetApplications(CurrentUser.google_id);
-                if (applications.Any(application => application.Status.Name == "APPROVED" && application.ApplicationType == ApplicationType.Passport))
+                if (applications.Any(application => application.Status.Name == "APPROVED" && application.ApplicationType == "PASSPORT"))
                 {
                     // we have someone who has a passport so they can see their history and the visa application page
                     Tabs = new ObservableCollection<ScreenViewModelBase>(){
@@ -50,11 +54,19 @@ namespace DOSA_Client.ViewModels
                     new ApplicationHistoryScreenViewModel()
                     };
                 }
-                else if (applications.Any(application => application.Status.Name == "PENDING" && application.ApplicationType == ApplicationType.Passport))
+                else if (applications.Any(application => application.Status.Name == "PENDING" && application.ApplicationType == "PASSPORT"))
                 {
                     // we have someone with a currently open application for a passport so they can only see their history
                     Tabs = new ObservableCollection<ScreenViewModelBase>(){
                     new ApplicationHistoryScreenViewModel()
+                    };
+                }
+                else if (applications.Any(application => application.Status.Name == "REJECTED" && application.ApplicationType == "PASSPORT"))
+                {
+                    // We have someone that has a recently rejected passport application
+                    Tabs = new ObservableCollection<ScreenViewModelBase>(){
+                        new PassportApplicationScreenViewModel(() => this.UpdateTabsAsync()),
+                        new ApplicationHistoryScreenViewModel()
                     };
                 }
                 else
@@ -73,7 +85,15 @@ namespace DOSA_Client.ViewModels
                     new ProcessVisaApplicationsScreenViewModel()
                 };
             }
-            SelectedIndex = 0;
+
+            // Delay setting the selected index to ensure the UI has time to bind
+
+            // Force the SelectedIndex update to happen *after* the UI re-renders the new Tabs
+            await Task.Delay(50); // wait a tiny bit to ensure binding completes
+            System.Windows.Application.Current.Dispatcher.Invoke(() =>
+            {
+                SelectedIndex = 0;
+            }, DispatcherPriority.Background);
         }
 
         public void OnVisibilityChanged(bool visibility)
@@ -93,7 +113,7 @@ namespace DOSA_Client.ViewModels
                 // we have a logged in user
                 UpdateTabsAsync();
             }
-            Tabs = new ObservableCollection<ScreenViewModelBase>(){};
+            Tabs = new ObservableCollection<ScreenViewModelBase>() { };
         }
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string name) =>

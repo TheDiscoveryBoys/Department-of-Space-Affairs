@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Windows.Controls;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using DOSA_Client.lib;
@@ -45,6 +46,10 @@ namespace DOSA_Client.ViewModels
             get => _visaApplication;
             set
             {
+                // if(value == null){
+                //     Context.Add("Applications Empty", true);
+                //     PageManager.NavigateTo(PageNames.VisaApplicationDetails);
+                // }
                 _visaApplication = value;
                 OnPropertyChanged(nameof(VisaApplication));
             }
@@ -53,26 +58,24 @@ namespace DOSA_Client.ViewModels
         public void RejectApplication()
         {
             // call API to reject application
-            Console.WriteLine($"Rejected Application with reason {Reason}");
+            var status = new Status(VisaApplication.VisaApplication.StatusId, "REJECTED", Reason);
             Task.Run(async ()=>{
-                // await ApiClient.UpdateVisaApplicationStatus(new Status(1,"REJECTED", Reason), VisaApplication.VisaApplication.id);
+                await ApiClient.UpdateApplicationStatus(status); 
                 Reason = "";
                 VisaApplication = null;
             });
-            PageManager.NavigateTo("Visa Application Details Page");
+            PageManager.NavigateTo("Passprot Application Details Page");
         }
 
         public void ApproveApplication()
         {
-            // call API to approve application
-            Console.WriteLine($"Approved Application {Reason}");
+            var status = new Status(VisaApplication.VisaApplication.StatusId, "APPROVED", Reason);
             Task.Run(async ()=>{
-                // await ApiClient.UpdateVisaApplicationStatus(new Status(1, "APPROVED", Reason), VisaApplication.VisaApplication.id);
-                // Need to delete the bound values here so that when we come back they are refreshed
+                await ApiClient.UpdateApplicationStatus(status); 
                 Reason = "";
                 VisaApplication = null;
             });
-            PageManager.NavigateTo("Visa Application Details Page");
+            PageManager.NavigateTo("Passprot Application Details Page");
         }
 
         public ProcessVisaApplicationViewModel(PageManager pageManager)
@@ -82,18 +85,22 @@ namespace DOSA_Client.ViewModels
 
             PageManager = pageManager;
 
-            Task.Run(async () =>{
-                Officer = await ApiClient.GetUserProfile("1");
+            Task.Run(async () =>
+            {
+                Officer = await ApiClient.GetUserProfile(Context.Get<User>("User").google_id);
             });
+
         }
 
         public void Load(bool visibility)
         {
             // make API call
-            Task.Run(async () => {
-                VisaApplication = await ApiClient.GetVisaApplication(Officer.google_id);
-                Reason = "";
-            });
+            if(visibility){
+                Task.Run(async () => {
+                    VisaApplication = await ApiClient.GetVisaApplication(Officer.google_id);
+                    Reason = "";
+                });
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

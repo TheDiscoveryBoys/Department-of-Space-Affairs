@@ -2,6 +2,7 @@ using IntergalacticPassportAPI.Data;
 using IntergalacticPassportAPI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace IntergalacticPassportAPI.Controllers
 {
@@ -29,6 +30,13 @@ namespace IntergalacticPassportAPI.Controllers
         public async Task<ActionResult<IEnumerable<Passport>>> GetPassportApplicationById(string google_id){
             Console.WriteLine($"Trying to get passport applications for google id {google_id}");
             return Ok(await _repo.GetPassportApplicationsByGoogleId(google_id));
+        }
+
+        [HttpGet]
+        [Route("getnext")]
+        public async Task<ActionResult<Passport>> GetPassportApplicationByOfficerId(string officerId){
+            Console.WriteLine($"Trying to get a passport applications for google id {officerId}");
+            return Ok(await _repo.GetPassportApplicationByOfficerId(officerId));
         }
     }
 

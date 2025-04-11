@@ -12,6 +12,7 @@ using System.IO;
 using System.Net.Http.Headers;
 using System.Reflection.Metadata;
 using System.Windows;
+using System.CodeDom;
 
 
 public static class RestClient
@@ -110,11 +111,13 @@ public static class RestClient
         return true;
     }
 
-    public static async Task<bool> UpdateVisaApplicationStatus(Status status, int applicationId)
+    public static async Task<bool> UpdateApplicationStatus(Status status)
     {
-        Console.WriteLine("Updating Visa application status");
-        await Task.Delay(1000);
-        return true;
+        var response = await HttpClient.PutAsJsonAsync<Status>($"{Constants.BaseURI}api/status", status);
+        if (response.IsSuccessStatusCode){
+            return true;
+        }
+        return false;
     }
 
     public static async Task<bool> UpdatePassportApplicationStatus(Status status, int applicationId)
@@ -163,13 +166,20 @@ public static class RestClient
     public static async Task<VisaApplication> GetOfficerVisaApplicationByGoogleId(string googleId)
     {
         //return new VisaApplication(1, "1", "Hoth", "Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here ", DateTime.Now, DateTime.Now.AddDays(3), null, new Status(1, "PENDING", null), DateTime.Now, DateTime.Now);
-        return null;
+        try{
+            return await HttpClient.GetFromJsonAsync<VisaApplication>($"{Constants.BaseURI}api/visa/getnext?officerId={googleId}") ?? throw new Exception("Failed to get a next step for you");
+        }catch(Exception e){
+            throw new Exception("There are no applications for you at this time, please try again later");
+        }
     }
 
     public static async Task<PassportApplication?> GetOfficerPassportApplicationByGoogleId(string officerId)
     {
-        await Task.Delay(1000);
-        return null;
+        try{
+            return await HttpClient.GetFromJsonAsync<PassportApplication>($"{Constants.BaseURI}api/passport/getnext?officerId={officerId}") ?? throw new Exception("Failed to get a next step for you");
+        }catch(Exception e){
+            throw new Exception("There are no applications for you at this time, please try again later");
+        }
     }
 
     public static async Task<PassportApplication?> CreatePassportApplication(PassportApplication passportApplication)
@@ -211,10 +221,13 @@ public static class RestClient
         return null;
     }
 
-    public static async Task<List<ApplicationDocument>> GetApplicationDocumentsByApplicationId(int applicationId)
+    public static async Task<List<ApplicationDocument>?> GetApplicationDocumentsByApplicationId(int applicationId)
     {
-        await Task.Delay(1000);
-        return [new ApplicationDocument(3,"ID Document", "https://google.com", 1) ,
-         new ApplicationDocument(4, "Proof of Address", "https://google.com", 1)];
+        try{
+            return await HttpClient.GetFromJsonAsync<List<ApplicationDocument>>($"{Constants.BaseURI}api/passport-documents/passport-application/{applicationId}") ?? throw new Exception("Failed to retrieve a passport document");
+        }catch(Exception ex){
+            return null;
+        }
+
     }
 }

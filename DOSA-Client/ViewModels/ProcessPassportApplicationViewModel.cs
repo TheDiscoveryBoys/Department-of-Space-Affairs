@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.DirectoryServices;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -69,32 +70,25 @@ namespace DOSA_Client.ViewModels
 
             Task.Run(async () =>
             {
-                Officer = await ApiClient.GetUserProfile("1");
-                Load(true);
+                Officer = await ApiClient.GetUserProfile(Context.Get<User>("User").google_id);
             });
         }
 
          public void Load(bool visibility)
         {
             // make API call
-            Task.Run(async () => {
-                PassportApplication = await ApiClient.GetPassportApplication(Officer.google_id);
-                Reason = "";
-            });
+            if(visibility){
+                Task.Run(async () => {
+                    PassportApplication = await ApiClient.GetPassportApplication(Officer.google_id);
+                });
+            }
         }
-
-        // private async Task LoadApplication()
-        // {
-
-        //     PassportApplication = await ApiClient.GetPassportApplication(Officer.GoogleId);
-        // }
 
         public void RejectApplication()
         {
-            // call API to reject application
-            Console.WriteLine($"Rejected Application with reason {Reason}");
+            var status = new Status(PassportApplication.PassportApplication.StatusId, "REJECTED", Reason);
             Task.Run(async ()=>{
-                // await ApiClient.UpdatePassportApplicationStatus(new Status("REJECTED", Reason), PassportApplication.PassportApplication.Id);
+                await ApiClient.UpdateApplicationStatus(status); 
                 Reason = "";
                 PassportApplication = null;
             });
@@ -103,9 +97,9 @@ namespace DOSA_Client.ViewModels
 
         public void ApproveApplication()
         {
-            Console.WriteLine($"Rejected Application with reason {Reason}");
             Task.Run(async ()=>{
-                //await ApiClient.UpdatePassportApplicationStatus(new Status("REJECTED", Reason), PassportApplication.PassportApplication.Id);
+                var status = new Status(PassportApplication.PassportApplication.StatusId, "APPROVED", Reason);
+                await ApiClient.UpdateApplicationStatus(status);
                 Reason = "";
                 PassportApplication = null;
             });
@@ -115,10 +109,8 @@ namespace DOSA_Client.ViewModels
         private async void DownloadDocumentAsync(ApplicationDocument doc)
         {
            if (doc == null) return; 
-           Console.WriteLine("Downloading a file");
-
            string downloadsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
-           string filePath = Path.Combine(downloadsPath, "file.pdf");
+           string filePath = Path.Combine(downloadsPath, doc.FileName);
            await DocumentHelpers.DownloadFileAsync(doc.S3Url, filePath);
         }
 

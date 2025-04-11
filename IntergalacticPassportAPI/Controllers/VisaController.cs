@@ -1,4 +1,5 @@
-﻿using IntergalacticPassportAPI.Data;
+﻿using System.Text.Json;
+using IntergalacticPassportAPI.Data;
 using IntergalacticPassportAPI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +19,9 @@ namespace IntergalacticPassportAPI.Controllers
         [Route("user")]
         public async Task<ActionResult<IEnumerable<Passport>>> GetVisaApplicationById(string google_id){
             Console.WriteLine($"Trying to get visa applications for google id {google_id}");
-            return Ok(await _repo.GetVisaApplicationsByGoogleId(google_id));
+            var result =await _repo.GetVisaApplicationsByGoogleId(google_id);
+            Console.WriteLine(JsonSerializer.Serialize(result));
+            return Ok(result);
         }
 
         [HttpPost]
@@ -29,6 +32,13 @@ namespace IntergalacticPassportAPI.Controllers
             var visaDB = await _repo.Create(visa);
             Console.WriteLine($"Successfully created visa with id {visaDB}");
             return visaDB;
+        }
+
+        [HttpGet]
+        [Route("getnext")]
+        public async Task<ActionResult<Passport>> GetPassportApplicationByOfficerId(string officerId){
+            Console.WriteLine($"Trying to get a passport applications for google id {officerId}");
+            return Ok(await _repo.GetVisaApplicationByOfficerId(officerId));
         }
     }
 }
