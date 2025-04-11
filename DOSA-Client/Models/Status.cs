@@ -1,5 +1,11 @@
-﻿namespace DOSA_Client.Models
+﻿using System.Text.Json.Serialization;
+
+namespace DOSA_Client.Models
 {
-    public record Status(int? Id, string Name, string? Reason = null);
+    public record Status(
+    [property: JsonPropertyName("id")] int? Id, 
+    [property: JsonPropertyName("name")]string Name, 
+    [property: JsonPropertyName("reason")]string? Reason = null
+    );
 }
 

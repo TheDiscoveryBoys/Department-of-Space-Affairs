@@ -29,10 +29,11 @@ namespace DOSA_Client.lib
                 applications.Add(new Application(Status, passportApplication.SubmittedAt, ApplicationType.Passport, passportApplication.ProcessedAt));
             }
             foreach (var visaApplication in visaApplications){
-                applications.Add(new Application(visaApplication.Status, visaApplication.SubmittedAt, ApplicationType.Passport, null));
+                var Status = await RestClient.GetStatusByStatusId(visaApplication.StatusId ?? throw new Exception("An application must have a status id"));
+                applications.Add(new Application(Status, visaApplication.SubmittedAt, ApplicationType.Visa, null));
             }
             Console.WriteLine(applications.Count);
-            return applications;
+            return [..applications.OrderByDescending(app => app.SubmittedAt)];
         }
 
         public static async Task<bool> UpdateUser(User user){

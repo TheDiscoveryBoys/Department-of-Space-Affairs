@@ -39,7 +39,7 @@ namespace IntergalacticPassportAPI.Data
 
         public async Task<IEnumerable<Passport>> GetPassportApplicationsByGoogleId(string googleId){
             using (var db = CreateDBConnection()){
-                var sql = "SELECT * FROM passport_applications WHERE user_id = @googleId;";
+                var sql = $"SELECT * FROM passport_applications WHERE user_id = '{googleId}';";
                 return await db.QueryAsync<Passport>(sql);
             }
         }

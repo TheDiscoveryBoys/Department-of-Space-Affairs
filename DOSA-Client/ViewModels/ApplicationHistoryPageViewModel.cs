@@ -32,8 +32,8 @@ namespace DOSA_Client.ViewModels
             onNextButtonClickedCommand = new DelegateCommand<string>(OnNext);
 
             // Call API to get list of passport applications and their statuses
-            Task.Run(()=>{
-            Applications = new ObservableCollection<Application>(ApiClient.GetApplications("1").GetAwaiter().GetResult());
+            Task.Run(async ()=>{
+            Applications = new ObservableCollection<Application>(await ApiClient.GetApplications(Context.Get<User>("User").google_id));
             });
         }
         public ICommand onNextButtonClickedCommand { get; }

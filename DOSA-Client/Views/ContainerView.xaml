@@ -33,7 +33,7 @@
         Margin="0,0,0,0"
         VerticalAlignment="Stretch"
         HorizontalAlignment="Stretch"
-        SelectedIndex="0"
+        SelectedIndex="{Binding SelectedIndex}"
         Padding="0">
         
         <TabControl.ItemTemplate>

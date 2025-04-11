@@ -25,6 +25,7 @@ namespace IntergalacticPassportAPI.Controllers
         }
 
         [HttpGet]
+        [Route("user")]
         public async Task<ActionResult<IEnumerable<Passport>>> GetPassportApplicationById(string google_id){
             Console.WriteLine($"Trying to get passport applications for google id {google_id}");
             return Ok(await _repo.GetPassportApplicationsByGoogleId(google_id));

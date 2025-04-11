@@ -27,6 +27,12 @@ namespace DOSA_Client.ViewModels
             }
         }
 
+        public int _selectedIndex;
+        public int SelectedIndex{get => _selectedIndex; set{
+            _selectedIndex = value;
+            OnPropertyChanged(nameof(SelectedIndex));
+        }}
+
         public async Task UpdateTabsAsync()
         {
             // this function checks the applications for the current user and decides what tabs to show
@@ -67,6 +73,7 @@ namespace DOSA_Client.ViewModels
                     new ProcessVisaApplicationsScreenViewModel()
                 };
             }
+            SelectedIndex = 0;
         }
 
         public void OnVisibilityChanged(bool visibility)

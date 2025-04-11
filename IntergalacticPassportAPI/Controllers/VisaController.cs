@@ -13,18 +13,9 @@ namespace IntergalacticPassportAPI.Controllers
         public VisaController(VisaRepository repo, StatusRepository statusRepo) : base(repo) { 
             this.statusRepo = statusRepo;
         }
-        
-        [HttpGet("user/{id}")]
-        public async Task<ActionResult<IEnumerable<Visa>>> GetUserVisas(string id)
-        {
-            return await BaseRequest(async () =>
-            {
-                var userVisas = await _repo.GetUserVisas(id);
-                return userVisas.Any() ? Ok(userVisas) : NoContent();
-            });
-        }
 
         [HttpGet]
+        [Route("user")]
         public async Task<ActionResult<IEnumerable<Passport>>> GetVisaApplicationById(string google_id){
             Console.WriteLine($"Trying to get visa applications for google id {google_id}");
             return Ok(await _repo.GetVisaApplicationsByGoogleId(google_id));
@@ -39,6 +30,5 @@ namespace IntergalacticPassportAPI.Controllers
             Console.WriteLine($"Successfully created visa with id {visaDB}");
             return visaDB;
         }
-
     }
 }

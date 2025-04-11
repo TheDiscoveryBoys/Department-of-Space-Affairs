@@ -43,7 +43,7 @@ public static class RestClient
     {
         var loginBody = new LoginPostBody(googleAuthCode);
         var response = await HttpClient.PostAsJsonAsync($"{Constants.BaseURI}auth/login", loginBody);
-    
+
         if (response.IsSuccessStatusCode)
         {
             var loginResponse = await response.Content.ReadFromJsonAsync<LoginResponse>();
@@ -53,7 +53,8 @@ public static class RestClient
     }
 
     // TODO Change to return user
-    public static async Task<bool> CreateUser(User user){
+    public static async Task<bool> CreateUser(User user)
+    {
         var response = await HttpClient.PostAsJsonAsync($"{Constants.BaseURI}api/users", user);
         if (response.IsSuccessStatusCode)
         {
@@ -64,7 +65,8 @@ public static class RestClient
         return false;
     }
 
-    public static async Task<bool> UpdateUser(User user){
+    public static async Task<bool> UpdateUser(User user)
+    {
         var response = await HttpClient.PutAsJsonAsync($"{Constants.BaseURI}api/users", user);
         if (response.IsSuccessStatusCode)
         {
@@ -77,10 +79,12 @@ public static class RestClient
 
     public static async Task<List<PassportApplication>> GetPassportApplicationsByGoogleId(string googleId)
     {
-        try{
-        return await HttpClient.GetFromJsonAsync<List<PassportApplication>>($"{Constants.BaseURI}api/passport/{googleId}") ?? throw new Exception("Failed to retrieve passport applications");
+        try
+        {
+            return await HttpClient.GetFromJsonAsync<List<PassportApplication>>($"{Constants.BaseURI}api/passport/user?google_id={googleId}") ?? throw new Exception("Failed to retrieve passport applications");
         }
-        catch(Exception e){
+        catch (Exception e)
+        {
             Console.WriteLine(e);
             return null;
         }
@@ -88,9 +92,12 @@ public static class RestClient
 
     public static async Task<List<VisaApplication>> GetVisaApplicationsByGoogleId(string googleId)
     {
-        try{
-        return await HttpClient.GetFromJsonAsync<List<VisaApplication>>($"{Constants.BaseURI}api/visa/{googleId}") ?? throw new Exception("Failed to retrieve visa applications");
-        }catch(Exception e){
+        try
+        {
+            return await HttpClient.GetFromJsonAsync<List<VisaApplication>>($"{Constants.BaseURI}api/visa/user?google_id={googleId}") ?? throw new Exception("Failed to retrieve visa applications");
+        }
+        catch (Exception e)
+        {
             Console.WriteLine(e.Message);
             return null;
         }
@@ -116,8 +123,14 @@ public static class RestClient
         await Task.Delay(1000);
         return true;
     }
-    public static async Task<Status> GetStatusByStatusId(int statusId){
-        return await HttpClient.GetFromJsonAsync<Status>($"api/status/{statusId}") ?? throw new Exception("Failed to fetch status");
+    public static async Task<Status> GetStatusByStatusId(int statusId)
+    {
+        try{
+            return await HttpClient.GetFromJsonAsync<Status>($"{Constants.BaseURI}api/status/{statusId}") ?? throw new Exception("Failed to fetch status");
+        }catch(Exception e){
+            Console.WriteLine(e);
+            return null;
+        }
     }
     public static async Task<bool?> PostFile(LocalFile filePath, int applicationId)
     {
@@ -149,9 +162,8 @@ public static class RestClient
 
     public static async Task<VisaApplication> GetOfficerVisaApplicationByGoogleId(string googleId)
     {
-        await Task.Delay(1000);
-        
-        return new VisaApplication(1, "1", "Hoth", "Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here ", DateTime.Now, DateTime.Now.AddDays(3), null, new Status(1, "PENDING", null), DateTime.Now, DateTime.Now);
+        //return new VisaApplication(1, "1", "Hoth", "Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here ", DateTime.Now, DateTime.Now.AddDays(3), null, new Status(1, "PENDING", null), DateTime.Now, DateTime.Now);
+        return null;
     }
 
     public static async Task<PassportApplication?> GetOfficerPassportApplicationByGoogleId(string officerId)
@@ -160,13 +172,17 @@ public static class RestClient
         return null;
     }
 
-    public static async Task<PassportApplication?> CreatePassportApplication(PassportApplication passportApplication){
-        var response = await HttpClient.PostAsJsonAsync($"{Constants.BaseURI}api/passport", passportApplication );
+    public static async Task<PassportApplication?> CreatePassportApplication(PassportApplication passportApplication)
+    {
+        var response = await HttpClient.PostAsJsonAsync($"{Constants.BaseURI}api/passport", passportApplication);
         if (response.IsSuccessStatusCode)
-        {  
-            try{
-            return await response.Content.ReadFromJsonAsync<PassportApplication>();
-            }catch(Exception e){
+        {
+            try
+            {
+                return await response.Content.ReadFromJsonAsync<PassportApplication>();
+            }
+            catch (Exception e)
+            {
                 Console.WriteLine(e);
                 Console.WriteLine("Failed to deserialise");
             }
