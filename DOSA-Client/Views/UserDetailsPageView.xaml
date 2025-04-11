@@ -77,13 +77,15 @@
                                        FontWeight="Bold" 
                                        VerticalAlignment="Center" 
                                        Margin="0,15,10,15"/>
-                            <TextBox Grid.Row="2" Grid.Column="1" 
-                                     Height="30" 
-                                     FontSize="14"
-                                     VerticalContentAlignment="Center"
-                                     Padding="5,0"
-                                     Text="{Binding CurrentUser.species}"
-                                     Margin="0,10"/>
+                            <ComboBox Grid.Row="2" Grid.Column="1"
+                                      ItemsSource="{Binding SpeciesList}"
+                                      DisplayMemberPath="Name"
+                                      SelectedValuePath="Name"
+                                      SelectedValue="{Binding CurrentUser.species, Mode=TwoWay}"
+                                      Height="30" 
+                                      FontSize="14"
+                                      Padding="5,0"
+                                      Margin="0,10"/>
 
                             <!-- Planet of Origin -->
                             <TextBlock Grid.Row="3" Grid.Column="0" 

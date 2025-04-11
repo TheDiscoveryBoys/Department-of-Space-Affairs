@@ -1,4 +1,5 @@
 
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
 using DOSA_Client.lib;
@@ -11,6 +12,17 @@ namespace DOSA_Client.ViewModels
     {
         public string Title => "User details page";
         public string Description => "You will see your user details here";
+        private ObservableCollection<Species> _species;
+        public ObservableCollection<Species> SpeciesList
+        {
+            get => _species;
+            set
+            {
+                _species = value;
+                OnPropertyChanged(nameof(SpeciesList));
+            }
+        }
+
         public PageManager PageManager { get; set; }
 
         public User CurrentUser {get; set;}
@@ -18,6 +30,7 @@ namespace DOSA_Client.ViewModels
             PageManager = pageManager;
             onNextButtonClickedCommand = new DelegateCommand<string>(OnNext);
             CurrentUser = Context.Get<User>("User");
+            LoadSwapiOptions();
         }
 
         public ICommand onNextButtonClickedCommand {get; }
@@ -25,7 +38,17 @@ namespace DOSA_Client.ViewModels
             // First we send an api request to update the state of the user 
             Console.WriteLine(CurrentUser.species);
             await RestClient.UpdateUser(CurrentUser);
+
             PageManager.NavigateTo(pageName);
+        }
+
+        private void LoadSwapiOptions()
+        {
+            Task.Run(async () =>
+            {
+                SpeciesResponse resp = await StarWarsClient.GetSpecies();
+                SpeciesList = new ObservableCollection<Species>(resp.Results);
+            });
         }
     }
 }
