@@ -11,7 +11,7 @@ namespace IntergalacticPassportAPI.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [PrimaryKey]
         [Column("id")]
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
         [Required]
         [Column("user_id")]
@@ -33,9 +33,8 @@ namespace IntergalacticPassportAPI.Models
         [Column("end_date")]
         public DateTime EndDate { get; set; }
 
-        [Required]
         [Column("status_id")]
-        public int StatusId { get; set; }
+        public int? StatusId { get; set; }
 
         [Required]
         [Column("submitted_at")]
