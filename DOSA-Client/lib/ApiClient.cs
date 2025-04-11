@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Formats.Asn1;
 using System.Linq;
 using System.Text;
@@ -17,22 +18,21 @@ namespace DOSA_Client.lib
         public static string? Jwt{get; set;}
         public static async Task<List<Application>> GetApplications(string googleId)
         {
-            //var passportApplicationsTask = RestClient.GetPassportApplicationsByGoogleId(googleId);
-            //var visaApplicationsTask = RestClient.GetVisaApplicationsByGoogleId(googleId);
-            //await Task.WhenAll(visaApplicationsTask);
-            //var passportApplications = passportApplicationsTask.Result;
-            //var visaApplications = visaApplicationsTask.Result;
-            //var applications = new List<Application>();
-            //foreach (var passportApplication in passportApplications){
-            //    applications.Add(new Application(passportApplication.Status, passportApplication.SubmittedAt, ApplicationType.Passport, passportApplication.ProcessedAt));
-            //}
-            //foreach (var visaApplication in visaApplications){
-            //    applications.Add(new Application(visaApplication.Status, visaApplication.SubmittedAt, ApplicationType.Passport, null));
-            //}
-            //Console.WriteLine(applications.Count);
-            //return applications;
-            //await Task.Delay(100);
-            return [new Application(new Status("APPROVED"), DateTime.Now, ApplicationType.Passport, null)];
+            var passportApplicationsTask = RestClient.GetPassportApplicationsByGoogleId(googleId);
+            var visaApplicationsTask = RestClient.GetVisaApplicationsByGoogleId(googleId);
+            await Task.WhenAll(visaApplicationsTask);
+            var passportApplications = passportApplicationsTask.Result;
+            var visaApplications = visaApplicationsTask.Result; 
+            var applications = new List<Application>();
+            foreach (var passportApplication in passportApplications){
+                var Status = await RestClient.GetStatusByStatusId(passportApplication.StatusId ?? throw new Exception("An application must have a status id"));
+                applications.Add(new Application(Status, passportApplication.SubmittedAt, ApplicationType.Passport, passportApplication.ProcessedAt));
+            }
+            foreach (var visaApplication in visaApplications){
+                applications.Add(new Application(visaApplication.Status, visaApplication.SubmittedAt, ApplicationType.Passport, null));
+            }
+            Console.WriteLine(applications.Count);
+            return applications;
         }
 
         public static async Task<bool> UpdateUser(User user){

@@ -10,6 +10,8 @@ using System.Configuration;
 using static DOSA_Client.ViewModels.UploadPassportDocumentsViewModel;
 using System.IO;
 using System.Net.Http.Headers;
+using System.Reflection.Metadata;
+using System.Windows;
 
 
 public static class RestClient
@@ -75,9 +77,23 @@ public static class RestClient
 
     public static async Task<List<PassportApplication>> GetPassportApplicationsByGoogleId(string googleId)
     {
-        await Task.Delay(1000);
-        //return [passport2];
-        return [];
+        try{
+        return await HttpClient.GetFromJsonAsync<List<PassportApplication>>($"{Constants.BaseURI}api/passport/{googleId}") ?? throw new Exception("Failed to retrieve passport applications");
+        }
+        catch(Exception e){
+            Console.WriteLine(e);
+            return null;
+        }
+    }
+
+    public static async Task<List<VisaApplication>> GetVisaApplicationsByGoogleId(string googleId)
+    {
+        try{
+        return await HttpClient.GetFromJsonAsync<List<VisaApplication>>($"{Constants.BaseURI}api/visa/{googleId}") ?? throw new Exception("Failed to retrieve visa applications");
+        }catch(Exception e){
+            Console.WriteLine(e.Message);
+            return null;
+        }
     }
 
     public static async Task<bool> UpdateUserDetails(User user)
@@ -100,14 +116,9 @@ public static class RestClient
         await Task.Delay(1000);
         return true;
     }
-
-    public static async Task<List<VisaApplication>> GetVisaApplicationsByGoogleId(string googleId)
-    {
-        await Task.Delay(1000);
-        //var visa1 = new VisaApplication(1, "1", "Mars", "Better Jobs", DateTime.Now, DateTime.Now.AddDays(2), null, new Status("PENDING"), DateTime.Now.AddDays(-10), null);
-        return [];
+    public static async Task<Status> GetStatusByStatusId(int statusId){
+        return await HttpClient.GetFromJsonAsync<Status>($"api/status/{statusId}") ?? throw new Exception("Failed to fetch status");
     }
-
     public static async Task<bool?> PostFile(LocalFile filePath, int applicationId)
     {
         using var form = new MultipartFormDataContent();
@@ -139,7 +150,8 @@ public static class RestClient
     public static async Task<VisaApplication> GetOfficerVisaApplicationByGoogleId(string googleId)
     {
         await Task.Delay(1000);
-        return null; // new VisaApplication(1, "1", "Hoth", "Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here ", DateTime.Now, DateTime.Now.AddDays(3), null, new Status("PENDING", null), DateTime.Now, DateTime.Now);
+        
+        return new VisaApplication(1, "1", "Hoth", "Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here Need to get a tan out here ", DateTime.Now, DateTime.Now.AddDays(3), null, new Status(1, "PENDING", null), DateTime.Now, DateTime.Now);
     }
 
     public static async Task<PassportApplication?> GetOfficerPassportApplicationByGoogleId(string officerId)

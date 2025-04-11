@@ -36,6 +36,13 @@ namespace IntergalacticPassportAPI.Data
                 return true;
             }
         }
+
+        public async Task<IEnumerable<Passport>> GetPassportApplicationsByGoogleId(string googleId){
+            using (var db = CreateDBConnection()){
+                var sql = "SELECT * FROM passport_applications WHERE user_id = @googleId;";
+                return await db.QueryAsync<Passport>(sql);
+            }
+        }
         //private readonly IConfiguration _configuration;
 
         //     public async Task<Passport?> GetByIdAsync(int id)

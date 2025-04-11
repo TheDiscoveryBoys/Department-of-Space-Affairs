@@ -15,13 +15,19 @@ namespace IntergalacticPassportAPI.Controllers
          }
 
         [HttpPost]
-        public  override async Task<ActionResult<Passport>> Create(Passport passport){
+        public override async Task<ActionResult<Passport>> Create(Passport passport){
             Console.WriteLine($"Trying to create passport");
             var status = await statusRepo.Create(new Status("PENDING", null));
             passport.StatusId = status.Id;
             var passportDB = await _repo.Create(passport);
             Console.WriteLine($"Successfully created passport with id {passportDB}");
             return passportDB;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Passport>>> GetPassportApplicationById(string google_id){
+            Console.WriteLine($"Trying to get passport applications for google id {google_id}");
+            return Ok(await _repo.GetPassportApplicationsByGoogleId(google_id));
         }
     }
 

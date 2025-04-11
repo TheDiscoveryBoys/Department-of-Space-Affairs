@@ -24,6 +24,12 @@ namespace IntergalacticPassportAPI.Controllers
             });
         }
 
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Passport>>> GetVisaApplicationById(string google_id){
+            Console.WriteLine($"Trying to get visa applications for google id {google_id}");
+            return Ok(await _repo.GetVisaApplicationsByGoogleId(google_id));
+        }
+
         [HttpPost]
         public  override async Task<ActionResult<Visa>> Create(Visa visa){
             Console.WriteLine($"Trying to create visa");

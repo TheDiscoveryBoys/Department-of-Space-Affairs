@@ -1,5 +1,5 @@
 ﻿namespace DOSA_Client.Models
 {
-    public record Status(string Name, string? Reason = null);
+    public record Status(int? Id, string Name, string? Reason = null);
 }
 

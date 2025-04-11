@@ -58,6 +58,13 @@ namespace IntergalacticPassportAPI.Data
             .ToList();
         }
 
+        public async Task<IEnumerable<Passport>> GetVisaApplicationsByGoogleId(string googleId){
+            using (var db = CreateDBConnection()){
+                var sql = "SELECT * FROM visa_applications WHERE user_id = @googleId;";
+                return await db.QueryAsync<Passport>(sql);
+            }
+        }
+
         public async override Task<bool> Exists(Visa model)
         {
             using var db = CreateDBConnection();

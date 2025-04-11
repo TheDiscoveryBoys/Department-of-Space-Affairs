@@ -55,7 +55,7 @@ namespace DOSA_Client.ViewModels
             // call API to reject application
             Console.WriteLine($"Rejected Application with reason {Reason}");
             Task.Run(async ()=>{
-                //await ApiClient.UpdateVisaApplicationStatus(new Status("REJECTED", Reason), VisaApplication.VisaApplication.id);
+                await ApiClient.UpdateVisaApplicationStatus(new Status(1,"REJECTED", Reason), VisaApplication.VisaApplication.id);
                 Reason = "";
                 VisaApplication = null;
             });
@@ -67,7 +67,7 @@ namespace DOSA_Client.ViewModels
             // call API to approve application
             Console.WriteLine($"Approved Application {Reason}");
             Task.Run(async ()=>{
-                //await ApiClient.UpdateVisaApplicationStatus(new Status("APPROVED", Reason), VisaApplication.VisaApplication.id);
+                await ApiClient.UpdateVisaApplicationStatus(new Status(1, "APPROVED", Reason), VisaApplication.VisaApplication.id);
                 // Need to delete the bound values here so that when we come back they are refreshed
                 Reason = "";
                 VisaApplication = null;
