@@ -1,4 +1,5 @@
 
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
@@ -12,14 +13,25 @@ namespace DOSA_Client.ViewModels
     {
         public string Title => "User details page";
         public string Description => "You will see your user details here";
-        private ObservableCollection<Species> _species;
-        public ObservableCollection<Species> SpeciesList
+        private ObservableCollection<SwapiRecord> _species;
+        public ObservableCollection<SwapiRecord> SpeciesList
         {
             get => _species;
             set
             {
                 _species = value;
                 OnPropertyChanged(nameof(SpeciesList));
+            }
+        }
+
+        private ObservableCollection<SwapiRecord> _planets;
+        public ObservableCollection<SwapiRecord> PlanetsList
+        {
+            get => _species;
+            set
+            {
+                _species = value;
+                OnPropertyChanged(nameof(PlanetsList));
             }
         }
 
@@ -46,8 +58,11 @@ namespace DOSA_Client.ViewModels
         {
             Task.Run(async () =>
             {
-                SpeciesResponse resp = await StarWarsClient.GetSpecies();
-                SpeciesList = new ObservableCollection<Species>(resp.Results);
+                List<SwapiRecord> species = await StarWarsClient.GetSpecies();
+                SpeciesList = new ObservableCollection<SwapiRecord>(species);
+
+                List<SwapiRecord> planets = await StarWarsClient.GetPlanets();
+                PlanetsList = new ObservableCollection<SwapiRecord>(planets);
             });
         }
     }

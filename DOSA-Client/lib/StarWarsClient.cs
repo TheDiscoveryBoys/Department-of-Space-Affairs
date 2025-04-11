@@ -13,33 +13,46 @@ using System.Net.Http.Headers;
 using System.Reflection.Metadata;
 using System.Windows;
 
-    public static class StarWarsClient
+public static class StarWarsClient
+{
+    private static HttpClient HttpClient = new HttpClient();
+    private static async Task<List<SwapiRecord>> GetAllFromEndpoint(string endpoint)
     {
-        public static HttpClient HttpClient = new HttpClient();
+        var allItems = new List<SwapiRecord>();
+        string nextUrl = $"{Constants.StarWarsURI}{endpoint}/";
 
-        public static async Task<SpeciesResponse> GetSpecies()
+        while (!string.IsNullOrEmpty(nextUrl))
         {
             try
             {
-                return await HttpClient.GetFromJsonAsync<SpeciesResponse>($"{Constants.StarWarsURI}species/");
+                var response = await HttpClient.GetFromJsonAsync<SwapiResponse>(nextUrl);
+                if (response?.Results != null)
+                {
+                    allItems.AddRange(response.Results);
+                    nextUrl = response.Next;
+                }
+                else
+                {
+                    break;
+                }
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                return new SpeciesResponse();
+                Console.WriteLine($"Error fetching {endpoint}: {e.Message}");
+                break;
             }
         }
 
-        public static async Task<SpeciesResponse> GetPlanets()
-        {
-            try
-            {
-                return await HttpClient.GetFromJsonAsync<SpeciesResponse>($"{Constants.StarWarsURI}species/");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return new SpeciesResponse();
-            }
-        }
+        return [.. allItems.OrderBy(item => item.Name)];
+    }
+
+    public static Task<List<SwapiRecord>> GetSpecies()
+    {
+        return GetAllFromEndpoint("species");
+    }
+
+    public static Task<List<SwapiRecord>> GetPlanets()
+    {
+        return GetAllFromEndpoint("planets");
+    }
 }
