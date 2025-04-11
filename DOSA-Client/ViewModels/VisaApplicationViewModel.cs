@@ -11,9 +11,35 @@ namespace DOSA_Client.ViewModels
         public string Title => "Submit Visa Details";
         public PageManager PageManager { get; set; }
         public string DestinationPlanet { get; set; }
-        public string TravelReason { get; set; }
+
+        private string _travelReason;
+        public string TravelReason
+        {
+            get => _travelReason;
+            set
+            {
+                _travelReason = value;
+                IsSubmitEnabled = string.IsNullOrWhiteSpace(_travelReason) ? false : true;
+
+                Console.WriteLine($"Enabled: {IsSubmitEnabled}");
+                Console.WriteLine($"Reason: '{TravelReason}'");
+
+            }
+        }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+
+        private bool _isSubmitEnabled;
+        public bool IsSubmitEnabled
+        {
+            get => _isSubmitEnabled;
+            set
+            {
+                _isSubmitEnabled = value;
+                OnPropertyChanged(nameof(IsSubmitEnabled));
+            }
+        }
+
         public ICommand OnSubmitVisaCommand { get; }
 
         private ObservableCollection<SwapiRecord> _planets;

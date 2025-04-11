@@ -70,7 +70,7 @@
                                      TextWrapping="Wrap"
                                      VerticalContentAlignment="Top"
                                      Padding="5"
-                                     Text="{Binding TravelReason}" 
+                                     Text="{Binding TravelReason, UpdateSourceTrigger=PropertyChanged}" 
                                      Margin="0,10"/>
 
                             <!-- Start Date -->
@@ -102,6 +102,7 @@
                         <!-- Submit Button -->
                         <Button Content="Submit Application"
                                 Command="{Binding OnSubmitVisaCommand}"
+                                IsEnabled="{Binding IsSubmitEnabled}"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom"
                                 Width="200"
