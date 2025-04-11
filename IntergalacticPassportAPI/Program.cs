@@ -20,6 +20,7 @@ builder.Services.AddScoped<VisaRepository>();
 builder.Services.AddScoped<PassportDocumentRepository>();
 builder.Services.AddScoped<StatusRepository>();
 builder.Services.AddScoped<UsersRepository>();
+builder.Services.AddScoped<UserRolesRepository>();
 builder.Services.AddScoped<RolesRepository>();
 builder.Services.AddScoped<VisaRepository>();
 builder.Services.AddScoped<PassportDocumentRepository>();
@@ -57,7 +58,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 var userRepository = context.HttpContext.RequestServices.GetRequiredService<UsersRepository>();
 
                 var userRoles = await userRepository.GetUserRoles(googleId);
-                Console.WriteLine(userRoles.ElementAt(0));
+                //Console.WriteLine(userRoles.ElementAt(0));
 
                 var identity = context.Principal.Identity as ClaimsIdentity;
                 foreach (var role in userRoles)
