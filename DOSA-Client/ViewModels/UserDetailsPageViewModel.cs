@@ -27,10 +27,10 @@ namespace DOSA_Client.ViewModels
         private ObservableCollection<SwapiRecord> _planets;
         public ObservableCollection<SwapiRecord> PlanetsList
         {
-            get => _species;
+            get => _planets;
             set
             {
-                _species = value;
+                _planets = value;
                 OnPropertyChanged(nameof(PlanetsList));
             }
         }
