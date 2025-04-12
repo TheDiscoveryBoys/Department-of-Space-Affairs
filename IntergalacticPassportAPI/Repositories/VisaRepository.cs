@@ -82,7 +82,7 @@ namespace IntergalacticPassportAPI.Data
                 var applications = await db.QueryAsync<Visa>(sql);
                 var openApplications =  applications.Where(app => app.OfficerId != null);
                 foreach(var app in openApplications){
-                    var statusSql = $"SELECT * FROM statuses WHERE status_id = {app.StatusId}";
+                    var statusSql = $"SELECT * FROM statuses WHERE id = {app.StatusId}";
                     var status = await db.QueryFirstAsync<Status>(statusSql);
                     if(status.Name == "PENDING"){
                         return app; 
