@@ -49,7 +49,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
     public async void OnLoginAsync()
     {
         var listener = new HttpListener();
-        listener.Prefixes.Add("http://localhost:6969/");
+        listener.Prefixes.Add("http://localhost:3000/");
         listener.Start();
 
         Process.Start(new ProcessStartInfo
