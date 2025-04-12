@@ -148,17 +148,6 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no -i spaceaffairs-key.pem ubuntu@${{ needs.terraform.outputs.ec2host }} "sudo apt update && sudo apt install docker.io -y"
 
-      - name: Set Environment Variables
-        run: |
-          EC2_HOST=${{ needs.terraform.outputs.ec2host }}
-        
-          ssh -o StrictHostKeyChecking=no -i spaceaffairs-key.pem "ubuntu@$EC2_HOST" << 'EOF'
-           
-            echo "export CLIENT_SECRET=${{ env.GOOGLE_CLIENT_SECRET }}" >> ~/.bashrc
-            
-            source ~/.bashrc
-          EOF
-
       - name: Build the Docker image
         run: |
           docker build -t space-affairs-api-image -f IntergalacticPassportAPI/Dockerfile IntergalacticPassportAPI
@@ -179,6 +168,18 @@ jobs:
      runs-on: ec2_api
      steps:
 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::179530787873:role/gh-actions-role
+          aws-region: af-south-1
+
+      - name: Get secrets from AWS Key Store
+        uses: aws-actions/aws-secretsmanager-get-secrets@v2
+        with:
+          secret-ids: |
+            GOOGLE_CLIENT_SECRET, googleclientsecret
+
       - name: Prune unused images
         run: sudo docker system prune --force
 
@@ -195,7 +196,7 @@ jobs:
         run: sudo docker rm -f space-affairs-api-container
 
       - name: Run container
-        run: sudo docker run -d -p 80:8080 --name space-affairs-api-container space-affairs-api-image
+        run: sudo docker run -d -e CLIENT_SECRET="${{env.GOOGLE_CLIENT_SECRET}}" -p 80:8080 --name space-affairs-api-container space-affairs-api-image
         
   flyway:
     needs:
