@@ -32,7 +32,7 @@ namespace IntergalacticPassportportAPI.Controllers
 			});
 		}
 
-		[HttpPost]
+		[HttpPost("upload")]
 		public async Task<ActionResult<PassportDocument>> CreateDocument(IFormFile file, [FromForm] string filename, [FromForm] int application_id)
 		{
 			Console.WriteLine("Trying to upload a file");
