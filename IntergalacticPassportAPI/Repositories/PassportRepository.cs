@@ -8,7 +8,6 @@ using System.Text.Json;
 namespace IntergalacticPassportAPI.Data
 {
     public class PassportRepository(IConfiguration config) : BaseRepository<Passport>(config, "passport_applications")
-    public class PassportRepository(IConfiguration config) : BaseRepository<Passport>(config, "passport_applications")
     {
         //     private readonly IConfiguration _configuration;
         //     private readonly IConfiguration _configuration;

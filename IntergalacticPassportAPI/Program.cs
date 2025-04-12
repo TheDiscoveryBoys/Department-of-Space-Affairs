@@ -1,17 +1,6 @@
-using System.Security.Cryptography;
-using System.Text;
 using IntergalacticPassportAPI.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
-using Microsoft.Extensions.DependencyInjection;
-using Dapper;
-using Swashbuckle.AspNetCore;
-using IntergalacticPassportAPI.Data;
-using System.Security.Claims;
-using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore;
-using IntergalacticPassportAPI.Data;
 using System.Security.Claims;
 using Microsoft.OpenApi.Models;
 
@@ -20,30 +9,21 @@ Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true; // This line ensures tha
 
 builder.Services.AddControllers();
 builder.Services.AddScoped<PassportRepository>();
-builder.Services.AddScoped<VisaRepository>();
-builder.Services.AddScoped<PassportDocumentRepository>();
-builder.Services.AddScoped<StatusRepository>();
 builder.Services.AddScoped<UsersRepository>();
 builder.Services.AddScoped<UserRolesRepository>();
 builder.Services.AddScoped<RolesRepository>();
 builder.Services.AddScoped<VisaRepository>();
-builder.Services.AddScoped<PassportDocumentRepository>();
 builder.Services.AddScoped<StatusRepository>();
-builder.Services.AddScoped<VisaRepository>();
 builder.Services.AddScoped<PassportDocumentRepository>();
 builder.Services.AddScoped<StatusRepository>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
     .AddJwtBearer(options =>
     {
         options.Authority = "https://accounts.google.com";
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
-            ValidIssuer = "https://accounts.google.com",
-            ValidateLifetime = false,
-            ValidAudience = "988182050054-vlcub1cr22892gc1e4uesj5d6sa3ji1v.apps.googleusercontent.com",
             ValidIssuer = "https://accounts.google.com",
             ValidateLifetime = false,
             ValidAudience = "988182050054-vlcub1cr22892gc1e4uesj5d6sa3ji1v.apps.googleusercontent.com",

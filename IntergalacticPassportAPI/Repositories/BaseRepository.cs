@@ -23,7 +23,6 @@ namespace IntergalacticPassportAPI.Data
             string PKIdentifier = GetPrimaryKeyIdentifier(typeof(Model));
             using var db = CreateDBConnection();
             var sql = $"SELECT * FROM {tableName} WHERE {tableName}.{CamelToSnake(PKIdentifier)} = '{id}'";
-            var sql = $"SELECT * FROM {tableName} WHERE {tableName}.{CamelToSnake(PKIdentifier)} = '{id}'";
             return await db.QueryFirstOrDefaultAsync<Model>(sql);
 
         }

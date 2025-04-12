@@ -1,5 +1,4 @@
 ﻿using IntergalacticPassportAPI.Controllers;
-using IntergalacticPassportAPI.Controllers;
 using IntergalacticPassportAPI.Data;
 using IntergalacticPassportAPI.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -12,10 +11,6 @@ namespace IntergalacticPassportportAPI.Controllers
 	[Route("api/passport-documents")]
 	public class PassportDocumentController : BaseController<PassportDocument, PassportDocumentRepository>
 	{
-	public class PassportDocumentController : BaseController<PassportDocument, PassportDocumentRepository>
-	{
-
-		public PassportDocumentController(PassportDocumentRepository repo) : base(repo) { }
 		public PassportDocumentController(PassportDocumentRepository repo) : base(repo) { }
 
 		[HttpGet("passport-application/{id}")]

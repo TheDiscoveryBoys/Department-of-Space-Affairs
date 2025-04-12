@@ -49,6 +49,8 @@ public static class RestClient
         {
             var loginResponse = await response.Content.ReadFromJsonAsync<LoginResponse>();
             return loginResponse?.Token;
+        }else{
+            Console.WriteLine(await response.Content.ReadAsStringAsync());
         }
         return null;
     }

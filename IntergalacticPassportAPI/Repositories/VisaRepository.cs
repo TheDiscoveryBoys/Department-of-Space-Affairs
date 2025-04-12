@@ -9,9 +9,6 @@ namespace IntergalacticPassportAPI.Data
     public class VisaRepository(IConfiguration config) : BaseRepository<Visa>(config, "visa_applications")
     {
         // private readonly IConfiguration _configuration;
-    public class VisaRepository(IConfiguration config) : BaseRepository<Visa>(config, "visa_applications")
-    {
-        // private readonly IConfiguration _configuration;
 
         // public VisaRepository(IConfiguration configuration) 
         // {
