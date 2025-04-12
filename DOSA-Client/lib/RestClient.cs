@@ -1,19 +1,11 @@
-using System.ComponentModel;
-using System.Net;
-using System.Windows.Documents;
-using System.Windows.Media.Animation;
 using DOSA_Client.Models;
 using System.Net.Http;
 using System.Net.Http.Json;
 using DOSA_Client.lib.Constants;
-using System.Configuration;
 using static DOSA_Client.ViewModels.UploadPassportDocumentsViewModel;
 using System.IO;
 using System.Net.Http.Headers;
-using System.Reflection.Metadata;
-using System.Windows;
-using System.CodeDom;
-
+using System.Text.Json;
 
 public static class RestClient
 {
@@ -21,10 +13,9 @@ public static class RestClient
     public static HttpClient HttpClient = new HttpClient();
     public static async Task<List<Role>> GetRolesByGoogleId(string googleId)
     {
-        await Task.Delay(1000);
-        return [
-                new Role( 1, "APPLICANT")
-        ];
+        var roles = await HttpClient.GetFromJsonAsync<List<Role>>($"{Constants.BaseURI}api/users/{googleId}/roles");
+        Console.WriteLine(JsonSerializer.Serialize(roles));
+        return roles ?? [];
     }
 
     public static string DynStatus = "APPROVED";
@@ -244,7 +235,6 @@ public static class RestClient
         Console.WriteLine(await response.Content.ReadAsStringAsync());
         return null;
     }
-
     public static async Task<List<ApplicationDocument>?> GetApplicationDocumentsByApplicationId(int applicationId)
     {
         try{
@@ -252,6 +242,5 @@ public static class RestClient
         }catch(Exception ex){
             return null;
         }
-
     }
 }
