@@ -36,8 +36,8 @@ namespace IntergalacticPassportAPI.Controllers
 
         [HttpGet]
         [Route("getnext")]
-        public async Task<ActionResult<Passport>> GetPassportApplicationByOfficerId(string officerId){
-            Console.WriteLine($"Trying to get a passport applications for google id {officerId}");
+        public async Task<ActionResult<Visa>> GetVisaApplicationByOfficerId(string officerId){
+            Console.WriteLine($"Trying to get a visa applications for google id {officerId}");
             return Ok(await _repo.GetVisaApplicationByOfficerId(officerId));
         }
     }
