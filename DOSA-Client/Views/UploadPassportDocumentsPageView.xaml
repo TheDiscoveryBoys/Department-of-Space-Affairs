@@ -98,7 +98,7 @@
                                                         BorderBrush="{x:Null}">
                                                     <Image Source="/Assets/bin_icon.png" Width="20" Height="20"/>
                                                 </Button>
-                                                <TextBlock Text="{Binding}" FontSize="14" VerticalAlignment="Center"/>
+                                                <TextBlock Text="{Binding FileName}" FontSize="14" VerticalAlignment="Center"/>
                                             </StackPanel>
                                         </Border>
                                     </DataTemplate>

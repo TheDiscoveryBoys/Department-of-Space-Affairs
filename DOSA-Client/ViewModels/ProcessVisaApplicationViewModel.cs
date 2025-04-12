@@ -61,7 +61,7 @@ namespace DOSA_Client.ViewModels
             Task.Run(async ()=>{
                 // eish, same issue with structs here
                 var status = new Status(VisaApplication.VisaApplication.StatusId, "REJECTED", Reason);
-                var visa = new VisaApplication(VisaApplication.VisaApplication.Id, Officer.google_id, status.Id, VisaApplication.VisaApplication.DestinationPlanet, VisaApplication.VisaApplication.TravelReason, VisaApplication.VisaApplication.StartDate, VisaApplication.VisaApplication.EndDate, VisaApplication.VisaApplication.SubmittedAt, DateTime.Now, Officer.google_id);
+                var visa = new VisaApplication(VisaApplication.VisaApplication.Id, VisaApplication.Applicant.google_id, status.Id, VisaApplication.VisaApplication.DestinationPlanet, VisaApplication.VisaApplication.TravelReason, VisaApplication.VisaApplication.StartDate, VisaApplication.VisaApplication.EndDate, VisaApplication.VisaApplication.SubmittedAt, DateTime.Now, Officer.google_id);
                 await ApiClient.ProcessVisaApplication(visa, status); 
                 Reason = "";
                 VisaApplication = null;

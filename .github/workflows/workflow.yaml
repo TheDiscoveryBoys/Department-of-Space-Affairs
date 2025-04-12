@@ -201,7 +201,7 @@ jobs:
         run: sudo docker rm -f space-affairs-api-container
 
       - name: Run container
-        run: sudo docker run -d -e CLIENT_SECRET="${{env.GOOGLE_CLIENT_SECRET}}" -e AWS_SECRET_KEY="${{env.S3_KEY}}" -e AWS_SECRET_ID="${{env.S3_ID}}" -p 80:8080 --name space-affairs-api-container space-affairs-api-image
+        run: sudo docker run -d -e CLIENT_SECRET="${{env.GOOGLE_CLIENT_SECRET}}" -e AWS_SECRET_KEY="${{env.S3_KEY}}" -e AWS_SECRET_ID="${{env.S3_ID}}"  -p 80:8080 --name space-affairs-api-container space-affairs-api-image
         
   flyway:
     needs:
