@@ -20,6 +20,7 @@ namespace IntergalacticPassportAPI.Controllers
         public async Task<ActionResult<IEnumerable<Visa>>> GetVisaApplicationById(string google_id){
             Console.WriteLine($"Trying to get visa applications for google id {google_id}");
             var result =await _repo.GetVisaApplicationsByGoogleId(google_id);
+            Console.WriteLine("These are the VISA results");
             Console.WriteLine(JsonSerializer.Serialize(result));
             return Ok(result);
         }
