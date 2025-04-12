@@ -20,7 +20,7 @@ namespace DOSA_Client.lib
         {
             var passportApplicationsTask = RestClient.GetPassportApplicationsByGoogleId(googleId);
             var visaApplicationsTask = RestClient.GetVisaApplicationsByGoogleId(googleId);
-            await Task.WhenAll(visaApplicationsTask);
+            await Task.WhenAll([passportApplicationsTask, visaApplicationsTask]);
             var passportApplications = passportApplicationsTask.Result;
             var visaApplications = visaApplicationsTask.Result;
             var applications = new List<Application>();

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using Microsoft.OpenApi.Models;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true; // This line ensures that PascalCase prpoperties are correctly mapped to snake case in the DB.
@@ -49,10 +50,13 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 var userRepository = context.HttpContext.RequestServices.GetRequiredService<UsersRepository>();
 
                 var userRoles = await userRepository.GetUserRoles(googleId);
+                Console.WriteLine($"User roles: {JsonSerializer.Serialize(userRoles)}");
 
                 var identity = context.Principal.Identity as ClaimsIdentity;
+                
                 foreach (var role in userRoles)
                 {
+                    Console.WriteLine($"Adding claim role: {role}");
                     identity?.AddClaim(new Claim(ClaimTypes.Role, role.Role));  
                 }
 

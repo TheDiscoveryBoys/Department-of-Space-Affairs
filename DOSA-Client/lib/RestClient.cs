@@ -23,7 +23,7 @@ public static class RestClient
     {
         await Task.Delay(1000);
         return [
-                new Role( 1, "APPLICANT")
+                new Role( 1, "OFFICER")
         ];
     }
 

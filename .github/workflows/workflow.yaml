@@ -154,7 +154,7 @@ jobs:
         
           ssh -o StrictHostKeyChecking=no -i spaceaffairs-key.pem "ubuntu@$EC2_HOST" << 'EOF'
            
-            echo "export GOOGLE_CLIENT_SECRET=${{ env.GOOGLE_CLIENT_SECRET }}" >> ~/.bashrc
+            echo "export CLIENT_SECRET=${{ env.GOOGLE_CLIENT_SECRET }}" >> ~/.bashrc
             
             source ~/.bashrc
           EOF
