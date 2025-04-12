@@ -120,6 +120,28 @@ public static class RestClient
         return false;
     }
 
+    public static async Task<bool> UpdatePassportApplication(PassportApplication passportApplication)
+    {
+        // update passport
+        var response = await HttpClient.PutAsJsonAsync<PassportApplication>($"{Constants.BaseURI}api/passport", passportApplication);
+        if (response.IsSuccessStatusCode)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public static async Task<bool> UpdateVisaApplication(VisaApplication visaApplication)
+    {
+        // update passport
+        var response = await HttpClient.PutAsJsonAsync<VisaApplication>($"{Constants.BaseURI}api/visa", visaApplication);
+        if (response.IsSuccessStatusCode)
+        {
+            return true;
+        }
+        return false;
+    }
+
     public static async Task<bool> UpdatePassportApplicationStatus(Status status, int applicationId)
     {
         Console.WriteLine("Updating Passport Application Status");

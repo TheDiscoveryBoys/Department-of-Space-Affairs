@@ -58,9 +58,11 @@ namespace DOSA_Client.ViewModels
         public void RejectApplication()
         {
             // call API to reject application
-            var status = new Status(VisaApplication.VisaApplication.StatusId, "REJECTED", Reason);
             Task.Run(async ()=>{
-                await ApiClient.UpdateApplicationStatus(status); 
+                // eish, same issue with structs here
+                var status = new Status(VisaApplication.VisaApplication.StatusId, "REJECTED", Reason);
+                var visa = new VisaApplication(VisaApplication.VisaApplication.Id, Officer.google_id, status.Id, VisaApplication.VisaApplication.DestinationPlanet, VisaApplication.VisaApplication.TravelReason, VisaApplication.VisaApplication.StartDate, VisaApplication.VisaApplication.EndDate, VisaApplication.VisaApplication.SubmittedAt, DateTime.Now, Officer.google_id);
+                await ApiClient.ProcessVisaApplication(visa, status); 
                 Reason = "";
                 VisaApplication = null;
             });
@@ -69,9 +71,10 @@ namespace DOSA_Client.ViewModels
 
         public void ApproveApplication()
         {
-            var status = new Status(VisaApplication.VisaApplication.StatusId, "APPROVED", Reason);
             Task.Run(async ()=>{
-                await ApiClient.UpdateApplicationStatus(status); 
+                var status = new Status(VisaApplication.VisaApplication.StatusId, "APPROVED", Reason);
+                var visa = new VisaApplication(VisaApplication.VisaApplication.Id, Officer.google_id, status.Id, VisaApplication.VisaApplication.DestinationPlanet, VisaApplication.VisaApplication.TravelReason, VisaApplication.VisaApplication.StartDate, VisaApplication.VisaApplication.EndDate, VisaApplication.VisaApplication.SubmittedAt, DateTime.Now, Officer.google_id);
+                await ApiClient.ProcessVisaApplication(visa, status);
                 Reason = "";
                 VisaApplication = null;
             });

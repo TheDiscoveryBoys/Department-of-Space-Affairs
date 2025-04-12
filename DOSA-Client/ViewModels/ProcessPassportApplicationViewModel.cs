@@ -86,9 +86,11 @@ namespace DOSA_Client.ViewModels
 
         public void RejectApplication()
         {
-            var status = new Status(PassportApplication.PassportApplication.StatusId, "REJECTED", Reason);
             Task.Run(async ()=>{
-                await ApiClient.UpdateApplicationStatus(status); 
+                // using records makes this very shit (I think we should have stuck to classes imo)
+                var status = new Status(PassportApplication.PassportApplication.StatusId, "REJECTED", Reason);
+                var passport = new PassportApplication(PassportApplication.PassportApplication.Id, PassportApplication.Applicant.google_id, status.Id, PassportApplication.PassportApplication.SubmittedAt, DateTime.Now, Officer.google_id);
+                await ApiClient.ProcessPassportApplication(passport, status); 
                 Reason = "";
                 PassportApplication = null;
             });
@@ -99,7 +101,8 @@ namespace DOSA_Client.ViewModels
         {
             Task.Run(async ()=>{
                 var status = new Status(PassportApplication.PassportApplication.StatusId, "APPROVED", Reason);
-                await ApiClient.UpdateApplicationStatus(status);
+                var passport = new PassportApplication(PassportApplication.PassportApplication.Id, PassportApplication.Applicant.google_id, status.Id, PassportApplication.PassportApplication.SubmittedAt, DateTime.Now, Officer.google_id);
+                await ApiClient.ProcessPassportApplication(passport, status);
                 Reason = "";
                 PassportApplication = null;
             });

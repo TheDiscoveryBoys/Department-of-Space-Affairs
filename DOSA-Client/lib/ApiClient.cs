@@ -129,5 +129,30 @@ namespace DOSA_Client.lib
             return await RestClient.UpdateApplicationStatus(status);
         }
 
+
+        public static async Task<bool> ProcessVisaApplication(VisaApplication visa, Status status)
+        {
+            // update status
+            if (!await RestClient.UpdateApplicationStatus(status))
+            {
+                return false;
+            }
+
+            // update visa
+            return await RestClient.UpdateVisaApplication(visa);
+        }
+
+        public static async Task<bool> ProcessPassportApplication(PassportApplication passport, Status status)
+        {
+            // update status
+            if (!await RestClient.UpdateApplicationStatus(status))
+            {
+                return false;
+            }
+
+            // update passport
+            return await RestClient.UpdatePassportApplication(passport);
+        }
+
     }
 }
