@@ -164,6 +164,9 @@ jobs:
 
   deploy-api:
      name: Deploy API to EC2
+     permissions:
+      id-token: write
+      contents: read
      needs: build-api
      runs-on: ec2_api
      steps:
