@@ -23,7 +23,7 @@ public static class RestClient
     {
         await Task.Delay(1000);
         return [
-                new Role( 1, "OFFICER")
+                new Role( 1, "APPLICANT")
         ];
     }
 
@@ -173,7 +173,7 @@ public static class RestClient
         form.Add(new StringContent(applicationId.ToString()), "application_id"); // name="description"
 
         // hit the endpoint with the file to upload
-        var response = await HttpClient.PostAsync($"{Constants.BaseURI}api/passport-documents", form);
+        var response = await HttpClient.PostAsync($"{Constants.BaseURI}api/passport-documents/upload", form);
 
         if (response.IsSuccessStatusCode)
         {
