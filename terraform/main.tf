@@ -44,6 +44,14 @@ resource "aws_security_group" "allow_postgres" {
   }
 }
 
+data "aws_secretsmanager_secret_version" "postgresuser" {
+  secret_id = "postgresuser"
+}
+
+data "aws_secretsmanager_secret_version" "postgrespass" {
+  secret_id = "postgrespass"
+}
+
 resource "aws_db_instance" "spaceaffairsdb" {
   identifier             = "spaceaffairsdb"
   engine                 = "postgres"
@@ -53,8 +61,8 @@ resource "aws_db_instance" "spaceaffairsdb" {
   allocated_storage      = 20
   storage_type           = "gp2"
   publicly_accessible    = true
-  username               = var.db_username    #TODO - store differently
-  password               = var.db_password    #TODO - store differently
+  username               = data.aws_secretsmanager_secret_version.postgresuser.secret_string
+  password               = data.aws_secretsmanager_secret_version.postgrespass.secret_string
   skip_final_snapshot    = true
   vpc_security_group_ids = [aws_security_group.allow_postgres.id]
   tags = {
@@ -67,8 +75,13 @@ output "db_host" {
   description = "The endpoint of the Postgres Server RDS instance"
 }
 
+resource "aws_s3_bucket" "spaceaffairsdocumentbucket" {
+  bucket = "spaceaffairsdocumentbucket"
+
+}
+
 resource "aws_security_group" "ec2_security_group" {
-  name_prefix = "fupboard_api_sg"
+  name_prefix = "spaceaffairs_api_sg"
 
   ingress {
     from_port   = 22
@@ -97,8 +110,9 @@ resource "aws_security_group" "ec2_security_group" {
 }
 
 resource "aws_instance" "spaceaffairs_ec2_instance" {
-  ami           = "ami-00d6d5db7a745ff3f"
+  ami           = "ami-0b7e05c6022fc830b"
   instance_type = "t3.micro"
+  key_name      = "spaceaffairs-key"
   tags = {
     Name = "spaceaffairs_ec2_instance"
   }
@@ -106,28 +120,14 @@ resource "aws_instance" "spaceaffairs_ec2_instance" {
   vpc_security_group_ids = [ aws_security_group.ec2_security_group.id ]
 
   user_data = <<-EOF
-    #!/bin/bash
-    # Install necessary packages
+    sudo apt update
+    sudo apt install docker.io -y
 
-    # Setup Systemd Service
-
-    # Setup nginx proxy
-    mkdir -p /etc/nginx/conf.d
-    file="/etc/nginx/conf.d/proxy.conf"
-
-    echo "server {" > $file
-    echo "  listen 80;" >> $file
-    echo "  server_name *.amazonaws.com;" >> $file
-    echo "  location / {" >> $file
-    echo "    proxy_pass http://localhost:8080;" >> $file
-    echo "    proxy_set_header Host \$host;" >> $file
-    echo "    proxy_set_header X-Real-IP \$remote_addr;" >> $file
-    echo "  }" >> $file
-    echo "}" >> $file
-
-    systemctl enable nginx
-    systemctl start nginx
-
+    mkdir -p /home/ubuntu/.ssh
+    echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDLissAbEP+9Z3OuSnLmpYk5DMB9DjrR9IDOKAmWgzHWRT8GVz6AqwJPbDo1HpCJ+IJs+bHhvm+YBJbsU36DB9tCYtPs/o7YBhz4B8qdNvBZd8YvT0+OdvLOJcuKedbGg3Hmtwhcp788HFec0ugv9GjNaHFPPD20al4ZRNzBJi5ydYyYroynVekcd7Wag8J8tMANQA2kGdRpS7b3sDwu0d/sEaM/ZxdDta5i5Gjcpg0/11aq5hPprWtaUWCy5Yl9VRuvLvSLJ5fJVGnAZ3ghtXVDATd9bWVVeRwVs6SNUu8aIpg9h8+RC9288TjBA+S5048UxOlWGObEiRiHk84VqW7" >> /home/ubuntu/.ssh/authorized_keys
+    chown -R ubuntu:ubuntu /home/ubuntu/.ssh
+    chmod 700 /home/ubuntu/.ssh
+    chmod 600 /home/ubuntu/.ssh/authorized_keys
     EOF
 }
 

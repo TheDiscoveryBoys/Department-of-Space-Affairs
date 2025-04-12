@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - development
+      - pipeline-adjust-linux
 
 jobs:
   terraform:
@@ -15,11 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       dbhost: ${{ steps.tf_outputs.outputs.dbhost }}
-      # ec2host: ${{ steps.tf_outputs.outputs.ec2host }}
-    env:
-      TF_VAR_db_password: ${{ secrets.TF_VAR_DB_PASSWORD }}
-      TF_VAR_db_username: ${{ secrets.TF_VAR_DB_USERNAME }}
-      #TF_VAR_key_name: spaceaffairskey
+      ec2host: ${{ steps.tf_outputs.outputs.ec2host }}
     defaults:
       run:
         working-directory: terraform
@@ -28,9 +25,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: arn:aws:iam::${{ secrets.IAM_USER_ID }}:role/gh-actions-role
+          role-to-assume: arn:aws:iam::179530787873:role/gh-actions-role #We did our research and the account ID is NOT considered secret, sensitive, or confidential information.
           aws-region: af-south-1
 
       - name: Setup Terraform
@@ -41,7 +38,7 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: terraform init -backend-config="bucket=space-affairs-bucket-test" -backend-config="key=terraformstate/terraform.tfstate" -backend-config="region=af-south-1"
+        run: terraform init -backend-config="bucket=spaceaffairsterraform" -backend-config="key=terraformstate/terraform.tfstate" -backend-config="region=af-south-1"
 
       - name: Terraform Apply
         run: terraform apply -auto-approve
@@ -50,17 +47,188 @@ jobs:
         id: tf_outputs
         run: |
           echo "dbhost=$(terraform output -raw db_host)" >> $GITHUB_OUTPUT
+          echo "ec2host=$(terraform output -raw ec2_host)" >> $GITHUB_OUTPUT
           
+  release-front-end:
+    name: Build & Release Front-End
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup MSBuild.exe
+        uses: microsoft/setup-msbuild@v1.0.2
+
+      - name: Setup VS Dev Environment
+        uses: seanmiddleditch/gha-setup-vsdevenv@v4
+
+      - name: Restore NuGet Packages
+        run: msbuild /t:Restore
+
+      - name: Build the application
+        run: msbuild /t:Build /p:Configuration=Release
+
+      - name: Disable Out of Process Building
+        run: .\DisableOutOfProcBuild.exe
+        working-directory: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\VSI\DisableOutOfProcBuild
+      
+      - name: Build the Installer
+        run: DevEnv DOSA-Client.sln /build Release
+        working-directory: DOSA-Client
+
+      - name: Get Version
+        run: |
+            $version = Get-Date -Format "yyyy.MM.dd-HH.mm.ss"
+            echo "VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+        shell: pwsh
+
+      - name: Create Front-End Release
+        uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ env.VERSION }}
+          name: "Release v${{ env.VERSION }}"
+          body: "Automated release for commit ${{ github.sha }}"
+          draft: false
+          prerelease: false
+          files: SpaceAffairsInstaller/Release/*.msi
+  
+  build-api:
+    name: Build API
+    runs-on: ubuntu-latest
+    needs: 
+      - terraform
+    
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::179530787873:role/gh-actions-role
+          aws-region: af-south-1
+
+      - name: Get secrets from AWS Key Store
+        uses: aws-actions/aws-secretsmanager-get-secrets@v2
+        with:
+          secret-ids: |
+            POSTGRES_USER, postgresuser
+            POSTGRES_PASS, postgrespass
+            GOOGLE_CLIENT_SECRET, googleclientsecret
+            EC2_PRIV_KEY, ec2privatekey
+
+      - name: Generate appsettings.Production.json
+        working-directory: IntergalacticPassportAPI
+        run: |
+          file=appsettings.Production.json
+          echo "{" > $file
+          echo '  "ConnectionStrings": {' >> $file
+          echo "    \"DefaultConnection\": \"Host=${{ needs.terraform.outputs.dbhost }};Port=5432;Database=spaceaffairsdb;Username=${{ env.POSTGRES_USER }};Password=${{ env.POSTGRES_PASS }}\"" >> $file
+          echo "  }," >> $file
+          echo '  "Logging": {' >> $file
+          echo '    "LogLevel": {' >> $file
+          echo '      "Default": "Information",' >> $file
+          echo '      "Microsoft.AspNetCore": "Warning"' >> $file
+          echo '    }' >> $file
+          echo '  },' >> $file
+          echo '  "AllowedHosts": "*"' >> $file
+          echo "}" >> $file
+
+      - name: Write private key
+        run: |
+          echo "${{ env.EC2_PRIV_KEY }}" > spaceaffairs-key.pem
+          chmod 600 spaceaffairs-key.pem
+
+      - name: SSH into EC2 and Install Docker
+        run: |
+          ssh -o StrictHostKeyChecking=no -i spaceaffairs-key.pem ubuntu@${{ needs.terraform.outputs.ec2host }} "sudo apt update && sudo apt install docker.io -y"
+
+      - name: Build the Docker image
+        run: |
+          docker build -t space-affairs-api-image -f IntergalacticPassportAPI/Dockerfile IntergalacticPassportAPI
+
+      - name: Save Docker image as an artifact
+        run: |
+          docker save space-affairs-api-image | gzip > space-affairs-api-image.tar.gz
+
+      - name: Upload Docker image artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: space-affairs-api-image
+          path: space-affairs-api-image.tar.gz
+
+  deploy-api:
+     name: Deploy API to EC2
+     permissions:
+      id-token: write
+      contents: read
+     needs: build-api
+     runs-on: ec2_api
+     steps:
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::179530787873:role/gh-actions-role
+          aws-region: af-south-1
+
+      - name: Get secrets from AWS Key Store
+        uses: aws-actions/aws-secretsmanager-get-secrets@v2
+        with:
+          secret-ids: |
+            GOOGLE_CLIENT_SECRET, googleclientsecret
+            S3_ID, s3id
+            S3_KEY, s3key
+
+      - name: Prune unused images
+        run: sudo docker system prune --force
+
+      - name: Download Docker image artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: space-affairs-api-image
+
+      - name: Load Docker image
+        run: |
+          gunzip -c space-affairs-api-image.tar.gz | sudo docker load
+
+      - name: Delete old container
+        run: sudo docker rm -f space-affairs-api-container
+
+      - name: Run container
+        run: sudo docker run -d -e CLIENT_SECRET="${{env.GOOGLE_CLIENT_SECRET}}" -e AWS_SECRET_KEY="${{env.S3_KEY}}" -e AWS_SECRET_ID="${{env.S3_ID}}"  -p 80:8080 --name space-affairs-api-container space-affairs-api-image
+        
   flyway:
     needs:
       - terraform
-      # - release
+      - deploy-api
+    permissions:
+      id-token: write
+      contents: read
     name: Flyway Migrations
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::179530787873:role/gh-actions-role
+          aws-region: af-south-1
+      
+      - name: Get secrets from AWS Key Store
+        uses: aws-actions/aws-secretsmanager-get-secrets@v2
+        with:
+          secret-ids: |
+                POSTGRES_USER, postgresuser
+                POSTGRES_PASS, postgrespass
+
       - name: Run Flyway Migrations
         run: |
-          docker run --rm --volume ${{ github.workspace }}/migrations:/flyway/sql:ro redgate/flyway -url="jdbc:postgresql://${{ needs.terraform.outputs.dbhost }}/spaceaffairsdb" -user="${{ secrets.TF_VAR_DB_USERNAME }}" -password="${{ secrets.TF_VAR_DB_PASSWORD }}" migrate
+          docker run --rm --volume ${{ github.workspace }}/migrations:/flyway/sql:ro redgate/flyway -url="jdbc:postgresql://${{ needs.terraform.outputs.dbhost }}/spaceaffairsdb" -user="${{ env.POSTGRES_USER }}" -password="${{ env.POSTGRES_PASS }}" migrate

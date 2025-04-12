@@ -1,0 +1,6 @@
+@IntergalacticPassportAPI_HostAddress = http://ec2-13-246-113-36.af-south-1.compute.amazonaws.com:80
+
+GET {{IntergalacticPassportAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
