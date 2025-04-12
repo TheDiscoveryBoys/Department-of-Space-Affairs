@@ -8,14 +8,24 @@ using System.Text.Json;
 namespace IntergalacticPassportAPI.Data
 {
     public class PassportRepository(IConfiguration config) : BaseRepository<Passport>(config, "passport_applications")
+    public class PassportRepository(IConfiguration config) : BaseRepository<Passport>(config, "passport_applications")
     {
+        //     private readonly IConfiguration _configuration;
         //     private readonly IConfiguration _configuration;
 
         //     public PassportRepository(IConfiguration configuration)
         //     {
         //         _configuration = configuration;
         //     }
+        //     public PassportRepository(IConfiguration configuration)
+        //     {
+        //         _configuration = configuration;
+        //     }
 
+        //     private IDbConnection CreateConnection()
+        //     {
+        //         return new NpgsqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+        //     }
         //     private IDbConnection CreateConnection()
         //     {
         //         return new NpgsqlConnection(_configuration.GetConnectionString("DefaultConnection"));
@@ -89,7 +99,28 @@ namespace IntergalacticPassportAPI.Data
         //                     RETURNING id;";
         //             return await connection.ExecuteScalarAsync<int>(sql, passport);
         //         }
+        //     public async Task<int> CreateAsync(Passport passport)
+        //     {
+        //         try
+        //         {
+        //             using var connection = CreateConnection();
+        //             var sql = @"INSERT INTO passport_applications (user_id, status_id, submitted_at, processed_at, officer_id)
+        //                     VALUES (@UserId, @StatusId, @SubmittedAt, @ProcessedAt)
+        //                     RETURNING id;";
+        //             return await connection.ExecuteScalarAsync<int>(sql, passport);
+        //         }
 
+        //         catch (Exception ex) 
+        //         {
+        //             throw new Exception("An error occurred while creating the passport.", ex);
+        //         }
+
+        //    catch (Exception ex) 
+        //    {
+        //        throw new Exception("An error occurred while creating the passport.", ex);
+        //    }
+
+        //}
         //         catch (Exception ex) 
         //         {
         //             throw new Exception("An error occurred while creating the passport.", ex);

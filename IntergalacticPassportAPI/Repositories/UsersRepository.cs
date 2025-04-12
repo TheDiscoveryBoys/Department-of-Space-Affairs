@@ -16,6 +16,7 @@ namespace IntergalacticPassportAPI.Data
                     WHERE ur.user_id = @GoogleId;
                     ";
             var roles = await db.QueryAsync<Roles>(sql, new { GoogleId = googleId });
+            //Console.WriteLine(roles.ElementAt(0).Role);
             return roles;
         }
 
@@ -28,6 +29,7 @@ namespace IntergalacticPassportAPI.Data
                     VALUES (@UserId, @RoleId)
                     ON CONFLICT DO NOTHING;
                 ";
+            Console.WriteLine(sql);
             Console.WriteLine(sql);
             var rowsAffected = await db.ExecuteAsync(sql, new { UserId = googleId, RoleId = roleId });
             return rowsAffected > 0;

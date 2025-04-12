@@ -9,12 +9,23 @@ namespace IntergalacticPassportAPI.Data
     public class VisaRepository(IConfiguration config) : BaseRepository<Visa>(config, "visa_applications")
     {
         // private readonly IConfiguration _configuration;
+    public class VisaRepository(IConfiguration config) : BaseRepository<Visa>(config, "visa_applications")
+    {
+        // private readonly IConfiguration _configuration;
 
         // public VisaRepository(IConfiguration configuration) 
         // {
         //     _configuration = configuration;
         // }
+        // public VisaRepository(IConfiguration configuration) 
+        // {
+        //     _configuration = configuration;
+        // }
 
+        // private IDbConnection CreateConnection()
+        // {
+        //     return new NpgsqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+        // }
         // private IDbConnection CreateConnection()
         // {
         //     return new NpgsqlConnection(_configuration.GetConnectionString("DefaultConnection"));
@@ -25,7 +36,18 @@ namespace IntergalacticPassportAPI.Data
         //     using var connection = CreateConnection();
         //     return await connection.QueryAsync<Visa>("SELECT * FROM visa_applications ORDER BY id;");
         // }
+        // public async Task<IEnumerable<Visa>> GetAllAsync()
+        // {
+        //     using var connection = CreateConnection();
+        //     return await connection.QueryAsync<Visa>("SELECT * FROM visa_applications ORDER BY id;");
+        // }
 
+        // public async Task<Visa?> GetByIdAsync(int id)
+        // {
+        //     using var connection = CreateConnection();
+        //     return await connection.QueryFirstOrDefaultAsync<Visa>(
+        //         "SELECT * FROM visa_applications WHERE id = @Id;", new { Id = id });
+        // }
         // public async Task<Visa?> GetByIdAsync(int id)
         // {
         //     using var connection = CreateConnection();

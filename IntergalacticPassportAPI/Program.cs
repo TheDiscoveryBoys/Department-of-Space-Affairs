@@ -10,6 +10,10 @@ using Swashbuckle.AspNetCore;
 using IntergalacticPassportAPI.Data;
 using System.Security.Claims;
 using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore;
+using IntergalacticPassportAPI.Data;
+using System.Security.Claims;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true; // This line ensures that PascalCase prpoperties are correctly mapped to snake case in the DB.
@@ -20,18 +24,26 @@ builder.Services.AddScoped<VisaRepository>();
 builder.Services.AddScoped<PassportDocumentRepository>();
 builder.Services.AddScoped<StatusRepository>();
 builder.Services.AddScoped<UsersRepository>();
+builder.Services.AddScoped<UserRolesRepository>();
 builder.Services.AddScoped<RolesRepository>();
+builder.Services.AddScoped<VisaRepository>();
+builder.Services.AddScoped<PassportDocumentRepository>();
+builder.Services.AddScoped<StatusRepository>();
 builder.Services.AddScoped<VisaRepository>();
 builder.Services.AddScoped<PassportDocumentRepository>();
 builder.Services.AddScoped<StatusRepository>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
+    .AddJwtBearer(options =>
     {
         options.Authority = "https://accounts.google.com";
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
+            ValidIssuer = "https://accounts.google.com",
+            ValidateLifetime = false,
+            ValidAudience = "988182050054-vlcub1cr22892gc1e4uesj5d6sa3ji1v.apps.googleusercontent.com",
             ValidIssuer = "https://accounts.google.com",
             ValidateLifetime = false,
             ValidAudience = "988182050054-vlcub1cr22892gc1e4uesj5d6sa3ji1v.apps.googleusercontent.com",
@@ -70,7 +82,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 // TODO: Come readd this 
- // builder.Services.AddAuthorization();
+builder.Services.AddAuthorization();
 
 builder.Services.AddSwaggerGen(c =>
 {
@@ -105,7 +117,7 @@ app.UseSwaggerUI();
 
 app.MapControllers();
 app.UseAuthentication();
-//app.UseAuthorization();
+app.UseAuthorization();
 app.Run();
 
 

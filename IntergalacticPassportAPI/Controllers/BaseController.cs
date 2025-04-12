@@ -98,7 +98,8 @@ namespace IntergalacticPassportAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(string id){ // Account for int or string id
+        public async Task<ActionResult> Delete(string id)
+        {
             return await BaseRequest(async () =>
             {
                 bool deleted = await _repo.Delete(id);

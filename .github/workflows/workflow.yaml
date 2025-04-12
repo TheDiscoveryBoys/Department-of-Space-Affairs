@@ -5,7 +5,7 @@ on:
     branches:
       - main
       - development
-      - pipeline-setup
+      - pipeline-adjust-linux
 
 jobs:
   terraform:
@@ -27,7 +27,7 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: arn:aws:iam::${{ secrets.IAM_USER_ID }}:role/gh-actions-role #This probably doesn't actually need to be a secret - will confirm
+          role-to-assume: arn:aws:iam::179530787873:role/gh-actions-role #We did our research and the account ID is NOT considered secret, sensitive, or confidential information.
           aws-region: af-south-1
 
       - name: Setup Terraform
@@ -52,31 +52,29 @@ jobs:
   release-front-end:
     name: Build & Release Front-End
     runs-on: windows-latest
-    needs: 
-      - terraform
-      - release-api
-    env: 
-      PROJECT_PATH: DOSA-Client.csproj
-    defaults:
-      run:
-        working-directory: DOSA-Client
     steps:
-      - name: Checkout
+      - name: Checkout Repository
         uses: actions/checkout@v4
-      
-      - name: Install Dotnet
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '9.0.x'
 
-      - name: Restore packages
-        run: dotnet restore ${{ env.PROJECT_PATH }} -p:SelfContained=true
-      
-      - name: Build Application
-        run: dotnet build ${{ env.PROJECT_PATH }} -c Release --self-contained --no-restore
+      - name: Setup MSBuild.exe
+        uses: microsoft/setup-msbuild@v1.0.2
 
-      - name: Publish Application
-        run: dotnet publish ${{ env.PROJECT_PATH }} -c Release --self-contained -r win-x64 -p:PublishSingleFile=true --no-build
+      - name: Setup VS Dev Environment
+        uses: seanmiddleditch/gha-setup-vsdevenv@v4
+
+      - name: Restore NuGet Packages
+        run: msbuild /t:Restore
+
+      - name: Build the application
+        run: msbuild /t:Build /p:Configuration=Release
+
+      - name: Disable Out of Process Building
+        run: .\DisableOutOfProcBuild.exe
+        working-directory: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\VSI\DisableOutOfProcBuild
+      
+      - name: Build the Installer
+        run: DevEnv DOSA-Client.sln /build Release
+        working-directory: DOSA-Client
 
       - name: Get Version
         run: |
@@ -94,79 +92,115 @@ jobs:
           body: "Automated release for commit ${{ github.sha }}"
           draft: false
           prerelease: false
-          files: DOSA-Client/bin/Release/net9.0-windows/win-x64/publish/*.exe
-
-  release-api:
-    name: Build & Release API
-    runs-on: windows-latest
-    needs: terraform
-    env: 
-      PROJECT_PATH: IntergalacticPassportAPI.csproj
-    defaults:
-      run:
-        working-directory: IntergalacticPassportAPI
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-    
-    - name: Install Dotnet
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: '9.0.x'
-
-    - name: Restore packages
-      run: dotnet restore ${{ env.PROJECT_PATH }} -p:SelfContained=true
-    
-    - name: Build API
-      run: dotnet build ${{ env.PROJECT_PATH }} -c Release --self-contained --no-restore
-
-    - name: Publish API
-      run: dotnet publish ${{ env.PROJECT_PATH }} -c Release --self-contained -r win-x64 -p:PublishSingleFile=true --no-build
-
-    - name: Rename API executable
-      run: |
-        Rename-Item -Path "bin\Release\net9.0\win-x64\publish\IntergalacticPassportAPI.exe" -NewName "SpaceAffairsAPI.exe"
-      shell: pwsh
-
-    - name: Upload API Artifact for Deployment
-      uses: actions/upload-artifact@v4
-      with:
-        name: SpaceAffairsAPI
-        path: IntergalacticPassportAPI/bin/Release/net9.0/win-x64/publish/SpaceAffairsAPI.exe
-        
-
-  deploy:
-    name: Deploy API
-    needs: 
-      - release-api
-      - terraform
+          files: SpaceAffairsInstaller/Release/*.msi
+  
+  build-api:
+    name: Build API
     runs-on: ubuntu-latest
+    needs: 
+      - terraform
+    
+    permissions:
+      id-token: write
+      contents: read
 
     steps:
-    - name: Download API Artifact for Deployment
-      uses: actions/download-artifact@v4
-      with:
-        name: SpaceAffairsAPI
+      - uses: actions/checkout@v4
 
-    - name: Write private key
-      run: |
-        echo "${{ secrets.EC2_PRIVATE_KEY }}" > spaceaffairs-key.pem
-        chmod 600 spaceaffairs-key.pem
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::179530787873:role/gh-actions-role
+          aws-region: af-south-1
 
-    - name: Deploy to EC2
-      env:
-        EC2_HOST: ${{ needs.terraform.outputs.ec2host }}
-      run: |
-        # Upload the .exe to the EC2 instance
-        scp -o StrictHostKeyChecking=no -i spaceaffairs-key.pem ./SpaceAffairsAPI.exe "Administrator@${EC2_HOST}:C:/deploy/SpaceAffairsAPI.exe"
+      - name: Get secrets from AWS Key Store
+        uses: aws-actions/aws-secretsmanager-get-secrets@v2
+        with:
+          secret-ids: |
+            POSTGRES_USER, postgresuser
+            POSTGRES_PASS, postgrespass
+            GOOGLE_CLIENT_SECRET, googleclientsecret
+            EC2_PRIV_KEY, ec2privatekey
 
-        # Start API
-          ssh -o StrictHostKeyChecking=no -i spaceaffairs-key.pem "Administrator@${EC2_HOST}" powershell -Command "cd 'C:/deploy'; Start-Process .\SpaceAffairsAPI.exe"
+      - name: Generate appsettings.Production.json
+        working-directory: IntergalacticPassportAPI
+        run: |
+          file=appsettings.Production.json
+          echo "{" > $file
+          echo '  "ConnectionStrings": {' >> $file
+          echo "    \"DefaultConnection\": \"Host=${{ needs.terraform.outputs.dbhost }};Port=5432;Database=spaceaffairsdb;Username=${{ env.POSTGRES_USER }};Password=${{ env.POSTGRES_PASS }}\"" >> $file
+          echo "  }," >> $file
+          echo '  "Logging": {' >> $file
+          echo '    "LogLevel": {' >> $file
+          echo '      "Default": "Information",' >> $file
+          echo '      "Microsoft.AspNetCore": "Warning"' >> $file
+          echo '    }' >> $file
+          echo '  },' >> $file
+          echo '  "AllowedHosts": "*"' >> $file
+          echo "}" >> $file
 
+      - name: Write private key
+        run: |
+          echo "${{ env.EC2_PRIV_KEY }}" > spaceaffairs-key.pem
+          chmod 600 spaceaffairs-key.pem
+
+      - name: SSH into EC2 and Install Docker
+        run: |
+          ssh -o StrictHostKeyChecking=no -i spaceaffairs-key.pem ubuntu@${{ needs.terraform.outputs.ec2host }} "sudo apt update && sudo apt install docker.io -y"
+
+      - name: Set Environment Variables
+        run: |
+          EC2_HOST=${{ needs.terraform.outputs.ec2host }}
+        
+          ssh -o StrictHostKeyChecking=no -i spaceaffairs-key.pem "ubuntu@$EC2_HOST" << 'EOF'
+           
+            echo "export GOOGLE_CLIENT_SECRET=${{ env.GOOGLE_CLIENT_SECRET }}" >> ~/.bashrc
+            
+            source ~/.bashrc
+          EOF
+
+      - name: Build the Docker image
+        run: |
+          docker build -t space-affairs-api-image -f IntergalacticPassportAPI/Dockerfile IntergalacticPassportAPI
+
+      - name: Save Docker image as an artifact
+        run: |
+          docker save space-affairs-api-image | gzip > space-affairs-api-image.tar.gz
+
+      - name: Upload Docker image artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: space-affairs-api-image
+          path: space-affairs-api-image.tar.gz
+
+  deploy-api:
+     name: Deploy API to EC2
+     needs: build-api
+     runs-on: ec2_api
+     steps:
+
+      - name: Prune unused images
+        run: sudo docker system prune --force
+
+      - name: Download Docker image artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: space-affairs-api-image
+
+      - name: Load Docker image
+        run: |
+          gunzip -c space-affairs-api-image.tar.gz | sudo docker load
+
+      - name: Delete old container
+        run: sudo docker rm -f space-affairs-api-container
+
+      - name: Run container
+        run: sudo docker run -d -p 80:8080 --name space-affairs-api-container space-affairs-api-image
+        
   flyway:
     needs:
       - terraform
-      - release-api
+      - deploy-api
     permissions:
       id-token: write
       contents: read
@@ -179,7 +213,7 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: arn:aws:iam::${{ secrets.IAM_USER_ID }}:role/gh-actions-role
+          role-to-assume: arn:aws:iam::179530787873:role/gh-actions-role
           aws-region: af-south-1
       
       - name: Get secrets from AWS Key Store
