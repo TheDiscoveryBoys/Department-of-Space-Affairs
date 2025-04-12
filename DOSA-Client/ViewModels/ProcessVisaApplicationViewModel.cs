@@ -102,6 +102,13 @@ namespace DOSA_Client.ViewModels
                 Task.Run(async () => {
                     VisaApplication = await ApiClient.GetVisaApplication(Officer.google_id);
                     Reason = "";
+
+                    if (VisaApplication != null)
+                    {
+                        // assign application to current officer
+                        var visa = new VisaApplication(VisaApplication.VisaApplication.Id, VisaApplication.Applicant.google_id, VisaApplication.VisaApplication.StatusId, VisaApplication.VisaApplication.DestinationPlanet, VisaApplication.VisaApplication.TravelReason, VisaApplication.VisaApplication.StartDate, VisaApplication.VisaApplication.EndDate, VisaApplication.VisaApplication.SubmittedAt, null, Officer.google_id);
+                        await RestClient.UpdateVisaApplication(visa);
+                    }
                 });
             }
         }

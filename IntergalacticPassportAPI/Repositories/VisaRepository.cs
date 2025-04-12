@@ -59,13 +59,13 @@ namespace IntergalacticPassportAPI.Data
 
         public async Task<Visa?> GetVisaApplicationByOfficerId(string officerId){
             using (var db = CreateDBConnection()){
-                var sql= $"SELECT * FROM visa_applications WHERE officer_id = '${officerId}' OR officer_id IS NULL ORDER BY submitted_at ASC;";
+                var sql= $"SELECT * FROM visa_applications WHERE officer_id = '{officerId}' OR officer_id IS NULL ORDER BY submitted_at ASC;";
                 var applications = await db.QueryAsync<Visa>(sql);
                 var openApplications =  applications.Where(app => app.OfficerId != null);
                 foreach(var app in openApplications){
                     var statusSql = $"SELECT * FROM statuses WHERE status_id = {app.StatusId}";
-                    var status = await db.QueryFirstAsync<Status>(sql);
-                    if(status.Name != "APPROVED"){
+                    var status = await db.QueryFirstAsync<Status>(statusSql);
+                    if(status.Name == "PENDING"){
                         return app; 
                     }
                 }

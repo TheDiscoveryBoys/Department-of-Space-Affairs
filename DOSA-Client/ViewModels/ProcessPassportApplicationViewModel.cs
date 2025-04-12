@@ -80,6 +80,12 @@ namespace DOSA_Client.ViewModels
             if(visibility){
                 Task.Run(async () => {
                     PassportApplication = await ApiClient.GetPassportApplication(Officer.google_id);
+                    if (PassportApplication != null)
+                    {
+                        // assign application to current officer
+                        var passport = new PassportApplication(PassportApplication.PassportApplication.Id, PassportApplication.Applicant.google_id, PassportApplication.PassportApplication.StatusId, PassportApplication.PassportApplication.SubmittedAt, null, Officer.google_id);
+                        await RestClient.UpdatePassportApplication(passport);
+                    }
                 });
             }
         }

@@ -3,6 +3,7 @@ using Dapper;
 using IntergalacticPassportAPI.Models;
 using Npgsql;
 using System.Data;
+using System.Text.Json;
 
 namespace IntergalacticPassportAPI.Data
 {
@@ -47,13 +48,19 @@ namespace IntergalacticPassportAPI.Data
 
         public async Task<Passport?> GetPassportApplicationByOfficerId(string officerId){
              using (var db = CreateDBConnection()){
-                var sql= $"SELECT * FROM passport_applications WHERE officer_id = '${officerId}' OR officer_id IS NULL ORDER BY submitted_at ASC;";
+                var sql= $"SELECT * FROM passport_applications WHERE officer_id = '{officerId}' OR officer_id IS NULL ORDER BY submitted_at ASC;";
+                Console.WriteLine(sql);
                 var applications = await db.QueryAsync<Passport>(sql);
+                Console.WriteLine($"Applications: {JsonSerializer.Serialize(applications)}");
                 var openApplications =  applications.Where(app => app.OfficerId != null);
+                Console.WriteLine($"Open applications: {JsonSerializer.Serialize(openApplications)}");
                 foreach(var app in openApplications){
-                    var statusSql = $"SELECT * FROM statuses WHERE status_id = {app.StatusId}";
-                    var status = await db.QueryFirstAsync<Status>(sql);
-                    if(status.Name != "APPROVED"){
+                    var statusSql = $"SELECT * FROM statuses WHERE id = {app.StatusId}";
+                    Console.WriteLine(statusSql);
+                    var status = await db.QueryFirstAsync<Status>(statusSql);
+                    Console.WriteLine($"Status: {JsonSerializer.Serialize(status)}: {status.Name == "PENDING"}");
+                    if(status.Name == "PENDING"){
+                        Console.WriteLine($"Returning application: {JsonSerializer.Serialize(app)}");
                         return app; 
                     }
                 }
