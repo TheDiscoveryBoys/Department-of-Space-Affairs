@@ -9,6 +9,7 @@ using System.Text.Json;
 using System.Windows.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using DOSA_Client.lib;
+using DOSA_Client.lib.Constants;
 using DOSA_Client.Models;
 using DOSA_Client.ViewModels;
 
@@ -40,7 +41,7 @@ namespace DOSA_Client.ViewModels
         public async Task UpdateTabsAsync()
         {
             // this function checks the applications for the current user and decides what tabs to show
-            User CurrentUser = Context.Get<User>("User");
+            User CurrentUser = Context.Get<User>(ContextKeys.USER);
             var roles = await ApiClient.GetRoles(CurrentUser.google_id);
             if (roles.Any(role => role.role == "APPLICANT"))
             {

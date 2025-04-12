@@ -9,7 +9,8 @@ public static class Constants{
 
 public static class ContextKeys
     {
-        public const string User = "User";
-
+        public const string USER = "User";
+        public const string CURRENT_PASSPORT_APPLICATION = "Current Passport Application";
+        public const string CURRENT_VISA_APPLICATION  = "Current Visa Application";
     }
 }

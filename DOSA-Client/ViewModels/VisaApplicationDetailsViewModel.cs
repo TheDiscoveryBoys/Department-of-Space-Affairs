@@ -8,6 +8,7 @@ using DOSA_Client.Models;
 using System.Windows.Input;
 using System.Windows.Controls;
 using System.Windows;
+using DOSA_Client.lib.Constants;
 
 namespace DOSA_Client.ViewModels
 {
@@ -21,7 +22,7 @@ namespace DOSA_Client.ViewModels
         {
             PageManager = pageManager;
             GetNextVisaApplication = new DelegateCommand<string>(OnNext);
-            CurrentUser = Context.Get<User>("User");
+            CurrentUser = Context.Get<User>(ContextKeys.USER);
         }
 
         public ICommand GetNextVisaApplication { get; }
@@ -30,7 +31,7 @@ namespace DOSA_Client.ViewModels
             Console.WriteLine(pageName);
             Task.Run(async () =>
             {
-                var Officer = Context.Get<User>("User");
+                var Officer = Context.Get<User>(ContextKeys.USER);
                 var VisaApplication = await ApiClient.GetVisaApplication(Officer.google_id);
                 if (VisaApplication != null)
                 {

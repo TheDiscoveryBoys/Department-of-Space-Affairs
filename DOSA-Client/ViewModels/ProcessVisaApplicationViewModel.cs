@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using DOSA_Client.lib;
+using DOSA_Client.lib.Constants;
 using DOSA_Client.Models;
 
 namespace DOSA_Client.ViewModels
@@ -85,7 +86,7 @@ namespace DOSA_Client.ViewModels
 
             Task.Run(async () =>
             {
-                Officer = await ApiClient.GetUserProfile(Context.Get<User>("User").google_id);
+                Officer = await ApiClient.GetUserProfile(Context.Get<User>(ContextKeys.USER).google_id);
             });
         }
 
@@ -94,7 +95,7 @@ namespace DOSA_Client.ViewModels
             // make API call
             if(visibility){
                 Task.Run(async () => {
-                    VisaApplication = Context.Get<OfficerVisaApplication>("Current Visa Application");
+                    VisaApplication = Context.Get<OfficerVisaApplication>(ContextKeys.CURRENT_VISA_APPLICATION);
                     Reason = "";
                     if (VisaApplication != null)
                     {

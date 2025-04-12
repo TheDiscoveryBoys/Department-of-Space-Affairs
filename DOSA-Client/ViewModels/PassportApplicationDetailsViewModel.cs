@@ -1,4 +1,5 @@
 ﻿using DOSA_Client.lib;
+using DOSA_Client.lib.Constants;
 using DOSA_Client.Models;
 using System;
 using System.Windows;
@@ -19,7 +20,7 @@ namespace DOSA_Client.ViewModels
         {
             PageManager = pageManager;
             GetNextPassportApplication = new DelegateCommand<string>(OnNext);
-            CurrentUser = Context.Get<User>("User");
+            CurrentUser = Context.Get<User>(ContextKeys.USER);
         }
 
         private void OnNext(string pageName)
@@ -27,7 +28,7 @@ namespace DOSA_Client.ViewModels
             Console.WriteLine($"Navigating to: {pageName}");
             Task.Run(async () =>
             {
-                var Officer = Context.Get<User>("User");
+                var Officer = Context.Get<User>(ContextKeys.USER);
                 var PassportApplication = await ApiClient.GetPassportApplication(Officer.google_id);
                 if (PassportApplication != null)
                 {

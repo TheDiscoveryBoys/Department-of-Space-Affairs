@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using DOSA_Client.lib;
+using DOSA_Client.lib.Constants;
 using DOSA_Client.Models;
 
 namespace DOSA_Client.ViewModels
@@ -31,7 +32,7 @@ namespace DOSA_Client.ViewModels
             onNextButtonClickedCommand = new DelegateCommand<string>(OnNext);
             // Call API to get list of passport applications and their statuses
             Task.Run(async ()=>{
-                Applications = new ObservableCollection<Application>(await ApiClient.GetApplications(Context.Get<User>("User").google_id));
+                Applications = new ObservableCollection<Application>(await ApiClient.GetApplications(Context.Get<User>(ContextKeys.USER).google_id));
             });
         }
         public ICommand onNextButtonClickedCommand { get; }
