@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using System.Windows.Controls;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using DOSA_Client.lib;
@@ -46,10 +45,6 @@ namespace DOSA_Client.ViewModels
             get => _visaApplication;
             set
             {
-                // if(value == null){
-                //     Context.Add("Applications Empty", true);
-                //     PageManager.NavigateTo(PageNames.VisaApplicationDetails);
-                // }
                 _visaApplication = value;
                 OnPropertyChanged(nameof(VisaApplication));
             }
@@ -73,7 +68,7 @@ namespace DOSA_Client.ViewModels
         {
             Task.Run(async ()=>{
                 var status = new Status(VisaApplication.VisaApplication.StatusId, "APPROVED", Reason);
-                var visa = new VisaApplication(VisaApplication.VisaApplication.Id, Officer.google_id, status.Id, VisaApplication.VisaApplication.DestinationPlanet, VisaApplication.VisaApplication.TravelReason, VisaApplication.VisaApplication.StartDate, VisaApplication.VisaApplication.EndDate, VisaApplication.VisaApplication.SubmittedAt, DateTime.Now, Officer.google_id);
+                var visa = new VisaApplication(VisaApplication.VisaApplication.Id, VisaApplication.Applicant.google_id, status.Id, VisaApplication.VisaApplication.DestinationPlanet, VisaApplication.VisaApplication.TravelReason, VisaApplication.VisaApplication.StartDate, VisaApplication.VisaApplication.EndDate, VisaApplication.VisaApplication.SubmittedAt, DateTime.Now, Officer.google_id);
                 await ApiClient.ProcessVisaApplication(visa, status);
                 Reason = "";
                 VisaApplication = null;
@@ -92,7 +87,6 @@ namespace DOSA_Client.ViewModels
             {
                 Officer = await ApiClient.GetUserProfile(Context.Get<User>("User").google_id);
             });
-
         }
 
         public void Load(bool visibility)
@@ -100,12 +94,11 @@ namespace DOSA_Client.ViewModels
             // make API call
             if(visibility){
                 Task.Run(async () => {
-                    VisaApplication = await ApiClient.GetVisaApplication(Officer.google_id);
+                    VisaApplication = Context.Get<OfficerVisaApplication>("Current Visa Application");
                     Reason = "";
-
                     if (VisaApplication != null)
                     {
-                        // assign application to current officer
+                        // assign the application to the current officer
                         var visa = new VisaApplication(VisaApplication.VisaApplication.Id, VisaApplication.Applicant.google_id, VisaApplication.VisaApplication.StatusId, VisaApplication.VisaApplication.DestinationPlanet, VisaApplication.VisaApplication.TravelReason, VisaApplication.VisaApplication.StartDate, VisaApplication.VisaApplication.EndDate, VisaApplication.VisaApplication.SubmittedAt, null, Officer.google_id);
                         await RestClient.UpdateVisaApplication(visa);
                     }

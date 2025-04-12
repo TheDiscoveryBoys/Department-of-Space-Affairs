@@ -79,7 +79,7 @@ namespace DOSA_Client.ViewModels
             // make API call
             if(visibility){
                 Task.Run(async () => {
-                    PassportApplication = await ApiClient.GetPassportApplication(Officer.google_id);
+                    PassportApplication = Context.Get<OfficerPassportApplication>("Current Passport Application");
                     if (PassportApplication != null)
                     {
                         // assign application to current officer

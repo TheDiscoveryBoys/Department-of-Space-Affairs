@@ -88,7 +88,7 @@ namespace DOSA_Client.lib
         {
             try
             {
-                var visaApplication = await RestClient.GetOfficerVisaApplicationByGoogleId(googleId) ?? throw new Exception("No more applications for you");
+                var visaApplication = await RestClient.GetOfficerVisaApplicationByGoogleId(googleId);
                 User? user = await RestClient.GetUserByGoogleId(visaApplication.UserId) ?? throw new Exception("An application with no user was returned");
                 return new OfficerVisaApplication(visaApplication, user);
             }

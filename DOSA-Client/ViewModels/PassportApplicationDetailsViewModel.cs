@@ -27,11 +27,17 @@ namespace DOSA_Client.ViewModels
             Console.WriteLine($"Navigating to: {pageName}");
             Task.Run(async () =>
             {
-                var Officer = await ApiClient.GetUserProfile(Context.Get<User>("User").google_id);
-
-                
+                var Officer = Context.Get<User>("User");
+                var PassportApplication = await ApiClient.GetPassportApplication(Officer.google_id);
+                if (PassportApplication != null)
+                {
+                    Context.Add("Current Passport Application", PassportApplication);
+                    PageManager.NavigateTo(pageName);
+                }
+                else{
+                    MessageBox.Show("There are no applications for you right now, please try again later.");
+                }
             });
-            PageManager.NavigateTo(pageName);
         }
     }
 }

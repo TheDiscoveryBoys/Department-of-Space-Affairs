@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using DOSA_Client.lib;
 using DOSA_Client.Models;
 using System.Windows.Input;
+using System.Windows.Controls;
+using System.Windows;
 
 namespace DOSA_Client.ViewModels
 {
@@ -26,7 +28,18 @@ namespace DOSA_Client.ViewModels
         public void OnNext(string pageName)
         {
             Console.WriteLine(pageName);
-            PageManager.NavigateTo(pageName);
+            Task.Run(async () =>
+            {
+                var Officer = Context.Get<User>("User");
+                var VisaApplication = await ApiClient.GetVisaApplication(Officer.google_id);
+                if (VisaApplication != null)
+                {
+                    Context.Add("Current Visa Application", VisaApplication);
+                    PageManager.NavigateTo(pageName);
+                }else{
+                    MessageBox.Show("There are no Visa Applications for you at the moment, please try again later.");
+                }
+            });
         }
     }
 }

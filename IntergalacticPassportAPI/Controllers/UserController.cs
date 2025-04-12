@@ -11,7 +11,6 @@ namespace IntergalacticPassportAPI.Controllers
     {
         public UserController(UsersRepository repo) : base(repo) { }
 
-
         [HttpPost]
         public override async Task<ActionResult<Users>> Create([FromBody] Users user)
         {
@@ -38,7 +37,6 @@ namespace IntergalacticPassportAPI.Controllers
         [HttpGet("{id}/roles")]
         public async Task<ActionResult<IEnumerable<Roles>>> GetUserRoles(string id)
         {
-
             return await BaseRequest(async () =>
             {
                 var roles = await _repo.GetUserRoles(id);
@@ -51,7 +49,6 @@ namespace IntergalacticPassportAPI.Controllers
                     return NoContent();
                 }
             });
-
         }
 
         [HttpPost("{userId}/roles/{roleId}")]

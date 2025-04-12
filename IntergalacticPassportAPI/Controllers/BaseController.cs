@@ -50,14 +50,11 @@ namespace IntergalacticPassportAPI.Controllers
                 var models = await _repo.GetAll();
                 return models.Any() ? Ok(models) : NoContent();
             });
-
         }
-
 
         [HttpPost]
         public virtual async Task<ActionResult<Model>> Create([FromBody] Model model)
         {
-
             return await BaseRequest(async () =>
             {
                 if (!ModelState.IsValid)
@@ -107,8 +104,6 @@ namespace IntergalacticPassportAPI.Controllers
                 return deleted ? Ok() : NotFound();
             });
         }
-
-
         protected async Task<ActionResult> BaseRequest(Func<Task<ActionResult>> controllerLogic)
         {
             try
