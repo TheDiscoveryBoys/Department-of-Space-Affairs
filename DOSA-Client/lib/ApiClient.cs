@@ -32,7 +32,9 @@ namespace DOSA_Client.lib
             foreach (var visaApplication in visaApplications)
             {
                 var Status = await RestClient.GetStatusByStatusId(visaApplication.StatusId ?? throw new Exception("An application must have a status id"));
-                applications.Add(new Application(Status, visaApplication.SubmittedAt, $"VISA - {visaApplication.DestinationPlanet}", null));
+                var formattedStartDate = visaApplication.StartDate?.ToString("MM/dd/yy");
+                var formattedEndDate = visaApplication.EndDate?.ToString("MM/dd/yy"); ;
+                applications.Add(new Application(Status, visaApplication.SubmittedAt, $"VISA - {visaApplication.DestinationPlanet} ({formattedStartDate} - {formattedEndDate})", null));
             }
             Console.WriteLine(applications.Count);
             return [.. applications.OrderByDescending(app => app.SubmittedAt)];
@@ -90,7 +92,7 @@ namespace DOSA_Client.lib
             {
                 var visaApplication = await RestClient.GetOfficerVisaApplicationByGoogleId(googleId);
                 User? user = await RestClient.GetUserByGoogleId(visaApplication.UserId) ?? throw new Exception("An application with no user was returned");
-                return new OfficerVisaApplication(visaApplication, user);
+                return new OfficerVisaApplication(visaApplication, user, visaApplication.StartDate, visaApplication.EndDate);
             }
             catch (Exception e)
             {
