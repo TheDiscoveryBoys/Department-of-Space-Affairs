@@ -32,7 +32,7 @@
                     VerticalAlignment="Stretch">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <StackPanel>
-                        <TextBlock Text="Visa Application Processing Guidelines"
+                        <TextBlock Text="Galactic Visa Application Protocols"
                                    FontSize="22"
                                    FontWeight="Bold"
                                    Margin="0,0,0,20"/>
@@ -43,7 +43,7 @@
                                 <Run Text="# "/>
                                 <Run Text="Duration of Visit: "
                                      FontWeight="Bold"/>
-                                <Run Text="Applications for visits longer than 12 months require additional approval."/>
+                                <Run Text="Visits exceeding 12 standard months are strictly prohibited without Imperial reassignment orders."/>
                             </TextBlock>
 
                             <TextBlock FontSize="14"
@@ -51,7 +51,7 @@
                                 <Run Text="# "/>
                                 <Run Text="Destination Planet: "
                                      FontWeight="Bold"/>
-                                <Run Text="High-risk planets require elevated clearance and background checks."/>
+                                <Run Text="Travel to restricted systems such as Mustafar, Scarif, or Kessel is not permitted under any circumstances."/>
                             </TextBlock>
 
                             <TextBlock FontSize="14"
@@ -59,7 +59,7 @@
                                 <Run Text="# "/>
                                 <Run Text="Applicant Age: "
                                      FontWeight="Bold"/>
-                                <Run Text="Applicants under 18 must be accompanied or have proper guardian authorization."/>
+                                <Run Text="Applicants below maturity threshold are not to be issued a visa."/>
                             </TextBlock>
 
                             <TextBlock FontSize="14"
@@ -75,15 +75,7 @@
                                 <Run Text="# "/>
                                 <Run Text="Travel Reason: "
                                      FontWeight="Bold"/>
-                                <Run Text="Purpose of visit must be clear and legitimate (e.g., education, work, tourism)."/>
-                            </TextBlock>
-
-                            <TextBlock FontSize="14"
-                                    Margin="0,0,0,10">
-                                <Run Text="# "/>
-                                <Run Text="Documentation: "
-                                     FontWeight="Bold"/>
-                                <Run Text="Valid passport, health certificate, and alien ID (if applicable) are required."/>
+                                <Run Text="The reason for travel must be clearly stated and align with approved categories: commerce, research, or family relocation."/>
                             </TextBlock>
                         </StackPanel>
                     </StackPanel>

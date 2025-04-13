@@ -36,38 +36,21 @@
                                    FontSize="22"
                                    FontWeight="Bold"
                                    Margin="0,0,0,20"/>
-
                         <StackPanel Margin="10,0,0,0">
                             <TextBlock FontSize="14"
-                                    Margin="0,0,0,10">
-                                    <Run Text="# "/>
-                                    <Run Text="Galactic ID: "
-                                         FontWeight="Bold"/>
-                                    <Run Text="Ensure the applicant has submitted a valid Galactic ID (e.g., Earth Driver's License, Moonbase Resident Card)."/>
+                                       Margin="0,0,0,10">
+                                <Run Text="# "/>
+                                <Run Text="Galactic Citizenship Holo-ID: "
+                                     FontWeight="Bold"/>
+                                <Run Text="Applicants must present a valid Holo-ID issued by a recognized planetary authority (e.g., Coruscant Central Identification, Tatooine Homestead Record)."/>
                             </TextBlock>
 
                             <TextBlock FontSize="14"
-                                    Margin="0,0,0,10">
-                                    <Run Text="# "/>
-                                    <Run Text="Proof of Residence: "
-                                         FontWeight="Bold"/>
-                                    <Run Text="Verify that the applicant has provided valid planetary residency proof (e.g., utility bill, asteroid lease)."/>
-                            </TextBlock>
-
-                            <TextBlock FontSize="14"
-                                    Margin="0,0,0,10">
-                                    <Run Text="# "/>
-                                    <Run Text="Starbirth Certificate: "
-                                         FontWeight="Bold"/>
-                                    <Run Text="Ensure the applicant’s Starbirth Certificate matches galactic records and constellation data."/>
-                            </TextBlock>
-
-                            <TextBlock FontSize="14"
-                                    Margin="0,0,0,10">
-                                    <Run Text="# "/>
-                                    <Run Text="Criminal Record: "
-                                         FontWeight="Bold"/>
-                                    <Run Text="Check for clearance from the Intergalactic Defense Force to ensure no major offenses."/>
+                                       Margin="0,0,0,10">
+                                <Run Text="# "/>
+                                <Run Text="Affiliation Clearance: "
+                                     FontWeight="Bold"/>
+                                <Run Text="Applicants must provide clearance verifying no allegiance to restricted factions such as the Sith, Rebellion, or First Order."/>
                             </TextBlock>
                         </StackPanel>
                     </StackPanel>
