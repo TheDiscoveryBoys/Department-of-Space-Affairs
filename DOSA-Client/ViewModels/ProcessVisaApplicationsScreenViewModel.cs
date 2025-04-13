@@ -11,17 +11,18 @@ namespace DOSA_Client.ViewModels
         public string Description => "You can process visa applications here";
         public PageManager PageManager { get; set; }
         public User CurrentUser { get; set; }
-        public ProcessVisaApplicationsScreenViewModel()
+
+        public ProcessVisaApplicationsScreenViewModel(Func<Task> updateTabsCallback)
         {
             PageManager = new PageManager();
-            RegisterPages();
+            RegisterPages(updateTabsCallback);
             PageManager.NavigateTo(PageNames.VisaApplicationDetails);
         }
 
-        public void RegisterPages()
+        public void RegisterPages(Func<Task> updateTabsCallback)
         {
-            PageManager.RegisterPage(PageNames.VisaApplicationDetails, new VisaApplicationDetailsViewModel(PageManager));
-            PageManager.RegisterPage(PageNames.ProcessVisaApplication, new ProcessVisaApplicationViewModel(PageManager));
+            PageManager.RegisterPage(PageNames.VisaApplicationDetails, new VisaApplicationDetailsViewModel(PageManager, updateTabsCallback));
+            PageManager.RegisterPage(PageNames.ProcessVisaApplication, new ProcessVisaApplicationViewModel(PageManager, updateTabsCallback));
         }
     }
 }

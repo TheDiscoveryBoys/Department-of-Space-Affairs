@@ -18,11 +18,13 @@ namespace DOSA_Client.ViewModels
         public PageManager PageManager { get; set; }
 
         public User CurrentUser { get; set; }
-        public VisaApplicationDetailsViewModel(PageManager pageManager)
+        private Func<Task> _updateTabsCallback;
+        public VisaApplicationDetailsViewModel(PageManager pageManager, Func<Task> updateTabsCallback)
         {
             PageManager = pageManager;
             GetNextVisaApplication = new DelegateCommand<string>(OnNext);
             CurrentUser = Context.Get<User>(ContextKeys.USER);
+            _updateTabsCallback = updateTabsCallback;
         }
 
         public ICommand GetNextVisaApplication { get; }

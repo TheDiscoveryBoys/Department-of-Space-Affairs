@@ -16,6 +16,8 @@ namespace DOSA_Client.ViewModels
         public User Officer { get; set; }
 
         private bool _isRejectEnabled;
+
+        private Func<Task> _updateTabsCallback;
         public bool IsRejectEnabled
         {
             get => _isRejectEnabled;
@@ -63,6 +65,7 @@ namespace DOSA_Client.ViewModels
                 VisaApplication = null;
             });
             PageManager.NavigateTo("Passprot Application Details Page");
+            _updateTabsCallback();
         }
 
         public void ApproveApplication()
@@ -75,14 +78,16 @@ namespace DOSA_Client.ViewModels
                 VisaApplication = null;
             });
             PageManager.NavigateTo("Passprot Application Details Page");
+            _updateTabsCallback();
         }
 
-        public ProcessVisaApplicationViewModel(PageManager pageManager)
+        public ProcessVisaApplicationViewModel(PageManager pageManager, Func<Task> updateTabsCallback)
         {
             RejectCommand = new RelayCommand(RejectApplication);
             ApproveCommand = new RelayCommand(ApproveApplication);
 
             PageManager = pageManager;
+            _updateTabsCallback = updateTabsCallback;
 
             Task.Run(async () =>
             {
