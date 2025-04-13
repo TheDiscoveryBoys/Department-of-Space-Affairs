@@ -46,7 +46,12 @@ namespace DOSA_Client.ViewModels
 
             var UpdatedTabs = new ObservableCollection<ScreenViewModelBase>();
 
-            if (roles.Any(role => role.role == "APPLICANT"))
+            if (roles.Any(role => role.role == "OFFICER"))
+            {
+                UpdatedTabs.Add(new ProcessPassportApplicationsScreenViewModel(() => this.UpdateTabsAsync()));
+                UpdatedTabs.Add(new ProcessVisaApplicationsScreenViewModel(() => this.UpdateTabsAsync()));
+            }
+            else if (roles.Any(role => role.role == "APPLICANT"))
             {
                 // we have an applicant on our hands so let us check which applications they have right now
                 List<Application> applications = await ApiClient.GetApplications(CurrentUser.google_id);
@@ -73,11 +78,6 @@ namespace DOSA_Client.ViewModels
                     // so we show them the passport applications tab only
                     UpdatedTabs.Add(new PassportApplicationScreenViewModel(() => this.UpdateTabsAsync()));
                 }
-            }
-            if (roles.Any(role => role.role == "OFFICER"))
-            {
-                UpdatedTabs.Add(new ProcessPassportApplicationsScreenViewModel(() => this.UpdateTabsAsync()));
-                UpdatedTabs.Add(new ProcessVisaApplicationsScreenViewModel(() => this.UpdateTabsAsync()));
             }
             if (roles.Any(role => role.role == "MANAGER"))
             {
