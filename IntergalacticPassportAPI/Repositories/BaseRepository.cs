@@ -5,10 +5,11 @@ using System.ComponentModel.DataAnnotations;
 using Dapper;
 using Npgsql;
 using IntergalacticPassportAPI.Models;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IntergalacticPassportAPI.Data
 {
-    public abstract class BaseRepository<Model>(IConfiguration config, string tableName)
+    public abstract class BaseRepository<Model>(IConfiguration config)
     {
 
         private readonly string _connectionString = config.GetConnectionString("DefaultConnection");
@@ -20,7 +21,8 @@ namespace IntergalacticPassportAPI.Data
 
         public async Task<Model> GetById(object id) // Object to handle string or int ids.
         {
-            string PKIdentifier = GetPrimaryKeyIdentifier(typeof(Model));
+            string PKIdentifier = GetPrimaryKeyIdentifier();
+            string tableName = GetTableNameFromModel();
             using var db = CreateDBConnection();
             var sql = $"SELECT * FROM {tableName} WHERE {tableName}.{CamelToSnake(PKIdentifier)} = '{id}'";
             return await db.QueryFirstOrDefaultAsync<Model>(sql);
@@ -28,6 +30,7 @@ namespace IntergalacticPassportAPI.Data
         }
         public async Task<IEnumerable<Model>> GetAll()
         {
+            string tableName = GetTableNameFromModel();
             using var db = CreateDBConnection();
             var sql = $"SELECT * FROM {tableName}";
             return await db.QueryAsync<Model>(sql);
@@ -41,7 +44,8 @@ namespace IntergalacticPassportAPI.Data
 
         public async Task<Model> Update(Model model)
         {
-            string PKIdentifier = GetPrimaryKeyIdentifier(typeof(Model));
+            string PKIdentifier = GetPrimaryKeyIdentifier();
+            string tableName = GetTableNameFromModel();
             using var db = CreateDBConnection();
             List<string> reflectedAttributes = GetPropertyNamesFromModel(model);
             string sqlSetCode = "";
@@ -57,9 +61,10 @@ namespace IntergalacticPassportAPI.Data
 
         }
 
-        public async Task<bool> Delete(string id) 
+        public async Task<bool> Delete(string id)
         {
-            string PKIdentifier = GetPrimaryKeyIdentifier(typeof(Model));
+            string PKIdentifier = GetPrimaryKeyIdentifier();
+            string tableName = GetTableNameFromModel();
             using var db = CreateDBConnection();
             var sql = $"DELETE FROM {tableName} WHERE {CamelToSnake(PKIdentifier)} = '{id}';";
             Console.WriteLine(sql);
@@ -72,6 +77,7 @@ namespace IntergalacticPassportAPI.Data
 
         protected virtual string ModelToSQLInsert(Model model)
         {
+            string tableName = GetTableNameFromModel();
             List<string> reflectedAttributes = GetPropertyNamesFromModel(model);
             string sqlCols = "";
             string sqlValues = "";
@@ -114,9 +120,9 @@ namespace IntergalacticPassportAPI.Data
             return modelAttributes;
         }
 
-        private string GetPrimaryKeyIdentifier(Type model)
+        private string GetPrimaryKeyIdentifier()
         {
-            PropertyInfo[] properties = model.GetProperties();
+            PropertyInfo[] properties = typeof(Model).GetProperties();
             foreach (PropertyInfo property in properties)
             {
                 string propertyName = property.Name;
@@ -151,10 +157,10 @@ namespace IntergalacticPassportAPI.Data
             return result;
         }
 
-        private string GetTableNameFromModel(Model model)
+        private string GetTableNameFromModel()
         {
-            PropertyInfo prop = model.GetType().GetProperty("tableName");
-            return prop?.GetValue(model)?.ToString();
+            var tableAttr = typeof(Model).GetCustomAttribute<TableAttribute>();
+            return tableAttr.Name;
         }
 
     }

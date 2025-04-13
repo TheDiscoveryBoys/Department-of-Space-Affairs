@@ -2,7 +2,7 @@ using IntergalacticPassportAPI.Models;
 
 namespace IntergalacticPassportAPI.Data
 {
-        public class UserRolesRepository(IConfiguration config) : BaseRepository<UserRoles>(config, "user_roles"){
+        public class UserRolesRepository(IConfiguration config) : BaseRepository<UserRoles>(config){
             public async Task<UserRoles?> CreateUserRole(UserRoles userRoles){
                 try
                 {

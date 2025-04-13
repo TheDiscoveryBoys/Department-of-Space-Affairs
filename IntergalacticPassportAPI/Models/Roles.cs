@@ -8,6 +8,7 @@ using Dapper;
 
 namespace IntergalacticPassportAPI.Models
 {
+    [Table("roles")]
     public class Roles
     {
         [PrimaryKey]
