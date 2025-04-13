@@ -24,8 +24,9 @@ namespace IntergalacticPassportAPI.Data
             string PKIdentifier = GetPrimaryKeyIdentifier();
             string tableName = GetTableNameFromModel();
             using var db = CreateDBConnection();
-            var sql = $"SELECT * FROM {tableName} WHERE {tableName}.{CamelToSnake(PKIdentifier)} = '{id}'";
-            return await db.QueryFirstOrDefaultAsync<Model>(sql);
+            var typedParam = ConvertToExpectedType(id, GetPrimaryKeyType());
+            var sql = $"SELECT * FROM {tableName} WHERE {tableName}.{CamelToSnake(PKIdentifier)} = @id";
+            return await db.QueryFirstOrDefaultAsync<Model>(sql, new { id = typedParam });
 
         }
         public async Task<IEnumerable<Model>> GetAll()
@@ -61,14 +62,14 @@ namespace IntergalacticPassportAPI.Data
 
         }
 
-        public async Task<bool> Delete(string id)
+        public async Task<bool> Delete(object id)
         {
             string PKIdentifier = GetPrimaryKeyIdentifier();
             string tableName = GetTableNameFromModel();
             using var db = CreateDBConnection();
-            var sql = $"DELETE FROM {tableName} WHERE {CamelToSnake(PKIdentifier)} = '{id}';";
-            Console.WriteLine(sql);
-            var rowsAffected = await db.ExecuteAsync(sql);
+            var typedParam = ConvertToExpectedType(id, GetPrimaryKeyType());
+            var sql = $"DELETE FROM {tableName} WHERE {tableName}.{CamelToSnake(PKIdentifier)} = @id";
+            var rowsAffected = await db.ExecuteAsync(sql, new {id = typedParam});
 
             return rowsAffected > 0;
         }
@@ -135,6 +136,32 @@ namespace IntergalacticPassportAPI.Data
 
             }
             throw new Exception("Model doesn't contain primary key");
+        }
+
+        private Type GetPrimaryKeyType()
+        {
+            PropertyInfo[] properties = typeof(Model).GetProperties();
+            foreach (PropertyInfo property in properties)
+            {
+                var pkAttr = property.GetCustomAttribute<PrimaryKeyAttribute>();
+                if (pkAttr != null)
+                {
+                    return property.PropertyType;
+                }
+
+            }
+            throw new Exception("Model doesn't contain primary key");
+        }
+
+        private object ConvertToExpectedType(object id, Type expectedType)
+        {
+            if (expectedType == typeof(int) && id is string str && int.TryParse(str, out var intVal))
+                return intVal;
+
+            if (expectedType == typeof(string))
+                return id.ToString();
+
+            return id;
         }
 
         private string truncateEndOfSql(string sqlString)
