@@ -22,34 +22,35 @@ public class UserControllerTests
         {
             new Users
             {
-                google_id = "zarg123",
-                email = "zarg@nebula7.gov",
-                name = "Zarg the Wise",
-                species = "Nebulon",
-                planet_of_origin = "Nebula-7",
-                primary_language = "Quantum Dialect",
-                date_of_birth = new DateTime(3100, 5, 12)
+                GoogleId = "zarg123",
+                Email = "zarg@nebula7.gov",
+                Name = "Zarg the Wise",
+                Species = "Nebulon",
+                PlanetOfOrigin = "Nebula-7",
+                PrimaryLanguage = "Quantum Dialect",
+                DateOfBirth = new DateTime(3100, 5, 12)
             },
             new Users
             {
-                google_id = "xena456",
-                email = "xena@marsnet.space",
-                name = "Xena of Mars",
-                species = "Martian",
-                planet_of_origin = "Mars",
-                primary_language = "Martian Tongue",
-                date_of_birth = new DateTime(2890, 11, 3)
+                GoogleId = "xena456",
+                Email = "xena@marsnet.space",
+                Name = "Xena of Mars",
+                Species = "Martian",
+                PlanetOfOrigin = "Mars",
+                PrimaryLanguage = "Martian Tongue",
+                DateOfBirth = new DateTime(2890, 11, 3)
             },
             new Users
             {
-                google_id = "earthling007",
-                email = "j.doe@earthmail.com",
-                name = "John Doe",
-                species = "Human",
-                planet_of_origin = "Earth",
-                primary_language = "English",
-                date_of_birth = new DateTime(1995, 2, 28)
+                GoogleId = "earthling007",
+                Email = "j.doe@earthmail.com",
+                Name = "John Doe",
+                Species = "Human",
+                PlanetOfOrigin = "Earth",
+                PrimaryLanguage = "English",
+                DateOfBirth = new DateTime(1995, 2, 28)
             }
+
         };
 
         mockRepo.Setup(repo => repo.GetAll()).ReturnsAsync(expectedUsers);
