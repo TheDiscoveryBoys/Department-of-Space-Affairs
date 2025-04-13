@@ -25,6 +25,9 @@
         <DataTemplate DataType="{x:Type vm:ProcessVisaApplicationsScreenViewModel}">
             <views:ProcessVisaApplicationScreenView Background="#1C1C1C"/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:ManagerScreenViewModel}">
+            <views:ManagerScreenView Background="#1C1C1C"/>
+        </DataTemplate>
     </UserControl.Resources>
 
     <Grid Margin="0 0 0 0">

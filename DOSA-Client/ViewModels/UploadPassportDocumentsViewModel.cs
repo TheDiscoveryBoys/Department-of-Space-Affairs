@@ -7,6 +7,7 @@ using DOSA_Client.ViewModels;
 using CommunityToolkit.Mvvm.Input;
 using System.Windows;
 using DOSA_Client.Models;
+using DOSA_Client.lib.Constants;
 
 namespace DOSA_Client.ViewModels
 {
@@ -37,7 +38,7 @@ namespace DOSA_Client.ViewModels
         {
             Task.Run(async () =>
             {
-                var passportApplication = await ApiClient.CreatePassportApplication(new PassportApplication(null, Context.Get<User>("User").google_id, null, DateTime.Now, null, null)) ?? throw new Exception("Failed to create an application");
+                var passportApplication = await ApiClient.CreatePassportApplication(new PassportApplication(null, Context.Get<User>(ContextKeys.USER).google_id, null, DateTime.Now, null, null)) ?? throw new Exception("Failed to create an application");
                 await ApiClient.UploadFiles([.. UploadedDocuments], passportApplication.Id ?? throw new Exception("Something diabolical has occurred"));
                 await UpdateTabsCallback();
             });
@@ -48,7 +49,7 @@ namespace DOSA_Client.ViewModels
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
                 Multiselect = true,
-                Filter = "All Files (*.*)|*.*"
+                Filter = "Image and PDF Files (*.jpg;*.jpeg;*.png;*.pdf)|*.jpg;*.jpeg;*.png;*.pdf"
             };
 
             bool? result = openFileDialog.ShowDialog();

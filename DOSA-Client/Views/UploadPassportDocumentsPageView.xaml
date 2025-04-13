@@ -33,11 +33,10 @@
                                    FontSize="20"
                                    FontWeight="Bold"
                                    Margin="0,0,0,10"/>
+                        
+                        <TextBlock FontSize="14" Margin="0,0,0,5" Text="- Galactic Citizenship Holo-ID (e.g., Coruscant Central ID, Tatooine Homestead Record)"/>
+                        <TextBlock FontSize="14" Margin="0,0,0,5" Text="- Affiliation Clearance (must confirm no ties to Sith, Rebellion, or First Order)"/>
 
-                        <TextBlock FontSize="14" Margin="0,0,0,5" Text="- Galactic ID (e.g., Earth Driver's License, Moonbase Resident Card)"/>
-                        <TextBlock FontSize="14" Margin="0,0,0,5" Text="- Proof of Planetary Residence (utility bill, asteroid lease, etc.)"/>
-                        <TextBlock FontSize="14" Margin="0,0,0,5" Text="- Starbirth Certificate (must match constellation records)"/>
-                        <TextBlock FontSize="14" Margin="0,0,0,5" Text="- Criminal Record Clearance (from the Intergalactic Defense Force)"/>
 
                         <!-- Important Note -->
                         <TextBlock FontSize="14"

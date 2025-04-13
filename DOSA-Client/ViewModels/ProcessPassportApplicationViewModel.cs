@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using DOSA_Client.lib;
+using DOSA_Client.lib.Constants;
 using DOSA_Client.Models;
 using System;
 using System.Collections.ObjectModel;
@@ -23,6 +24,7 @@ namespace DOSA_Client.ViewModels
         public User Officer { get; set; }
 
         private OfficerPassportApplication _passportApplication;
+        private Func<Task> _updateTabsCallback;
         public OfficerPassportApplication PassportApplication
         {
             get => _passportApplication;
@@ -60,9 +62,10 @@ namespace DOSA_Client.ViewModels
             }
         }
 
-        public ProcessPassportApplicationViewModel(PageManager pageManager)
+        public ProcessPassportApplicationViewModel(PageManager pageManager, Func<Task> updateTabsCallback)
         {
             PageManager = pageManager;
+            _updateTabsCallback = updateTabsCallback;
 
             RejectCommand = new RelayCommand(RejectApplication);
             ApproveCommand = new RelayCommand(ApproveApplication);
@@ -70,7 +73,7 @@ namespace DOSA_Client.ViewModels
 
             Task.Run(async () =>
             {
-                Officer = await ApiClient.GetUserProfile(Context.Get<User>("User").google_id);
+                Officer = await ApiClient.GetUserProfile(Context.Get<User>(ContextKeys.USER).google_id);
             });
         }
 
@@ -79,7 +82,7 @@ namespace DOSA_Client.ViewModels
             // make API call
             if(visibility){
                 Task.Run(async () => {
-                    PassportApplication = Context.Get<OfficerPassportApplication>("Current Passport Application");
+                    PassportApplication = Context.Get<OfficerPassportApplication>(ContextKeys.CURRENT_PASSPORT_APPLICATION);
                     if (PassportApplication != null)
                     {
                         // assign application to current officer
@@ -101,6 +104,7 @@ namespace DOSA_Client.ViewModels
                 PassportApplication = null;
             });
             PageManager.NavigateTo("Passprot Application Details Page");
+            _updateTabsCallback();
         }
 
         public void ApproveApplication()
@@ -112,7 +116,8 @@ namespace DOSA_Client.ViewModels
                 Reason = "";
                 PassportApplication = null;
             });
-            PageManager.NavigateTo("Passprot Application Details Page");;
+            PageManager.NavigateTo("Passprot Application Details Page");
+            _updateTabsCallback();
         }
 
         private async void DownloadDocumentAsync(ApplicationDocument doc)

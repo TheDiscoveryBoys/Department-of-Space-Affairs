@@ -70,9 +70,24 @@ namespace DOSA_Client.lib
             return await RestClient.GetUserByGoogleId(googleId);
         }
 
-        public static async Task<List<Role>> GetRoles(string googleId)
+        public static async Task<List<Role>> GetUserRoles(string googleId)
         {
             return await RestClient.GetRolesByGoogleId(googleId);
+        }
+
+        public static async Task<User?> GetUserByEmail(string email)
+        {
+            return await RestClient.GetUserByEmail(email);
+        }
+
+        public static async Task<bool> AddUserRole(UserRole userRole)
+        {
+            return await RestClient.AddUserRole(userRole);
+        }
+
+        public static async Task<List<Role>> GetAllRoles()
+        {
+            return await RestClient.GetRoles();
         }
 
         public static async Task UploadFiles(List<LocalFile> fileNames, int applicationID)

@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
 using DOSA_Client.lib;
+using DOSA_Client.lib.Constants;
 using DOSA_Client.Models;
 using DOSA_Client.ViewModels;
 
@@ -41,7 +42,7 @@ namespace DOSA_Client.ViewModels
         public UserDetailsPageViewModel(PageManager pageManager){
             PageManager = pageManager;
             onNextButtonClickedCommand = new DelegateCommand<string>(OnNext);
-            CurrentUser = Context.Get<User>("User");
+            CurrentUser = Context.Get<User>(ContextKeys.USER);
             LoadSwapiOptions();
         }
 

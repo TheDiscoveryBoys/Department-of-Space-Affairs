@@ -92,7 +92,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
             throw new Exception("Something went wrong while trying to login, please try again");
         }
         // Add the user to context
-        Context.Add("User", await ApiClient.GetUserProfile(googleID));
+        Context.Add(ContextKeys.USER, await ApiClient.GetUserProfile(googleID));
         Console.WriteLine(jwt);
         
         // now hide this page
