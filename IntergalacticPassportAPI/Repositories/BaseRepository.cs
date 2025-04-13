@@ -9,29 +9,36 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IntergalacticPassportAPI.Data
 {
-    public abstract class BaseRepository<Model>(IConfiguration config)
+    public abstract class BaseRepository<Model>
     {
 
-        private readonly string _connectionString = config.GetConnectionString("DefaultConnection");
+        private readonly string _connectionString;
+        private readonly string tableName;
+        private readonly string PKIdentifier;
+
+        public BaseRepository(IConfiguration config)
+        {
+            _connectionString = config.GetConnectionString("DefaultConnection");
+            tableName = GetTableNameFromModel();
+            PKIdentifier = GetPrimaryKeyIdentifier();
+        }
+
 
         protected IDbConnection CreateDBConnection()
         {
             return new NpgsqlConnection(_connectionString);
         }
 
-        public async Task<Model> GetById(object id) // Object to handle string or int ids.
+        public async Task<Model> GetById(object id)
         {
-            string PKIdentifier = GetPrimaryKeyIdentifier();
-            string tableName = GetTableNameFromModel();
             using var db = CreateDBConnection();
-            var typedParam = ConvertToExpectedType(id, GetPrimaryKeyType());
+            var typedParam = ConvertToExpectedType(id);
             var sql = $"SELECT * FROM {tableName} WHERE {tableName}.{CamelToSnake(PKIdentifier)} = @id";
             return await db.QueryFirstOrDefaultAsync<Model>(sql, new { id = typedParam });
 
         }
         public async Task<IEnumerable<Model>> GetAll()
         {
-            string tableName = GetTableNameFromModel();
             using var db = CreateDBConnection();
             var sql = $"SELECT * FROM {tableName}";
             return await db.QueryAsync<Model>(sql);
@@ -45,8 +52,6 @@ namespace IntergalacticPassportAPI.Data
 
         public async Task<Model> Update(Model model)
         {
-            string PKIdentifier = GetPrimaryKeyIdentifier();
-            string tableName = GetTableNameFromModel();
             using var db = CreateDBConnection();
             List<string> reflectedAttributes = GetPropertyNamesFromModel(model);
             string sqlSetCode = "";
@@ -64,12 +69,10 @@ namespace IntergalacticPassportAPI.Data
 
         public async Task<bool> Delete(object id)
         {
-            string PKIdentifier = GetPrimaryKeyIdentifier();
-            string tableName = GetTableNameFromModel();
             using var db = CreateDBConnection();
-            var typedParam = ConvertToExpectedType(id, GetPrimaryKeyType());
+            var typedParam = ConvertToExpectedType(id);
             var sql = $"DELETE FROM {tableName} WHERE {tableName}.{CamelToSnake(PKIdentifier)} = @id";
-            var rowsAffected = await db.ExecuteAsync(sql, new {id = typedParam});
+            var rowsAffected = await db.ExecuteAsync(sql, new { id = typedParam });
 
             return rowsAffected > 0;
         }
@@ -78,7 +81,6 @@ namespace IntergalacticPassportAPI.Data
 
         protected virtual string ModelToSQLInsert(Model model)
         {
-            string tableName = GetTableNameFromModel();
             List<string> reflectedAttributes = GetPropertyNamesFromModel(model);
             string sqlCols = "";
             string sqlValues = "";
@@ -127,7 +129,6 @@ namespace IntergalacticPassportAPI.Data
             foreach (PropertyInfo property in properties)
             {
                 string propertyName = property.Name;
-                //var pkAttr = property.GetCustomAttribute<PrimaryKeyAttribute>();
                 var pkAttr = property.GetCustomAttribute<PrimaryKeyAttribute>();
                 if (pkAttr != null)
                 {
@@ -153,8 +154,9 @@ namespace IntergalacticPassportAPI.Data
             throw new Exception("Model doesn't contain primary key");
         }
 
-        private object ConvertToExpectedType(object id, Type expectedType)
+        private object ConvertToExpectedType(object id)
         {
+            Type expectedType = GetPrimaryKeyType();
             if (expectedType == typeof(int) && id is string str && int.TryParse(str, out var intVal))
                 return intVal;
 
