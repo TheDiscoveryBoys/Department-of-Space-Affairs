@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace IntergalacticPassportAPI.Controllers
 {
     public abstract class BaseController<Model, ModelRepo> : ControllerBase
-        where ModelRepo : BaseRepository<Model>
+        where ModelRepo : IBaseRepository<Model>
     {
         protected readonly ModelRepo _repo;
 

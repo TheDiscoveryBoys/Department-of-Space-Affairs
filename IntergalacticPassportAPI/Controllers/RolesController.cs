@@ -7,8 +7,8 @@ namespace IntergalacticPassportAPI.Controllers
     [ApiController]
     [Route("api/roles")]
 
-    public class RolesController : BaseController<Roles, RolesRepository>
+    public class RolesController : BaseController<Roles, IRolesRepository>
     {
-        public RolesController(RolesRepository repo) : base(repo) { }
+        public RolesController(IRolesRepository repo) : base(repo) { }
     }
 }

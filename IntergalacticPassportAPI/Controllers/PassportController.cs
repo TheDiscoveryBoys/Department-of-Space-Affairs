@@ -8,10 +8,10 @@ namespace IntergalacticPassportAPI.Controllers
 {
     [ApiController]
     [Route("api/passport")]
-    public class PassportController : BaseController<Passport, PassportRepository>
+    public class PassportController : BaseController<Passport, IPassportRepository>
     {
-        StatusRepository statusRepo;
-        public PassportController(PassportRepository repo, StatusRepository statusRepo) : base(repo) {
+        IStatusRepository statusRepo;
+        public PassportController(IPassportRepository repo, IStatusRepository statusRepo) : base(repo) {
             this.statusRepo = statusRepo;
          }
 

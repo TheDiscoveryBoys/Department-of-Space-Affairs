@@ -9,11 +9,11 @@ namespace IntergalacticPassportAPI.Controllers
     [Route("auth/login")]
     public class AuthController : ControllerBase
     {
-        UsersRepository UserRepo;
-        UserRolesRepository UserRolesRepo;
+        IUsersRepository UserRepo;
+        IUserRolesRepository UserRolesRepo;
+        IRolesRepository RolesRepo;
 
-        RolesRepository RolesRepo;
-        public AuthController(UsersRepository repo, UserRolesRepository userRolesRepository, RolesRepository rolesRepo){
+        public AuthController(IUsersRepository repo, IUserRolesRepository userRolesRepository, IRolesRepository rolesRepo){
             this.UserRepo = repo;
             this.UserRolesRepo = userRolesRepository;
             this.RolesRepo = rolesRepo;

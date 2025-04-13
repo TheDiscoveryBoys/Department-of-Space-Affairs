@@ -8,7 +8,7 @@ using IntergalacticPassportAPI.Models;
 
 namespace IntergalacticPassportAPI.Data
 {
-    public abstract class BaseRepository<Model>(IConfiguration config, string tableName)
+    public abstract class BaseRepository<Model>(IConfiguration config, string tableName) : IBaseRepository<Model>
     {
 
         private readonly string _connectionString = config.GetConnectionString("DefaultConnection");
@@ -18,7 +18,7 @@ namespace IntergalacticPassportAPI.Data
             return new NpgsqlConnection(_connectionString);
         }
 
-        public async Task<Model> GetById(object id) // Object to handle string or int ids.
+        public virtual async Task<Model> GetById(object id) // Object to handle string or int ids.
         {
             string PKIdentifier = GetPrimaryKeyIdentifier(typeof(Model));
             using var db = CreateDBConnection();
@@ -26,20 +26,20 @@ namespace IntergalacticPassportAPI.Data
             return await db.QueryFirstOrDefaultAsync<Model>(sql);
 
         }
-        public async Task<IEnumerable<Model>> GetAll()
+        public virtual async Task<IEnumerable<Model>> GetAll()
         {
             using var db = CreateDBConnection();
             var sql = $"SELECT * FROM {tableName}";
             return await db.QueryAsync<Model>(sql);
         }
-        public async Task<Model> Create(Model model)
+        public virtual async Task<Model> Create(Model model)
         {
             using var db = CreateDBConnection();
             var sql = ModelToSQLInsert(model);
             return await db.QuerySingleAsync<Model>(sql, model);
         }
 
-        public async Task<Model> Update(Model model)
+        public virtual async Task<Model> Update(Model model)
         {
             string PKIdentifier = GetPrimaryKeyIdentifier(typeof(Model));
             using var db = CreateDBConnection();
@@ -57,7 +57,7 @@ namespace IntergalacticPassportAPI.Data
 
         }
 
-        public async Task<bool> Delete(string id) 
+        public virtual async Task<bool> Delete(string id) 
         {
             string PKIdentifier = GetPrimaryKeyIdentifier(typeof(Model));
             using var db = CreateDBConnection();

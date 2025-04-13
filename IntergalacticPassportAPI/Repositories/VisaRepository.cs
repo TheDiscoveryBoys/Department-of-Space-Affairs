@@ -4,7 +4,7 @@ using System.Data;
 
 namespace IntergalacticPassportAPI.Data
 {
-    public class VisaRepository(IConfiguration config) : BaseRepository<Visa>(config, "visa_applications")
+    public class VisaRepository(IConfiguration config) : BaseRepository<Visa>(config, "visa_applications"), IVisaRepository 
     {
         public async Task<IEnumerable<Visa>> GetVisaApplicationsByGoogleId(string googleId){
             using (var db = CreateDBConnection()){

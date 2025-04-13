@@ -8,10 +8,10 @@ namespace IntergalacticPassportAPI.Controllers
 {
     [ApiController]
     [Route("api/visa")]
-    public class VisaController : BaseController<Visa, VisaRepository>
+    public class VisaController : BaseController<Visa, IVisaRepository>
     {
-        StatusRepository statusRepo;
-        public VisaController(VisaRepository repo, StatusRepository statusRepo) : base(repo) { 
+        IStatusRepository statusRepo;
+        public VisaController(IVisaRepository repo, IStatusRepository statusRepo) : base(repo) { 
             this.statusRepo = statusRepo;
         }
 
