@@ -7,7 +7,7 @@ using System.Text.Json;
 
 namespace IntergalacticPassportAPI.Data
 {
-    public class PassportRepository(IConfiguration config) : BaseRepository<Passport>(config)
+    public class PassportRepository(IConfiguration config) : BaseRepository<Passport>(config), IPassportRepository
     {
         public async override Task<bool> Exists(Passport passport)
         {

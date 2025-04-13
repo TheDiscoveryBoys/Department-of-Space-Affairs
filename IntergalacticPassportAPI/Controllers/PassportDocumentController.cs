@@ -9,9 +9,9 @@ namespace IntergalacticPassportportAPI.Controllers
 {
 	[ApiController]
 	[Route("api/passport-documents")]
-	public class PassportDocumentController : BaseController<PassportDocument, PassportDocumentRepository>
+	public class PassportDocumentController : BaseController<PassportDocument, IPassportDocumentRepository>
 	{
-		public PassportDocumentController(PassportDocumentRepository repo) : base(repo) { }
+		public PassportDocumentController(IPassportDocumentRepository repo) : base(repo) { }
 
 		[HttpGet("passport-application/{id}")]
 		// TODO: Add authorization.

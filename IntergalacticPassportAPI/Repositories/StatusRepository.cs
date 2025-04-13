@@ -5,7 +5,7 @@ using System.Data;
 
 namespace IntergalacticPassportAPI.Data
 {
-    public class StatusRepository(IConfiguration config) : BaseRepository<Status>(config)
+    public class StatusRepository(IConfiguration config) : BaseRepository<Status>(config), IStatusRepository
     {
         public override async Task<bool> Exists(Status model)
         {

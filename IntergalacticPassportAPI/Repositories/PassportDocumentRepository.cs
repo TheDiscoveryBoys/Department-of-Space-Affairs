@@ -5,7 +5,7 @@ using System.Data;
 
 namespace IntergalacticPassportAPI.Data
 {
-    public class PassportDocumentRepository(IConfiguration config) : BaseRepository<PassportDocument>(config)
+    public class PassportDocumentRepository(IConfiguration config) : BaseRepository<PassportDocument>(config), IPassportDocumentRepository
     {
 
         public async Task<IEnumerable<PassportDocument>> GetByPassportApplicationIdAsync(int id)

@@ -7,9 +7,9 @@ namespace IntergalacticPassportAPI.Controllers
 {
     [ApiController]
     [Route("api/users")]
-    public class UserController : BaseController<Users, UsersRepository>
+    public class UserController : BaseController<Users, IUsersRepository>
     {
-        public UserController(UsersRepository repo) : base(repo) { }
+        public UserController(IUsersRepository repo) : base(repo) { }
 
         [HttpPost]
         public override async Task<ActionResult<Users>> Create([FromBody] Users user)
@@ -32,6 +32,14 @@ namespace IntergalacticPassportAPI.Controllers
                 }
             });
 
+        }
+
+        [HttpGet]
+        [Route("email/{email}")]
+        [Authorize(Roles="Officer")]
+        public async Task<ActionResult<Users>> GetUserByEmail(string email){
+            Console.WriteLine($"Trying to get user by email {email}");
+            return Ok(await _repo.GetUserByEmail(email));
         }
 
         [HttpGet("{id}/roles")]

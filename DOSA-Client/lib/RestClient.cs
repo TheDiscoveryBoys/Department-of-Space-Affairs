@@ -18,6 +18,25 @@ public static class RestClient
         return roles ?? [];
     }
 
+    public static async Task<User?> GetUserByEmail(string email)
+    {
+        try
+        {
+            return await HttpClient.GetFromJsonAsync<User>($"{Constants.BaseURI}api/users/email/{email}");
+        } catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return null;
+        }
+    }
+
+    public static async Task<List<Role>> GetRoles()
+    {
+        var roles = await HttpClient.GetFromJsonAsync<List<Role>>($"{Constants.BaseURI}api/roles");
+        Console.WriteLine(JsonSerializer.Serialize(roles));
+        return roles ?? [];
+    }
+
     public static string DynStatus = "APPROVED";
 
     public static async Task<User?> GetUserByGoogleId(string googleId)
@@ -56,6 +75,16 @@ public static class RestClient
             return true;
         }
         Console.WriteLine(await response.Content.ReadAsStringAsync());
+        return false;
+    }
+
+    public static async Task<bool> AddUserRole(UserRole userRole)
+    {
+        var response = await HttpClient.PostAsJsonAsync<object>($"{Constants.BaseURI}api/users/{userRole.UserId}/roles/{userRole.RoleId}", null);
+        if (response.IsSuccessStatusCode)
+        {
+            return true;
+        }
         return false;
     }
 

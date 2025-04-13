@@ -9,7 +9,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IntergalacticPassportAPI.Data
 {
-    public abstract class BaseRepository<Model>
+    public abstract class BaseRepository<Model> : IBaseRepository<Model>
     {
 
         private readonly string _connectionString;
@@ -37,20 +37,20 @@ namespace IntergalacticPassportAPI.Data
             return await db.QueryFirstOrDefaultAsync<Model>(sql, new { id = typedParam });
 
         }
-        public async Task<IEnumerable<Model>> GetAll()
+        public virtual async Task<IEnumerable<Model>> GetAll()
         {
             using var db = CreateDBConnection();
             var sql = $"SELECT * FROM {tableName}";
             return await db.QueryAsync<Model>(sql);
         }
-        public async Task<Model> Create(Model model)
+        public virtual async Task<Model> Create(Model model)
         {
             using var db = CreateDBConnection();
             var sql = ModelToSQLInsert(model);
             return await db.QuerySingleAsync<Model>(sql, model);
         }
 
-        public async Task<Model> Update(Model model)
+        public virtual async Task<Model> Update(Model model)
         {
             using var db = CreateDBConnection();
             List<string> reflectedAttributes = GetPropertyNamesFromModel(model);

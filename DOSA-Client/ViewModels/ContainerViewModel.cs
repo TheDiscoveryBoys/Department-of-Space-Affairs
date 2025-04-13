@@ -42,51 +42,49 @@ namespace DOSA_Client.ViewModels
         {
             // this function checks the applications for the current user and decides what tabs to show
             User CurrentUser = Context.Get<User>(ContextKeys.USER);
-            var roles = await ApiClient.GetRoles(CurrentUser.google_id);
-            if (roles.Any(role => role.role == "APPLICANT"))
+            var roles = await ApiClient.GetUserRoles(CurrentUser.google_id);
+
+            var UpdatedTabs = new ObservableCollection<ScreenViewModelBase>();
+
+            if (roles.Any(role => role.role == "OFFICER"))
+            {
+                UpdatedTabs.Add(new ProcessPassportApplicationsScreenViewModel(() => this.UpdateTabsAsync()));
+                UpdatedTabs.Add(new ProcessVisaApplicationsScreenViewModel(() => this.UpdateTabsAsync()));
+            }
+            else if (roles.Any(role => role.role == "APPLICANT"))
             {
                 // we have an applicant on our hands so let us check which applications they have right now
                 List<Application> applications = await ApiClient.GetApplications(CurrentUser.google_id);
                 if (applications.Any(application => application.Status.Name == "APPROVED" && application.ApplicationType == "PASSPORT"))
                 {
                     // we have someone who has a passport so they can see their history and the visa application page
-                    Tabs = new ObservableCollection<ScreenViewModelBase>(){
-                    new VisaApplicationScreenViewModel(() => this.UpdateTabsAsync()),
-                    new ApplicationHistoryScreenViewModel()
-                    };
+                    UpdatedTabs.Add(new VisaApplicationScreenViewModel(() => this.UpdateTabsAsync()));
+                    UpdatedTabs.Add(new ApplicationHistoryScreenViewModel());
                 }
                 else if (applications.Any(application => application.Status.Name == "PENDING" && application.ApplicationType == "PASSPORT"))
                 {
                     // we have someone with a currently open application for a passport so they can only see their history
-                    Tabs = new ObservableCollection<ScreenViewModelBase>(){
-                    new ApplicationHistoryScreenViewModel()
-                    };
+                    UpdatedTabs.Add(new ApplicationHistoryScreenViewModel());
                 }
                 else if (applications.Any(application => application.Status.Name == "REJECTED" && application.ApplicationType == "PASSPORT"))
                 {
                     // We have someone that has a recently rejected passport application
-                    Tabs = new ObservableCollection<ScreenViewModelBase>(){
-                        new PassportApplicationScreenViewModel(() => this.UpdateTabsAsync()),
-                        new ApplicationHistoryScreenViewModel()
-                    };
+                    UpdatedTabs.Add(new PassportApplicationScreenViewModel(() => this.UpdateTabsAsync()));
+                    UpdatedTabs.Add(new ApplicationHistoryScreenViewModel());
                 }
                 else
                 {
                     // we have someone who does not have a passport and does not have any current applications for a passport
                     // so we show them the passport applications tab only
-                    Tabs = new ObservableCollection<ScreenViewModelBase>(){
-                        new PassportApplicationScreenViewModel(() => this.UpdateTabsAsync())
-                    };
+                    UpdatedTabs.Add(new PassportApplicationScreenViewModel(() => this.UpdateTabsAsync()));
                 }
             }
-            else
+            if (roles.Any(role => role.role == "MANAGER"))
             {
-                Tabs = new ObservableCollection<ScreenViewModelBase>(){
-                    new ProcessPassportApplicationsScreenViewModel(),
-                    new ProcessVisaApplicationsScreenViewModel()
-                };
+                UpdatedTabs.Add(new ManagerScreenViewModel());
             }
 
+            Tabs = UpdatedTabs;
             // Delay setting the selected index to ensure the UI has time to bind
 
             // Force the SelectedIndex update to happen *after* the UI re-renders the new Tabs

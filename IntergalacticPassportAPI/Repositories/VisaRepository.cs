@@ -1,12 +1,10 @@
 ﻿using Dapper;
 using IntergalacticPassportAPI.Models;
-using Npgsql;
 using System.Data;
-using System.Runtime.CompilerServices;
 
 namespace IntergalacticPassportAPI.Data
 {
-    public class VisaRepository(IConfiguration config) : BaseRepository<Visa>(config)
+    public class VisaRepository(IConfiguration config) : BaseRepository<Visa>(config), IVisaRepository
     {
     
         public async Task<IEnumerable<Visa>> GetVisaApplicationsByGoogleId(string googleId){
