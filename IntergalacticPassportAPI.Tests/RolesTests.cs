@@ -56,11 +56,11 @@ public class RolesControllerTests
     {
         var mockRepo = new Mock<IRolesRepository>();
 
-        var roleId = 1;
+        var roleId = "1";// Needs to be string for generic use case
         var expectedRole = new Roles
         {
-            id = 1,
-            role = "APPLICANT"
+            Id = 1,
+            Role = "APPLICANT"
         };
 
         mockRepo.Setup(repo => repo.GetById(roleId)).ReturnsAsync(expectedRole);
@@ -73,8 +73,8 @@ public class RolesControllerTests
         okResult.Should().NotBeNull("because the role with id provided exists");
 
         var actualRole = okResult!.Value as Roles;
-        actualUser.Should().NotBeNull();
-        actualUser.Should().BeEquivalentTo(expectedRole);
+        actualRole.Should().NotBeNull();
+        actualRole.Should().BeEquivalentTo(expectedRole);
     }
 
     [Fact]
@@ -82,7 +82,7 @@ public class RolesControllerTests
     {
         var mockRepo = new Mock<IRolesRepository>();
 
-        var imaginaryId = 9999;
+        var imaginaryId = "9999"; // Needs to be string for generic use case
 
         mockRepo.Setup(repo => repo.GetById(imaginaryId)).ReturnsAsync((Roles?)null);
 
@@ -99,8 +99,8 @@ public class RolesControllerTests
         var mockRepo = new Mock<IRolesRepository>();
         var newRole = new Roles
         {
-            id = 1,
-            role = "APPLICANT"
+            Id = 1,
+            Role = "APPLICANT"
         };
 
         mockRepo.Setup(r => r.Exists(newRole)).ReturnsAsync(false);
@@ -108,7 +108,7 @@ public class RolesControllerTests
 
         var controller = new RolesController(mockRepo.Object);
 
-        var result = await controller.Create(newUser);
+        var result = await controller.Create(newRole);
 
         var okResult = result.Result as OkObjectResult;
         okResult.Should().NotBeNull();
@@ -121,8 +121,8 @@ public class RolesControllerTests
         var mockRepo = new Mock<IRolesRepository>();
         var existingRole = new Roles
         {
-            id = 1,
-            role = "APPLICANT"
+            Id = 1,
+            Role = "APPLICANT"
         };
 
         mockRepo.Setup(r => r.Exists(existingRole)).ReturnsAsync(true);
@@ -159,8 +159,8 @@ public class RolesControllerTests
         var mockRepo = new Mock<IRolesRepository>();
         var roleToUpdate = new Roles
         {
-            id = 1,
-            role = "APPLICANT"
+            Id = 1,
+            Role = "APPLICANT"
         };
 
         mockRepo.Setup(r => r.Update(roleToUpdate)).ReturnsAsync(roleToUpdate);
@@ -180,8 +180,8 @@ public class RolesControllerTests
         var mockRepo = new Mock<IRolesRepository>();
         var roleToUpdate = new Roles
         {
-            id = 1,
-            role = "APPLICANT"
+            Id = 1,
+            Role = "APPLICANT"
         };
 
         mockRepo.Setup(r => r.Update(roleToUpdate)).ReturnsAsync((Roles?)null);
@@ -215,7 +215,7 @@ public class RolesControllerTests
     public async Task Delete_ReturnsOk_WhenRoleIsDeleted()
     {
         var mockRepo = new Mock<IRolesRepository>();
-        var roleId = 1;
+        var roleId = "1"; // Needs to be string for generic use case
 
         mockRepo.Setup(r => r.Delete(roleId)).ReturnsAsync(true);
 
@@ -231,7 +231,7 @@ public class RolesControllerTests
     public async Task Delete_ReturnsNotFound_WhenRoleDoesNotExist()
     {
         var mockRepo = new Mock<IRolesRepository>();
-        var roleId = 99999;
+        var roleId = "99999"; // Needs to be string for generic use case
 
         mockRepo.Setup(r => r.Delete(roleId)).ReturnsAsync(false);
 

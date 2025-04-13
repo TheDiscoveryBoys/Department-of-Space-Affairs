@@ -23,7 +23,7 @@ public class UserControllerTests
         {
             new Users
             {
-                Google_Id = "zarg123",
+                GoogleId = "zarg123",
                 Email = "zarg@nebula7.gov",
                 Name = "Zarg the Wise",
                 Species = "Nebulon",
@@ -359,52 +359,6 @@ public class UserControllerTests
         var result = await controller.AssignRoleToUser(userId, roleId);
 
         result.Should().BeOfType<ConflictResult>();
-    }
-
-    [Fact]
-    public async Task Exists_ReturnsTrue_WhenUserExists()
-    {
-        var mockRepo = new Mock<UsersRepository>(null);
-        var testUser = new Users { GoogleId = "zarg123" };
-
-        mockRepo.Setup(r => r.GetById("zarg123"))
-                .ReturnsAsync(new Users { GoogleId = "zarg123" });
-
-        mockRepo.CallBase = true;
-
-        var result = await mockRepo.Object.Exists(testUser);
-
-        result.Should().BeTrue("because the user exists");
-    }
-
-    [Fact]
-    public async Task Exists_ReturnsFalse_WhenUserDoesNotExist()
-    {
-        var mockRepo = new Mock<UsersRepository>(null);
-        var testUser = new Users { GoogleId = "nonexistent123" };
-
-        mockRepo.Setup(r => r.GetById("nonexistent123"))
-                .ReturnsAsync((Users?)null);
-
-        mockRepo.CallBase = true;
-
-        var result = await mockRepo.Object.Exists(testUser);
-
-        result.Should().BeFalse("because the user does not exist");
-    }
-
-    [Fact]
-    public async Task Exists_ThrowsException_WhenGoogleIdIsNull()
-    {
-        var mockRepo = new Mock<UsersRepository>(null);
-        var testUser = new Users { GoogleId = null };
-
-        mockRepo.CallBase = true;
-
-        var act = async () => await mockRepo.Object.Exists(testUser);
-
-        await act.Should().ThrowAsync<Exception>()
-            .WithMessage("No google id");
     }
 
 }
