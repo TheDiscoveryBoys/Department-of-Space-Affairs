@@ -41,7 +41,7 @@ namespace IntergalacticPassportAPI.Controllers
                 if(! await UserRepo.Exists(user)){
                     await UserRepo.Create(user);
                     var applicantRole = RolesRepo.GetRolesByName("APPLICANT");
-                    var userRole = new UserRoles{RoleId=1, UserId=user.google_id};
+                    var userRole = new UserRoles{RoleId=applicantRole.Id, UserId=user.google_id};
                     await UserRolesRepo.Create(userRole);
                 }
                 return Ok(new LoginResponse{Token = googleTokenResp.id_token});
