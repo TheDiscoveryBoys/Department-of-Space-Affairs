@@ -17,29 +17,44 @@ namespace IntergalacticPassportAPI.Controllers
 
         [HttpGet]
         [Route("user")]
-        public async Task<ActionResult<IEnumerable<Visa>>> GetVisaApplicationById(string google_id){
-            Console.WriteLine($"Trying to get visa applications for google id {google_id}");
-            var result =await _repo.GetVisaApplicationsByGoogleId(google_id);
-            Console.WriteLine("These are the VISA results");
-            Console.WriteLine(JsonSerializer.Serialize(result));
-            return Ok(result);
+        public async Task<ActionResult<IEnumerable<Visa>>> GetVisaApplicationById(string google_id)
+        {
+            return await BaseRequest(async () =>
+            {
+                Console.WriteLine($"Trying to get visa applications for google id {google_id}");
+                var result = await _repo.GetVisaApplicationsByGoogleId(google_id);
+                Console.WriteLine("These are the VISA results");
+                Console.WriteLine(JsonSerializer.Serialize(result));
+                return Ok(result);
+            });
+
         }
 
         [HttpPost]
-        public  override async Task<ActionResult<Visa>> Create(Visa visa){
-            Console.WriteLine($"Trying to create visa");
-            var status = await statusRepo.Create(new Status("PENDING", null));
-            visa.StatusId = status.Id;
-            var visaDB = await _repo.Create(visa);
-            Console.WriteLine($"Successfully created visa with id {visaDB}");
-            return visaDB;
+        public override async Task<ActionResult<Visa>> Create(Visa visa)
+        {
+            return await BaseRequest(async () =>
+            {
+                Console.WriteLine($"Trying to create visa");
+                var status = await statusRepo.Create(new Status("PENDING", null));
+                visa.StatusId = status.Id;
+                var visaDB = await _repo.Create(visa);
+                Console.WriteLine($"Successfully created visa with id {visaDB}");
+                return Ok(visaDB);
+            });
+
         }
 
         [HttpGet]
         [Route("getnext")]
-        public async Task<ActionResult<Visa>> GetVisaApplicationByOfficerId(string officerId){
-            Console.WriteLine($"Trying to get a visa applications for google id {officerId}");
-            return Ok(await _repo.GetVisaApplicationByOfficerId(officerId));
+        public async Task<ActionResult<Visa>> GetVisaApplicationByOfficerId(string officerId)
+        {
+            return await BaseRequest(async () =>
+           {
+               Console.WriteLine($"Trying to get a visa applications for google id {officerId}");
+               return Ok(await _repo.GetVisaApplicationByOfficerId(officerId));
+           });
+
         }
     }
 }

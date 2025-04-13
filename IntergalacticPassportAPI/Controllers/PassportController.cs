@@ -13,32 +13,42 @@ namespace IntergalacticPassportAPI.Controllers
         IStatusRepository statusRepo;
         public PassportController(IPassportRepository repo, IStatusRepository statusRepo) : base(repo) {
             this.statusRepo = statusRepo;
-         }
+        }
 
         [HttpPost]
-        public override async Task<ActionResult<Passport>> Create(Passport passport){
-            Console.WriteLine($"Trying to create passport");
-            var status = await statusRepo.Create(new Status("PENDING", null));
-            passport.StatusId = status.Id;
-            var passportDB = await _repo.Create(passport);
-            Console.WriteLine($"Successfully created passport with id {passportDB}");
-            return passportDB;
+        public override async Task<ActionResult<Passport>> Create(Passport passport)
+        {
+            return await BaseRequest(async () =>
+            {
+                var status = await statusRepo.Create(new Status("PENDING", null));
+                passport.StatusId = status.Id;
+                var passportDB = await _repo.Create(passport);
+                return Ok(passportDB);
+            });
+
         }
 
         [HttpGet]
         [Route("user")]
-        public async Task<ActionResult<IEnumerable<Passport>>> GetPassportApplicationById(string google_id){
-            Console.WriteLine($"Trying to get passport applications for google id {google_id}");
-            return Ok(await _repo.GetPassportApplicationsByGoogleId(google_id));
+        public async Task<ActionResult<IEnumerable<Passport>>> GetPassportApplicationById(string google_id)
+        {
+            return await BaseRequest(async () =>
+            {
+                return Ok(await _repo.GetPassportApplicationsByGoogleId(google_id));
+            });
+
         }
 
         [HttpGet]
         [Route("getnext")]
-        public async Task<ActionResult<Passport>> GetPassportApplicationByOfficerId(string officerId){
-            Console.WriteLine($"Trying to get a passport applications for google id {officerId}");
-            return Ok(await _repo.GetPassportApplicationByOfficerId(officerId));
+        public async Task<ActionResult<Passport>> GetPassportApplicationByOfficerId(string officerId)
+        {
+            return await BaseRequest(async () => {
+                return Ok(await _repo.GetPassportApplicationByOfficerId(officerId));
+            });
+           
         }
     }
 
-    
+
 }

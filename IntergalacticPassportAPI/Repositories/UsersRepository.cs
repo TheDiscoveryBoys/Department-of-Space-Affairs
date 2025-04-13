@@ -3,7 +3,7 @@ using IntergalacticPassportAPI.Models;
 
 namespace IntergalacticPassportAPI.Data
 {
-    public class UsersRepository(IConfiguration config) : BaseRepository<Users>(config, "users"), IUsersRepository
+    public class UsersRepository(IConfiguration config) : BaseRepository<Users>(config), IUsersRepository
     { 
         
         public async Task<IEnumerable<Roles>> GetUserRoles(string googleId)
