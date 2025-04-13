@@ -60,7 +60,7 @@ namespace IntergalacticPassportAPI.Data
 
         public async override Task<bool> Exists(Users model)
         {
-             var existingUser = await GetById(model.google_id ?? throw new Exception("No google id"));
+             var existingUser = await GetById(model.GoogleId ?? throw new Exception("No google id"));
              
               if (existingUser == null){
                     return false;
