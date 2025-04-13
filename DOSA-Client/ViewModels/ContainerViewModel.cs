@@ -42,7 +42,7 @@ namespace DOSA_Client.ViewModels
         {
             // this function checks the applications for the current user and decides what tabs to show
             User CurrentUser = Context.Get<User>(ContextKeys.USER);
-            var roles = await ApiClient.GetRoles(CurrentUser.google_id);
+            var roles = await ApiClient.GetUserRoles(CurrentUser.google_id);
             if (roles.Any(role => role.role == "APPLICANT"))
             {
                 // we have an applicant on our hands so let us check which applications they have right now
@@ -79,12 +79,22 @@ namespace DOSA_Client.ViewModels
                     };
                 }
             }
-            else
+            else if (roles.Any(role => role.role == "OFFICER"))
             {
                 Tabs = new ObservableCollection<ScreenViewModelBase>(){
                     new ProcessPassportApplicationsScreenViewModel(),
                     new ProcessVisaApplicationsScreenViewModel()
                 };
+            }
+            else if (roles.Any(role => role.role == "MANAGER"))
+            {
+                Tabs = new ObservableCollection<ScreenViewModelBase>(){
+                    new ManagerScreenViewModel()
+                };
+            }
+            else
+            {
+                throw new Exception("You do not have any roles. Please contact administration.");
             }
 
             // Delay setting the selected index to ensure the UI has time to bind

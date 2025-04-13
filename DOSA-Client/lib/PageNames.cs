@@ -8,5 +8,6 @@ namespace DOSA_Client.lib{
         public const string ProcessVisaApplication = "Process Visa Application Page";
         public const string PassportApplicationDetails = "Passprot Application Details Page";
         public const string ProcessPassportApplication = "Process Passport Application Page";
+        public const string Manager = "Manager Page";
     }
 }
