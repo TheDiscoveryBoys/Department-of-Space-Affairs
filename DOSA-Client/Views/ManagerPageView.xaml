@@ -21,52 +21,92 @@
         <Grid Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="30,10,30,20">
             <Border Background="White"
                     CornerRadius="10"
+                    BorderThickness="3"
                     Padding="40"
                     VerticalAlignment="Stretch">
+                <Border.BorderBrush>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#462AD8" Offset="0" />
+                        <GradientStop Color="#DA34AE" Offset="0.75" />
+                        <GradientStop Color="#8A16C1" Offset="1" />
+                    </LinearGradientBrush>
+                </Border.BorderBrush>
                 <StackPanel VerticalAlignment="Top" HorizontalAlignment="Stretch">
+                  
                     <TextBlock Text="Assign Role to User" 
                                FontSize="20"
                                FontWeight="Bold" 
+                               FontFamily="Consolas"
                                Margin="0,0,0,20" />
+                    <TextBlock Text="Use this page to assign a role to a user of the system. You can make users an Applicant, Officer, or Manager."
+           TextWrapping="Wrap"
+           FontSize="14"
+           FontFamily="Consolas"
+           Foreground="Gray"
+           Margin="0,0,0,20" />
+
 
                     <!-- Email Address -->
-                    <TextBlock Text="User Email Address:" 
-                               FontWeight="Bold" 
-                               Margin="30,10,30,5" />
+
+                    <!-- Email Address -->
+                    <StackPanel Orientation="Horizontal" Margin="30,10,30,5">
+                        <Image Source="/Assets/mail.png" Width="20" Height="20" Margin="0,0,8,0" />
+                        <TextBlock Text="User Email Address:" 
+               FontWeight="Bold" 
+               FontFamily="Consolas"/>
+                    </StackPanel>
                     <TextBox Text="{Binding UserEmail, UpdateSourceTrigger=PropertyChanged}"
-                             Height="30"
-                             FontSize="14"
-                             Padding="5"
-                             VerticalContentAlignment="Center"
-                             Margin="30,0,30,20" />
+         Height="30"
+         FontSize="14"
+         Padding="5"
+         VerticalContentAlignment="Center"
+         Margin="30,0,30,20" />
+
 
                     <!-- Role Dropdown -->
-                    <TextBlock Text="Select Role:" 
-                               FontWeight="Bold" 
-                               Margin="30,10,30,5" />
+                    <StackPanel Orientation="Horizontal" Margin="30,10,30,5">
+                        <Image Source="/Assets/user.png" Width="20" Height="20" Margin="0,0,8,0" />
+                        <TextBlock Text="Select Role:" 
+               FontWeight="Bold" 
+               FontFamily="Consolas"/>
+                    </StackPanel>
                     <ComboBox ItemsSource="{Binding Roles}" 
-                                SelectedItem="{Binding SelectedRole, Mode=TwoWay}"
-                                DisplayMemberPath="role"
-                                SelectedValuePath="role"                             
-                                Height="30"
-                                FontSize="14"
-                                Padding="5,0"
-                                Margin="30,0,30,30"
-                                VerticalContentAlignment="Center" />
+          SelectedItem="{Binding SelectedRole, Mode=TwoWay}"
+          DisplayMemberPath="role"
+          SelectedValuePath="role"                             
+          Height="30"
+          FontSize="14"
+          Padding="5,0"
+          Margin="30,0,30,30"
+          VerticalContentAlignment="Center" />
+
 
                     <!-- Submit Button -->
-                    <Button Content="Update User Roles"
+                    <Button
                             Command="{Binding OnUpdateUserRoles}"
                             IsEnabled="{Binding IsUpdateButtonEnabled}"
-                            Width="150"
+                            Width="250"
                             Height="40"
                             Margin="30,0,30,30"
                             HorizontalAlignment="Right"
                             Background="#7F5AF0"
                             Foreground="White"
+                            Cursor="Hand"
                             FontWeight="Bold"
                             FontSize="16"
-                            Style="{StaticResource RoundedButtonStyle}" />
+                            Style="{StaticResource RoundedButtonStyle}" >
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <TextBlock Text="Update User Roles"
+                                    FontFamily="Consolas"
+                            VerticalAlignment="Center"
+                            Foreground="White"
+                            FontWeight="Bold"/>
+                            <Image Source="/Assets/check.png"
+                        Width="20"
+                        Height="20"
+                        Margin="8,0,0,0"/>  
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
             </Border>
         </Grid>
