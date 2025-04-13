@@ -49,7 +49,7 @@ namespace DOSA_Client.ViewModels
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
                 Multiselect = true,
-                Filter = "All Files (*.*)|*.*"
+                Filter = "Image and PDF Files (*.jpg;*.jpeg;*.png;*.pdf)|*.jpg;*.jpeg;*.png;*.pdf"
             };
 
             bool? result = openFileDialog.ShowDialog();
