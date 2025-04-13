@@ -1,0 +1,74 @@
+﻿<UserControl x:Class="DOSA_Client.Views.ManagerPageView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:controls="clr-namespace:DOSA_Client.Controls"
+             mc:Ignorable="d" 
+             HorizontalAlignment="Stretch"
+             VerticalAlignment="Stretch">
+
+    <Grid Background="#ECEFF1">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Optional Header -->
+        <controls:HeaderRibbon Grid.Row="0" DataContext="{Binding}" />
+
+        <!-- Main Content -->
+        <Grid Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="30,10,30,20">
+            <Border Background="White"
+                    CornerRadius="10"
+                    Padding="40"
+                    VerticalAlignment="Stretch">
+                <StackPanel VerticalAlignment="Top" HorizontalAlignment="Stretch">
+                    <TextBlock Text="Assign Role to User" 
+                               FontSize="20"
+                               FontWeight="Bold" 
+                               Margin="0,0,0,20" />
+
+                    <!-- Email Address -->
+                    <TextBlock Text="User Email Address:" 
+                               FontWeight="Bold" 
+                               Margin="30,10,30,5" />
+                    <TextBox Text="{Binding UserEmail, UpdateSourceTrigger=PropertyChanged}"
+                             Height="30"
+                             FontSize="14"
+                             Padding="5"
+                             VerticalContentAlignment="Center"
+                             Margin="30,0,30,20" />
+
+                    <!-- Role Dropdown -->
+                    <TextBlock Text="Select Role:" 
+                               FontWeight="Bold" 
+                               Margin="30,10,30,5" />
+                    <ComboBox ItemsSource="{Binding Roles}" 
+                                SelectedItem="{Binding SelectedRole, Mode=TwoWay}"
+                                DisplayMemberPath="role"
+                                SelectedValuePath="role"                             
+                                Height="30"
+                                FontSize="14"
+                                Padding="5,0"
+                                Margin="30,0,30,30"
+                                VerticalContentAlignment="Center" />
+
+                    <!-- Submit Button -->
+                    <Button Content="Update User Roles"
+                            Command="{Binding OnUpdateUserRoles}"
+                            IsEnabled="{Binding IsUpdateButtonEnabled}"
+                            Width="150"
+                            Height="40"
+                            Margin="30,0,30,30"
+                            HorizontalAlignment="Right"
+                            Background="#7F5AF0"
+                            Foreground="White"
+                            FontWeight="Bold"
+                            FontSize="16"
+                            Style="{StaticResource RoundedButtonStyle}" />
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

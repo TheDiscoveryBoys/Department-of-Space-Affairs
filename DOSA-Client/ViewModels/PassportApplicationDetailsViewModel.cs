@@ -16,11 +16,14 @@ namespace DOSA_Client.ViewModels
 
         public ICommand GetNextPassportApplication { get; }
 
-        public PassportApplicationDetailsViewModel(PageManager pageManager)
+        private Func<Task> _updateTabsCallback;
+
+        public PassportApplicationDetailsViewModel(PageManager pageManager, Func<Task> updateTabsCallback)
         {
             PageManager = pageManager;
             GetNextPassportApplication = new DelegateCommand<string>(OnNext);
             CurrentUser = Context.Get<User>(ContextKeys.USER);
+            _updateTabsCallback = updateTabsCallback;
         }
 
         private void OnNext(string pageName)

@@ -20,19 +20,42 @@ namespace IntergalacticPassportAPI.Data
             return roles;
         }
 
+        public async Task<Users?> GetUserByEmail(string email)
+        {
+            using (var db = CreateDBConnection())
+            {
+                var sql = "SELECT * FROM users WHERE email = @Email;";
+                var result = await db.QueryAsync<Users>(sql, new { Email = email });
+                return result.FirstOrDefault();
+            }
+        }
+
         public async Task<bool> AssignRoleToUser(string googleId, int roleId)
         {
 
             using var db = CreateDBConnection();
-            var sql = @"
+
+            var sqlCheck = @"
+                SELECT * FROM user_roles 
+                WHERE user_id = @GoogleId
+                AND role_id = @RoleId;
+            ";
+            Console.WriteLine(sqlCheck);
+            var resultRows = await db.QueryAsync<UserRoles>(sqlCheck, new { GoogleId = googleId, RoleId = roleId });
+
+            if (resultRows.Count() == 0) {
+                var sql = @"
                     INSERT INTO user_roles (user_id, role_id)
-                    VALUES (@UserId, @RoleId)
+                    VALUES (@GoogleId, @RoleId)
                     ON CONFLICT DO NOTHING;
                 ";
             Console.WriteLine(sql);
-            Console.WriteLine(sql);
-            var rowsAffected = await db.ExecuteAsync(sql, new { UserId = googleId, RoleId = roleId });
+            
+            var rowsAffected = await db.ExecuteAsync(sql, new { GoogleId = googleId, RoleId = roleId });
             return rowsAffected > 0;
+            } else {
+                return false;
+            }
         }
 
         public async override Task<bool> Exists(Users model)

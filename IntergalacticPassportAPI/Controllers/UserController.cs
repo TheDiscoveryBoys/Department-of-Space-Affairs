@@ -34,6 +34,13 @@ namespace IntergalacticPassportAPI.Controllers
 
         }
 
+        [HttpGet]
+        [Route("email/{email}")]
+        public async Task<ActionResult<Users>> GetUserByEmail(string email){
+            Console.WriteLine($"Trying to get user by email {email}");
+            return Ok(await _repo.GetUserByEmail(email));
+        }
+
         [HttpGet("{id}/roles")]
         public async Task<ActionResult<IEnumerable<Roles>>> GetUserRoles(string id)
         {
