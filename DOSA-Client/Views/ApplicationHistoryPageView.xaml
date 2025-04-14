@@ -43,27 +43,7 @@
                         <!-- List -->
                     </Grid.RowDefinitions>
 
-                    <!-- Refresh Button -->
-                    <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" Margin="30,0,30,10">
-                        <Button Command="{Binding RefreshCommand}"
-                                Width="120"
-                                Height="35"
-                                Background="#7F5AF0"
-                                Foreground="White"
-                                FontWeight="Bold"
-                                FontSize="14"
-                                ToolTip="Refresh Application History"
-                                Cursor="Hand"
-                                Style="{StaticResource RoundedButtonStyle}">
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <TextBlock Text="Refresh"
-                                                FontFamily="Consolas"
-                                                VerticalAlignment="Center"
-                                                Foreground="White"
-                                                FontWeight="Bold"/>
-                            </StackPanel>
-                        </Button>
-                    </StackPanel>
+
 
                     <!-- Headers -->
                     <Grid Grid.Row="1" Margin="30,0,45,10">
@@ -78,69 +58,112 @@
                             <!-- Reason -->
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Grid.Column="0" Text="Document Type" FontWeight="Bold" FontFamily="Consolas" FontSize="18"  TextWrapping="Wrap"/>
-                        <TextBlock Grid.Column="1" Text="Application Date" FontWeight="Bold" FontFamily="Consolas" FontSize="18" />
-                        <TextBlock Grid.Column="2" Text="Status" FontWeight="Bold" FontFamily="Consolas" FontSize="18"/>
-                        <TextBlock Grid.Column="3" Text="Reason" FontWeight="Bold" FontFamily="Consolas" FontSize="18"/>
+                        <TextBlock Grid.Column="0" Text="Document Type" FontWeight="Bold" FontFamily="Consolas" FontSize="16"  TextWrapping="Wrap"/>
+                        <TextBlock Grid.Column="1" Text="Application Date" FontWeight="Bold" FontFamily="Consolas"  FontSize="16" />
+                        <TextBlock Grid.Column="2" Text="Status" FontWeight="Bold" FontFamily="Consolas"  FontSize="16"/>
+                        <TextBlock Grid.Column="3" Text="Reason" FontWeight="Bold" FontFamily="Consolas"  FontSize="16"/>
                     </Grid>
                     
                     <!-- Application List -->
-                    <ScrollViewer Grid.Row="2" Margin="30,0,30,30">
-                        <ItemsControl ItemsSource="{Binding Applications}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Border BorderBrush="#B0BEC5" BorderThickness="0,0,0,1" Padding="0,5">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="2*" />
-                                                <ColumnDefinition Width="2*" />
-                                                <ColumnDefinition Width="2*" />
-                                                <ColumnDefinition Width="3*" />
-                                            </Grid.ColumnDefinitions>
+                    <!-- Application List + Button -->
+                    <Grid Grid.Row="2" Margin="30,0,30,20">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <!-- Scrollable content -->
+                            <RowDefinition Height="Auto" />
+                            <!-- Button -->
+                        </Grid.RowDefinitions>
 
-                                            <!-- Document Type -->
-                                            <TextBlock Grid.Column="0" Text="{Binding ApplicationType}" FontFamily="Consolas" FontSize="14"/>
+                        <!-- Scrollable list -->
+                        <ScrollViewer Grid.Row="0">
+                            <ItemsControl ItemsSource="{Binding Applications}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border BorderBrush="#B0BEC5" BorderThickness="0,0,0,1" Padding="0,5">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="2*" />
+                                                    <ColumnDefinition Width="2*" />
+                                                    <ColumnDefinition Width="2*" />
+                                                    <ColumnDefinition Width="3*" />
+                                                </Grid.ColumnDefinitions>
 
-                                            <!-- Date -->
-                                            <TextBlock Grid.Column="1"
-                                                       Text="{Binding SubmittedAt, StringFormat={}{0:MM/dd/yyyy}}" FontFamily="Consolas" FontSize="14"/>
+                                                <!-- Document Type -->
+                                                <TextBlock Grid.Column="0" Text="{Binding ApplicationType}" FontFamily="Consolas" FontSize="12"/>
 
-                                            <!-- Status -->
-                                            <TextBlock Grid.Column="2"
-                                                       FontWeight="Bold"
-                                                       FontSize="14"
-                                                       FontFamily="Consolas"
-                                                       Text="{Binding Status.Name}">
-                                                <TextBlock.Style>
-                                                    <Style TargetType="TextBlock">
-                                                        <Setter Property="Foreground" Value="Black"/>
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding Status.Name}" Value="REJECTED">
-                                                                <Setter Property="Foreground" Value="Red"/>
-                                                            </DataTrigger>
-                                                            <DataTrigger Binding="{Binding Status.Name}" Value="PENDING">
-                                                                <Setter Property="Foreground" Value="DarkOrange"/>
-                                                            </DataTrigger>
-                                                            <DataTrigger Binding="{Binding Status.Name}" Value="APPROVED">
-                                                                <Setter Property="Foreground" Value="Green"/>
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </TextBlock.Style>
-                                            </TextBlock>
+                                                <!-- Date -->
+                                                <TextBlock Grid.Column="1"
+                                       Text="{Binding SubmittedAt, StringFormat={}{0:MM/dd/yyyy}}" FontFamily="Consolas" FontSize="13"/>
 
-                                            <!-- Reason -->
-                                            <TextBlock Grid.Column="3"
-                                                       Text="{Binding Status.Reason, TargetNullValue='-'}"
-                                                       FontSize="14"
-                                                       FontFamily="Consolas"
-                                                       TextWrapping="Wrap" />
-                                        </Grid>
-                                    </Border>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </ScrollViewer>
+                                                <!-- Status -->
+                                                <TextBlock Grid.Column="2"
+                                       FontWeight="Bold"
+                                       FontSize="13"
+                                       FontFamily="Consolas"
+                                       Text="{Binding Status.Name}">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="Foreground" Value="Black"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Status.Name}" Value="REJECTED">
+                                                                    <Setter Property="Foreground" Value="Red"/>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Status.Name}" Value="PENDING">
+                                                                    <Setter Property="Foreground" Value="DarkOrange"/>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Status.Name}" Value="APPROVED">
+                                                                    <Setter Property="Foreground" Value="Green"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+
+                                                <!-- Reason -->
+                                                <TextBlock Grid.Column="3"
+                                       Text="{Binding Status.Reason, TargetNullValue='-'}"
+                                       FontSize="13"
+                                       FontFamily="Consolas"
+                                       TextWrapping="Wrap" />
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+
+                        <!-- Refresh Button -->
+                        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,30,0,0">
+                            <Button Command="{Binding RefreshCommand}"
+        Width="120"
+        Height="35"
+        Background="#7F5AF0"
+        Foreground="White"
+        FontWeight="Bold"
+        FontSize="14"
+        ToolTip="Refresh Application History"
+        Cursor="Hand"
+        Style="{StaticResource RoundedButtonStyle}">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <!-- Refresh Icon -->
+                                    <TextBlock Text=""
+                   FontFamily="Segoe MDL2 Assets"
+                   Margin="0,0,5,0"
+                   VerticalAlignment="Center"
+                   FontSize="16"
+                   Foreground="White"/>
+                                    <!-- Label -->
+                                    <TextBlock Text="Refresh"
+                   FontFamily="Consolas"
+                   VerticalAlignment="Center"
+                   FontWeight="Bold"
+                   Foreground="White"/>
+                                </StackPanel>
+                            </Button>
+
+                        </StackPanel>
+                    </Grid>
+
                 </Grid>
             </Border>
         </Grid>
