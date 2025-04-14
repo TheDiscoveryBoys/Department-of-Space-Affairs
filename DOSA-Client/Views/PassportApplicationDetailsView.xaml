@@ -48,6 +48,7 @@
                         <StackPanel Margin="10,0,0,0">
                             <TextBlock FontSize="14"
                                        FontFamily="Consolas"
+                                       TextWrapping="Wrap"
                                        Margin="0,0,0,10">
                                 <Run Text="# "/>
                                 <Run Text="Galactic Citizenship Holo-ID: "
