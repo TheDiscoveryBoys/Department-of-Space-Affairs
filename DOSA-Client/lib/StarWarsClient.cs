@@ -36,25 +36,52 @@ public static class StarWarsClient
         return [.. allItems.OrderBy(item => item.Name)];
     }
 
-    private static List<SwapiRecord> GetFallbackData(string endpoint)
+private static List<SwapiRecord> GetFallbackData(string endpoint)
+{
+    return endpoint switch
     {
-        return endpoint switch
-        {
-            "species" => new List<SwapiRecord>
+        "species" => new List<SwapiRecord>
         {
             new SwapiRecord("Human"),
             new SwapiRecord("Droid"),
             new SwapiRecord("Wookiee"),
-        },
-            "planets" => new List<SwapiRecord>
+            new SwapiRecord("Twi'lek"),
+            new SwapiRecord("Rodian"),
+            new SwapiRecord("Trandoshan"),
+            new SwapiRecord("Mon Calamari"),
+            new SwapiRecord("Zabrak"),
+            new SwapiRecord("Togruta"),
+            new SwapiRecord("Chiss"),
+            new SwapiRecord("Ewok"),
+            new SwapiRecord("Gamorrean"),
+            new SwapiRecord("Hutt"),
+            new SwapiRecord("Bothan"),
+            new SwapiRecord("Nautolan"),
+        }.OrderBy(r => r.Name).ToList(),
+
+        "planets" => new List<SwapiRecord>
         {
             new SwapiRecord("Tatooine"),
             new SwapiRecord("Alderaan"),
             new SwapiRecord("Hoth"),
-        },
-            _ => new List<SwapiRecord>()
-        };
-    }
+            new SwapiRecord("Dagobah"),
+            new SwapiRecord("Endor"),
+            new SwapiRecord("Naboo"),
+            new SwapiRecord("Coruscant"),
+            new SwapiRecord("Kamino"),
+            new SwapiRecord("Geonosis"),
+            new SwapiRecord("Mustafar"),
+            new SwapiRecord("Jakku"),
+            new SwapiRecord("Kashyyyk"),
+            new SwapiRecord("Scarif"),
+            new SwapiRecord("Bespin"),
+            new SwapiRecord("Yavin IV"),
+        }.OrderBy(r => r.Name).ToList(),
+
+        _ => new List<SwapiRecord>()
+    };
+}
+
 
     public static Task<List<SwapiRecord>> GetSpecies()
     {
