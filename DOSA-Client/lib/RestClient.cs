@@ -13,9 +13,15 @@ public static class RestClient
     public static HttpClient HttpClient = new HttpClient();
     public static async Task<List<Role>> GetRolesByGoogleId(string googleId)
     {
-        var roles = await HttpClient.GetFromJsonAsync<List<Role>>($"{Constants.BaseURI}api/users/{googleId}/roles");
-        Console.WriteLine(JsonSerializer.Serialize(roles));
-        return roles ?? [];
+        try
+        {
+            return await HttpClient.GetFromJsonAsync<List<Role>>($"{Constants.BaseURI}api/users/{googleId}/roles");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return [];
+        }
     }
 
     public static async Task<User?> GetUserByEmail(string email)

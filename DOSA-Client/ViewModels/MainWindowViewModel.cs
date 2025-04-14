@@ -84,13 +84,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
         var claimsDict = JWTHelpers.DecodeClaims(jwt);
         string googleID = claimsDict["sub"].ToString() ?? throw new Exception("Google ID not found in the jwt");
-        string email = claimsDict["email"].ToString() ?? throw new Exception("Email not present in jwt");
-        string name = claimsDict["name"].ToString() ?? throw new Exception("Name not present in jwt");
 
-        if(!await ApiClient.CreateUser(googleID, email, name)){
-            Console.WriteLine("Failed to create the user");
-            throw new Exception("Something went wrong while trying to login, please try again");
-        }
         // Add the user to context
         Context.Add(ContextKeys.USER, await ApiClient.GetUserProfile(googleID));
         Console.WriteLine(jwt);
