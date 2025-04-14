@@ -29,6 +29,7 @@
     <None Remove="Assets\mail.png" />
     <None Remove="Assets\SPACE.png" />
     <None Remove="Assets\translate.png" />
+    <None Remove="Assets\upload.png" />
     <None Remove="Assets\user.png" />
   </ItemGroup>
 
@@ -54,6 +55,7 @@
     <Resource Include="Assets\mail.png" />
     <Resource Include="Assets\SPACE.png" />
     <Resource Include="Assets\translate.png" />
+    <Resource Include="Assets\upload.png" />
     <Resource Include="Assets\user.png" />
   </ItemGroup>
 
