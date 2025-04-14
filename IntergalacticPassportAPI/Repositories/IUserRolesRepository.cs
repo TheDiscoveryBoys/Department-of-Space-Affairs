@@ -5,7 +5,6 @@ namespace IntergalacticPassportAPI.Data
 {
     public interface IUserRolesRepository : IBaseRepository<UserRoles>
     {
-        Task<UserRoles?> CreateUserRole(UserRoles userRoles);
     }
 
 }
