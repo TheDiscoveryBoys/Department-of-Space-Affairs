@@ -71,19 +71,6 @@ public static class RestClient
         return null;
     }
 
-    // TODO Change to return user
-    public static async Task<bool> CreateUser(User user)
-    {
-        var response = await HttpClient.PostAsJsonAsync($"{Constants.BaseURI}api/users", user);
-        if (response.IsSuccessStatusCode)
-        {
-            await response.Content.ReadFromJsonAsync<User>();
-            return true;
-        }
-        Console.WriteLine(await response.Content.ReadAsStringAsync());
-        return false;
-    }
-
     public static async Task<bool> AddUserRole(UserRole userRole)
     {
         var response = await HttpClient.PostAsJsonAsync<object>($"{Constants.BaseURI}api/users/{userRole.UserId}/roles/{userRole.RoleId}", null);

@@ -76,7 +76,7 @@ namespace DOSA_Client.ViewModels
             Task.Run(async () =>
             {
                 try {
-                    var visaApplication = await ApiClient.CreateVisaApplication(new VisaApplication(null, Context.Get<User>(ContextKeys.USER).google_id, null, DestinationPlanet, TravelReason, StartDate, EndDate, DateTime.Now, null, null) ?? throw new Exception("Failed to create a visa application"));
+                    var visaApplication = await ApiClient.CreateVisaApplication(new VisaApplication(-1, Context.Get<User>(ContextKeys.USER).google_id, null, DestinationPlanet, TravelReason, StartDate, EndDate, DateTime.Now, null, null) ?? throw new Exception("Failed to create a visa application"));
                     await UpdateTabsCallback();
                 }
                 catch (HttpRequestException ex) when (ex.StatusCode == System.Net.HttpStatusCode.Conflict)

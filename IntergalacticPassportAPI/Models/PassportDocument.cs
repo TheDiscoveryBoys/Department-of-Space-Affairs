@@ -7,7 +7,7 @@ using Dapper;
 
 namespace IntergalacticPassportAPI.Models
 {
-    [Table("passport_document")]
+    [Table("passport_application_document")]
     public class PassportDocument 
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
