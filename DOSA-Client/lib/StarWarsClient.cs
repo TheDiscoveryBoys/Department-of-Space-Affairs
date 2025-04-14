@@ -29,11 +29,31 @@ public static class StarWarsClient
             catch (Exception e)
             {
                 Console.WriteLine($"Error fetching {endpoint}: {e.Message}");
-                break;
+                return GetFallbackData(endpoint);
             }
         }
 
         return [.. allItems.OrderBy(item => item.Name)];
+    }
+
+    private static List<SwapiRecord> GetFallbackData(string endpoint)
+    {
+        return endpoint switch
+        {
+            "species" => new List<SwapiRecord>
+        {
+            new SwapiRecord("Human"),
+            new SwapiRecord("Droid"),
+            new SwapiRecord("Wookiee"),
+        },
+            "planets" => new List<SwapiRecord>
+        {
+            new SwapiRecord("Tatooine"),
+            new SwapiRecord("Alderaan"),
+            new SwapiRecord("Hoth"),
+        },
+            _ => new List<SwapiRecord>()
+        };
     }
 
     public static Task<List<SwapiRecord>> GetSpecies()
