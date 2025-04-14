@@ -7,32 +7,10 @@ namespace IntergalacticPassportAPI.Controllers
 {
     [ApiController]
     [Route("api/users")]
+    [Authorize(Roles="APPLICANT")]
     public class UserController : BaseController<Users, IUsersRepository>
     {
         public UserController(IUsersRepository repo) : base(repo) { }
-
-        //[HttpPost]
-        //public override async Task<ActionResult<Users>> Create([FromBody] Users user)
-        //{
-        //    return await BaseRequest(async () =>
-        //    {
-        //        if (!ModelState.IsValid)
-        //            return BadRequest(ModelState);
-
-        //        var existingUser = await _repo.Exists(user);
-
-        //        if (!existingUser)
-        //        {
-        //            var registeredUser = await _repo.Create(user);
-        //            return Ok(registeredUser);
-        //        }
-        //        else
-        //        {
-        //            return Ok(user);
-        //        }
-        //    });
-
-        //}
 
         [HttpGet]
         [Route("email/{email}")]
@@ -60,6 +38,7 @@ namespace IntergalacticPassportAPI.Controllers
         }
 
         [HttpPost("{userId}/roles/{roleId}")]
+        [Authorize(Roles="OFFICER")]
         public async Task<ActionResult> AssignRoleToUser(string userId, int roleId)
         {
             return await BaseRequest(async () =>
