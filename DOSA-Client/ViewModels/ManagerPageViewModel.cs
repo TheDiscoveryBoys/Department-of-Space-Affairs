@@ -22,7 +22,7 @@ namespace DOSA_Client.ViewModels
             get => _selectedRole;
             set 
             {
-                if (value.id > 0)
+                if (value != null)
                 {
                     IsUpdateButtonEnabled = true;
 ;                }

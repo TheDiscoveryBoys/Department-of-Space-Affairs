@@ -90,7 +90,7 @@
                                         <Border BorderThickness="1" BorderBrush="Gray" Padding="10" Margin="5">
                                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                                 <Button Command="{Binding DataContext.RemoveDocumentCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                                        CommandParameter="{Binding}"
+                                                        CommandParameter="{Binding FileName}"
                                                         Width="30" Height="30"
                                                         Margin="0,0,10,0"
                                                         Background="Transparent"

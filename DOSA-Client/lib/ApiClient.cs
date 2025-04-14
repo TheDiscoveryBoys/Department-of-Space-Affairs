@@ -45,7 +45,7 @@ namespace DOSA_Client.lib
             return await RestClient.UpdateUser(user);
         }
 
-        public static async Task<PassportApplication> CreatePassportApplication(PassportApplication passportApplication)
+        public static async Task<PassportApplication?> CreatePassportApplication(PassportApplication passportApplication)
         {
             return await RestClient.CreatePassportApplication(passportApplication);
         }

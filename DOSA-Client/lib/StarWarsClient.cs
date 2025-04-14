@@ -1,17 +1,7 @@
-﻿using System.ComponentModel;
-using System.Net;
-using System.Windows.Documents;
-using System.Windows.Media.Animation;
-using DOSA_Client.Models;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Net.Http.Json;
 using DOSA_Client.lib.Constants;
-using System.Configuration;
-using static DOSA_Client.ViewModels.UploadPassportDocumentsViewModel;
-using System.IO;
-using System.Net.Http.Headers;
-using System.Reflection.Metadata;
-using System.Windows;
+using DOSA_Client.Models;
 
 public static class StarWarsClient
 {
@@ -39,12 +29,59 @@ public static class StarWarsClient
             catch (Exception e)
             {
                 Console.WriteLine($"Error fetching {endpoint}: {e.Message}");
-                break;
+                return GetFallbackData(endpoint);
             }
         }
 
         return [.. allItems.OrderBy(item => item.Name)];
     }
+
+private static List<SwapiRecord> GetFallbackData(string endpoint)
+{
+    return endpoint switch
+    {
+        "species" => new List<SwapiRecord>
+        {
+            new SwapiRecord("Human"),
+            new SwapiRecord("Droid"),
+            new SwapiRecord("Wookiee"),
+            new SwapiRecord("Twi'lek"),
+            new SwapiRecord("Rodian"),
+            new SwapiRecord("Trandoshan"),
+            new SwapiRecord("Mon Calamari"),
+            new SwapiRecord("Zabrak"),
+            new SwapiRecord("Togruta"),
+            new SwapiRecord("Chiss"),
+            new SwapiRecord("Ewok"),
+            new SwapiRecord("Gamorrean"),
+            new SwapiRecord("Hutt"),
+            new SwapiRecord("Bothan"),
+            new SwapiRecord("Nautolan"),
+        }.OrderBy(r => r.Name).ToList(),
+
+        "planets" => new List<SwapiRecord>
+        {
+            new SwapiRecord("Tatooine"),
+            new SwapiRecord("Alderaan"),
+            new SwapiRecord("Hoth"),
+            new SwapiRecord("Dagobah"),
+            new SwapiRecord("Endor"),
+            new SwapiRecord("Naboo"),
+            new SwapiRecord("Coruscant"),
+            new SwapiRecord("Kamino"),
+            new SwapiRecord("Geonosis"),
+            new SwapiRecord("Mustafar"),
+            new SwapiRecord("Jakku"),
+            new SwapiRecord("Kashyyyk"),
+            new SwapiRecord("Scarif"),
+            new SwapiRecord("Bespin"),
+            new SwapiRecord("Yavin IV"),
+        }.OrderBy(r => r.Name).ToList(),
+
+        _ => new List<SwapiRecord>()
+    };
+}
+
 
     public static Task<List<SwapiRecord>> GetSpecies()
     {
