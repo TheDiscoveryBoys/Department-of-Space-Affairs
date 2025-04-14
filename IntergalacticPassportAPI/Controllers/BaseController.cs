@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace IntergalacticPassportAPI.Controllers
 {
     public abstract class BaseController<Model, ModelRepo> : ControllerBase
-        where ModelRepo : BaseRepository<Model>
+        where ModelRepo : IBaseRepository<Model>
     {
         protected readonly ModelRepo _repo;
 
@@ -17,28 +17,28 @@ namespace IntergalacticPassportAPI.Controllers
 
         [HttpGet("{id}")]
         // [Authorize(Roles = "Citizen")]
-        public async Task<ActionResult<Model>> GetById(string id)
+        public async Task<ActionResult<Model?>> GetById(string id)
         {
 
-            if (typeof(Model) == typeof(Users))
-            {
+            // if (typeof(Model) == typeof(Users))
+            // {
                 return await BaseRequest(async () =>
                 {
                     var model = await _repo.GetById(id);
                     return model == null ? NoContent() : Ok(model);
 
                 });
-            }
+         //   }
 
-            else 
-            {
-                return await BaseRequest(async () =>
-                {
-                    var model = await _repo.GetById(Int32.Parse(id));
-                    return model == null ? NoContent() : Ok(model);
+            // else 
+            // {
+            //     return await BaseRequest(async () =>
+            //     {
+            //         var model = await _repo.GetById(Int32.Parse(id));
+            //         return model == null ? NoContent() : Ok(model);
 
-                });
-            }
+            //     });
+            // }
         }
 
         [HttpGet]

@@ -1,4 +1,5 @@
 using IntergalacticPassportAPI.Data;
+using IntergalacticPassportAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
@@ -9,14 +10,22 @@ var builder = WebApplication.CreateBuilder(args);
 Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true; // This line ensures that PascalCase prpoperties are correctly mapped to snake case in the DB.
 
 builder.Services.AddControllers();
-builder.Services.AddScoped<PassportRepository>();
-builder.Services.AddScoped<UsersRepository>();
-builder.Services.AddScoped<UserRolesRepository>();
-builder.Services.AddScoped<RolesRepository>();
-builder.Services.AddScoped<VisaRepository>();
-builder.Services.AddScoped<StatusRepository>();
-builder.Services.AddScoped<PassportDocumentRepository>();
-builder.Services.AddScoped<StatusRepository>();
+//builder.Services.AddScoped<PassportRepository>();
+//builder.Services.AddScoped<UsersRepository>();
+//builder.Services.AddScoped<VisaRepository>();
+//builder.Services.AddScoped<StatusRepository>();
+//builder.Services.AddScoped<PassportDocumentRepository>();
+//builder.Services.AddScoped<RolesRepository>();
+//builder.Services.AddScoped<UserRolesRepository>();
+builder.Services.AddScoped<IUsersRepository, UsersRepository>();
+builder.Services.AddScoped<IPassportRepository, PassportRepository>();
+builder.Services.AddScoped<IVisaRepository, VisaRepository>();
+builder.Services.AddScoped<IPassportDocumentRepository, PassportDocumentRepository>();
+builder.Services.AddScoped<IStatusRepository, StatusRepository>();
+builder.Services.AddScoped<IRolesRepository, RolesRepository>();
+builder.Services.AddScoped<IUserRolesRepository, UserRolesRepository>();
+builder.Services.AddScoped<IGoogleAuthService, GoogleAuthService>();
+
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -47,7 +56,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 {
                     return;
                 }
-                var userRepository = context.HttpContext.RequestServices.GetRequiredService<UsersRepository>();
+                var userRepository = context.HttpContext.RequestServices.GetRequiredService<IUsersRepository>();
 
                 var userRoles = await userRepository.GetUserRoles(googleId);
                 Console.WriteLine($"User roles: {JsonSerializer.Serialize(userRoles)}");
@@ -67,7 +76,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 // TODO: Come readd this 
 builder.Services.AddAuthorization();
-
+//builder.Services.AddSwaggerGen();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Intergalactic Passport API", Version = "v1" });
