@@ -1,4 +1,5 @@
 using IntergalacticPassportAPI.Data;
+using IntergalacticPassportAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
@@ -23,6 +24,7 @@ builder.Services.AddScoped<IPassportDocumentRepository, PassportDocumentReposito
 builder.Services.AddScoped<IStatusRepository, StatusRepository>();
 builder.Services.AddScoped<IRolesRepository, RolesRepository>();
 builder.Services.AddScoped<IUserRolesRepository, UserRolesRepository>();
+builder.Services.AddScoped<IGoogleAuthService, GoogleAuthService>();
 
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
