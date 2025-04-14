@@ -11,15 +11,13 @@
     <Grid Background="#ECEFF1">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <!-- Title -->
             <RowDefinition Height="*" />
-            <!-- Content -->
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Title and Horizontal Line -->
+        <!-- Title -->
         <controls:HeaderRibbon DataContext="{Binding}" />
 
+        <!-- Content -->
         <Grid Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="30,10,30,20">
             <Border Background="White"
                     BorderThickness="3"
@@ -35,27 +33,26 @@
                 </Border.BorderBrush>
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
                         <!-- Title -->
                         <RowDefinition Height="Auto"/>
                         <!-- Headers -->
+                        <RowDefinition Height="Auto"/>
+                        <!-- Applications -->
                         <RowDefinition Height="*"/>
-                        <!-- List -->
                     </Grid.RowDefinitions>
-
 
 
                     <!-- Headers -->
                     <Grid Grid.Row="1" Margin="30,0,45,10">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2*" />
                             <!-- Document Type -->
                             <ColumnDefinition Width="2*" />
                             <!-- Date -->
                             <ColumnDefinition Width="2*" />
                             <!-- Status -->
-                            <ColumnDefinition Width="3*" />
+                            <ColumnDefinition Width="2*" />
                             <!-- Reason -->
+                            <ColumnDefinition Width="3*" />
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Grid.Column="0" Text="Document Type" FontWeight="Bold" FontFamily="Consolas" FontSize="16"  TextWrapping="Wrap"/>
