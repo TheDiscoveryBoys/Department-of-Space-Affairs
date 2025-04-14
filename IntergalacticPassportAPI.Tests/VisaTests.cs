@@ -6,6 +6,7 @@ using Moq;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+namespace IntergalacticPassportAPI.Tests;
 
 public class VisaControllerTests
 {
