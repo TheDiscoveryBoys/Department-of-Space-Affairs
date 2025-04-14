@@ -88,7 +88,7 @@ namespace DOSA_Client.ViewModels
             // Delay setting the selected index to ensure the UI has time to bind
 
             // Force the SelectedIndex update to happen *after* the UI re-renders the new Tabs
-            await Task.Delay(50); // wait a tiny bit to ensure binding completes
+            await Task.Delay(150); // wait a tiny bit to ensure binding completes
             System.Windows.Application.Current.Dispatcher.Invoke(() =>
             {
                 SelectedIndex = 0;

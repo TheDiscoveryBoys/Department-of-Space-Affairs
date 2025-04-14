@@ -43,7 +43,27 @@
                         <!-- List -->
                     </Grid.RowDefinitions>
 
-
+                    <!-- Refresh Button -->
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" Margin="30,0,30,10">
+                        <Button Command="{Binding RefreshCommand}"
+                                Width="120"
+                                Height="35"
+                                Background="#7F5AF0"
+                                Foreground="White"
+                                FontWeight="Bold"
+                                FontSize="14"
+                                ToolTip="Refresh Application History"
+                                Cursor="Hand"
+                                Style="{StaticResource RoundedButtonStyle}">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <TextBlock Text="Refresh"
+                                                FontFamily="Consolas"
+                                                VerticalAlignment="Center"
+                                                Foreground="White"
+                                                FontWeight="Bold"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
 
                     <!-- Headers -->
                     <Grid Grid.Row="1" Margin="30,0,30,10">
@@ -63,8 +83,7 @@
                         <TextBlock Grid.Column="2" Text="Status" FontWeight="Bold" FontFamily="Consolas"/>
                         <TextBlock Grid.Column="3" Text="Reason" FontWeight="Bold" FontFamily="Consolas"/>
                     </Grid>
-
-
+                    
                     <!-- Application List -->
                     <ScrollViewer Grid.Row="2" Margin="30,0,30,30">
                         <ItemsControl ItemsSource="{Binding Applications}">

@@ -95,6 +95,11 @@ namespace DOSA_Client.ViewModels
 
         public void RejectApplication()
         {
+            if (Reason.Length > 255)
+            {
+                Reason = Reason.Substring(0, 255);
+                MessageBox.Show("Reason exceeds 255 characters. Input will be truncated.");
+            }
             Task.Run(async ()=>{
                 // using records makes this very shit (I think we should have stuck to classes imo)
                 var status = new Status(PassportApplication.PassportApplication.StatusId, "REJECTED", Reason);
@@ -109,6 +114,11 @@ namespace DOSA_Client.ViewModels
 
         public void ApproveApplication()
         {
+            if (Reason.Length > 255)
+            {
+                Reason = Reason.Substring(0, 255);
+                MessageBox.Show("Reason exceeds 255 characters. Input will be truncated.");
+            }
             Task.Run(async ()=>{
                 var status = new Status(PassportApplication.PassportApplication.StatusId, "APPROVED", Reason);
                 var passport = new PassportApplication(PassportApplication.PassportApplication.Id, PassportApplication.Applicant.google_id, status.Id, PassportApplication.PassportApplication.SubmittedAt, DateTime.Now, Officer.google_id);
