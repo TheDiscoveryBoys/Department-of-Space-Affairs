@@ -82,6 +82,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
         ApiClient.Jwt = jwt;
         RestClient.HttpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", ApiClient.Jwt);
 
+        var claimsDict = JWTHelpers.DecodeClaims(jwt);
         
         string googleID = claimsDict["sub"].ToString() ?? throw new Exception("Google ID not found in the jwt");
         
