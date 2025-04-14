@@ -9,6 +9,7 @@ namespace IntergalacticPassportportAPI.Controllers
 {
 	[ApiController]
 	[Route("api/passport-documents")]
+	[Authorize(Roles="APPLICANT, OFFICER")]
 	public class PassportDocumentController : BaseController<PassportDocument, IPassportDocumentRepository>
 	{
 		public PassportDocumentController(IPassportDocumentRepository repo) : base(repo) { }
