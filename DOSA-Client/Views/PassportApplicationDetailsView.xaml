@@ -11,21 +11,18 @@
     <Grid Background="#ECEFF1">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <!-- Header -->
             <RowDefinition Height="*"/>
-            <!-- Guidelines -->
             <RowDefinition Height="Auto"/>
-            <!-- Button -->
         </Grid.RowDefinitions>
 
         <!-- Header -->
-        <controls:HeaderRibbon DataContext="{Binding}"/>
+        <controls:HeaderRibbon Grid.Row="0" DataContext="{Binding}"/>
 
         <!-- Content -->
         <Grid Grid.Row="1"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch"
-                Margin="30,10,30,20">
+              HorizontalAlignment="Stretch"
+              VerticalAlignment="Stretch"
+              Margin="30,10,30,20">
             <Border Background="White"
                     BorderThickness="3"
                     CornerRadius="10"
@@ -54,7 +51,6 @@
                                      FontWeight="Bold"/>
                                 <Run Text="Applicants must present a valid Holo-ID issued by a recognized planetary authority (e.g., Coruscant Central Identification, Tatooine Homestead Record)."/>
                             </TextBlock>
-
                             <TextBlock FontSize="14"
                                        FontFamily="Consolas"
                                        Margin="0,0,0,10">
@@ -71,9 +67,8 @@
 
         <!-- Button -->
         <Grid Grid.Row="2"
-                Margin="30,0,30,20">
-            <Button 
-                    Command="{Binding GetNextPassportApplication}"
+              Margin="30,0,30,20">
+            <Button Command="{Binding GetNextPassportApplication}"
                     CommandParameter="Process Passport Application Page"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
@@ -89,13 +84,13 @@
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <TextBlock Text="Get Next Passport Application"
                                FontFamily="Consolas"
-                   VerticalAlignment="Center"
-                   Foreground="White"
-                   FontWeight="Bold"/>
+                               VerticalAlignment="Center"
+                               Foreground="White"
+                               FontWeight="Bold"/>
                     <Image Source="/Assets/arrow.png"
-               Width="20"
-               Height="20"
-               Margin="8,0,0,0"/>
+                           Width="20"
+                           Height="20"
+                           Margin="8,0,0,0"/>
                 </StackPanel>
             </Button>
         </Grid>

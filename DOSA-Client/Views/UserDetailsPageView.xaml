@@ -11,16 +11,14 @@
     <Grid Background="#ECEFF1">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <!-- Title -->
             <RowDefinition Height="*" />
-            <!-- Content -->
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Title and Horizontal Line -->
+        <!-- Header -->
         <controls:HeaderRibbon DataContext="{Binding}" />
 
-        <!-- Layer 2: Centered content in a card -->
+        <!-- Content -->
         <Grid Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="30,10,30,20">
             <Border Background="White"
                     CornerRadius="10"
@@ -36,7 +34,7 @@
                 </Border.BorderBrush>
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                        <!-- Form Fields -->
+                        <!-- Fields -->
                         <Grid Margin="100,10,100,20">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1.5*"/>
@@ -53,18 +51,18 @@
 
                             <!-- Email -->
                             <StackPanel Grid.Row="0" Grid.Column="0" 
-                                                    Orientation="Horizontal" 
-                                                    VerticalAlignment="Center" 
-                                                    Margin="0,15,10,15">            
+                                        Orientation="Horizontal" 
+                                        VerticalAlignment="Center" 
+                                        Margin="0,15,10,15">            
                                 <Image Source="/Assets/mail.png"
-                                   Width="18" Height="18"
-                                   Margin="0,0,6,0"
-                                   VerticalAlignment="Center"/>
+                                       Width="18" Height="18"
+                                       Margin="0,0,6,0"
+                                       VerticalAlignment="Center"/>
                                 <TextBlock Grid.Row="0" Grid.Column="0" 
-                                       Text="Email:" 
-                                       FontWeight="Bold" 
-                                       VerticalAlignment="Center" 
-                                       Margin="0,15,10,15"/>
+                                           Text="Email:" 
+                                           FontWeight="Bold" 
+                                           VerticalAlignment="Center" 
+                                           Margin="0,15,10,15"/>
                             </StackPanel>
                             <TextBox Grid.Row="0" Grid.Column="1" 
                                      Height="30" 
@@ -73,23 +71,22 @@
                                      Padding="5,0"
                                      Text="{Binding CurrentUser.email}"
                                      Margin="0,10"
-                                     IsEnabled="False"
-                                     />
+                                     IsEnabled="False"/>
 
                             <!-- Name -->
                             <StackPanel Grid.Row="1" Grid.Column="0" 
-                                                    Orientation="Horizontal" 
-                                                    VerticalAlignment="Center" 
-                                                    Margin="0,15,10,15">
+                                        Orientation="Horizontal" 
+                                        VerticalAlignment="Center" 
+                                        Margin="0,15,10,15">
                                 <Image Source="/Assets/user.png"
-                                   Width="18" Height="18"
-                                   Margin="0,0,6,0"
-                                   VerticalAlignment="Center"/>
+                                       Width="18" Height="18"
+                                       Margin="0,0,6,0"
+                                       VerticalAlignment="Center"/>
                                 <TextBlock Grid.Row="1" Grid.Column="0" 
-                                       Text="Name:" 
-                                       FontWeight="Bold" 
-                                       VerticalAlignment="Center" 
-                                       Margin="0,15,10,15"/>
+                                           Text="Name:" 
+                                           FontWeight="Bold" 
+                                           VerticalAlignment="Center" 
+                                           Margin="0,15,10,15"/>
                             </StackPanel>
                             <TextBox Grid.Row="1" Grid.Column="1" 
                                      Height="30" 
@@ -101,18 +98,18 @@
 
                             <!-- Species -->
                             <StackPanel Grid.Row="2" Grid.Column="0" 
-                                                    Orientation="Horizontal" 
-                                                    VerticalAlignment="Center" 
-                                                    Margin="0,15,10,15">
+                                        Orientation="Horizontal" 
+                                        VerticalAlignment="Center" 
+                                        Margin="0,15,10,15">
                                 <Image Source="/Assets/aliens.png"
-                                   Width="18" Height="18"
-                                   Margin="0,0,6,0"
-                                   VerticalAlignment="Center"/>
+                                       Width="18" Height="18"
+                                       Margin="0,0,6,0"
+                                       VerticalAlignment="Center"/>
                                 <TextBlock Grid.Row="2" Grid.Column="0" 
-                                       Text="Species:" 
-                                       FontWeight="Bold" 
-                                       VerticalAlignment="Center" 
-                                       Margin="0,15,10,15"/>
+                                           Text="Species:" 
+                                           FontWeight="Bold" 
+                                           VerticalAlignment="Center" 
+                                           Margin="0,15,10,15"/>
                             </StackPanel>
                             <ComboBox Grid.Row="2" Grid.Column="1"
                                       ItemsSource="{Binding SpeciesList}"
@@ -126,44 +123,44 @@
 
                             <!-- Planet of Origin -->
                             <StackPanel Grid.Row="3" Grid.Column="0" 
-                                                    Orientation="Horizontal" 
-                                                    VerticalAlignment="Center" 
-                                                    Margin="0,15,10,15">
+                                        Orientation="Horizontal" 
+                                        VerticalAlignment="Center" 
+                                        Margin="0,15,10,15">
                                 <Image Source="/Assets/asteroid.png"
-                                   Width="18" Height="18"
-                                   Margin="0,0,6,0"
-                                   VerticalAlignment="Center"/>
+                                       Width="18" Height="18"
+                                       Margin="0,0,6,0"
+                                       VerticalAlignment="Center"/>
                                 <TextBlock Grid.Row="3" Grid.Column="0" 
-                                       Text="Planet of Origin:" 
-                                       FontWeight="Bold" 
-                                       VerticalAlignment="Center" 
-                                       Margin="0,15,10,15"/>
+                                           Text="Planet of Origin:" 
+                                           FontWeight="Bold" 
+                                           VerticalAlignment="Center" 
+                                           Margin="0,15,10,15"/>
                             </StackPanel>
                             <ComboBox Grid.Row="3" Grid.Column="1" 
-                                        ItemsSource="{Binding PlanetsList}"
-                                        DisplayMemberPath="Name"
-                                        SelectedValuePath="Name"
-                                        SelectedValue="{Binding CurrentUser.planet_of_origin, Mode=TwoWay}"
-                                        Height="30" 
-                                        FontSize="14"
-                                        VerticalContentAlignment="Center"
-                                        Padding="5,0"
-                                        Margin="0,10"/>
+                                      ItemsSource="{Binding PlanetsList}"
+                                      DisplayMemberPath="Name"
+                                      SelectedValuePath="Name"
+                                      SelectedValue="{Binding CurrentUser.planet_of_origin, Mode=TwoWay}"
+                                      Height="30" 
+                                      FontSize="14"
+                                      VerticalContentAlignment="Center"
+                                      Padding="5,0"
+                                      Margin="0,10"/>
 
                             <!-- Primary Language -->
                             <StackPanel Grid.Row="4" Grid.Column="0" 
-                         Orientation="Horizontal" 
-                         VerticalAlignment="Center" 
-                         Margin="0,15,10,15">
+                                        Orientation="Horizontal" 
+                                        VerticalAlignment="Center" 
+                                        Margin="0,15,10,15">
                                 <Image Source="/Assets/translate.png"
-                                                Width="18" Height="18"
-                                                Margin="0,0,6,0"
-                                                VerticalAlignment="Center"/>
+                                       Width="18" Height="18"
+                                       Margin="0,0,6,0"
+                                       VerticalAlignment="Center"/>
                                 <TextBlock Grid.Row="4" Grid.Column="0" 
-                                       Text="Primary Language:" 
-                                       FontWeight="Bold" 
-                                       VerticalAlignment="Center" 
-                                       Margin="0,15,10,15"/>
+                                           Text="Primary Language:" 
+                                           FontWeight="Bold" 
+                                           VerticalAlignment="Center" 
+                                           Margin="0,15,10,15"/>
                             </StackPanel>
                             <TextBox Grid.Row="4" Grid.Column="1" 
                                      Height="30" 
@@ -179,14 +176,14 @@
                                         VerticalAlignment="Center" 
                                         Margin="0,15,10,15">
                                 <Image Source="/Assets/calendar.png"
-                       Width="18" Height="18"
-                       Margin="0,0,6,0"
-                       VerticalAlignment="Center"/>
+                                       Width="18" Height="18"
+                                       Margin="0,0,6,0"
+                                       VerticalAlignment="Center"/>
                                 <TextBlock Grid.Row="5" Grid.Column="0" 
-                                       Text="Date of Birth:" 
-                                       FontWeight="Bold" 
-                                       VerticalAlignment="Center" 
-                                       Margin="0,15,10,15"/>
+                                           Text="Date of Birth:" 
+                                           FontWeight="Bold" 
+                                           VerticalAlignment="Center" 
+                                           Margin="0,15,10,15"/>
                             </StackPanel>
                             <DatePicker Grid.Row="5" Grid.Column="1" 
                                         Height="30" 
@@ -196,9 +193,7 @@
                                         Margin="0,10"/>
                         </Grid>
 
-                        <!-- Done Button -->
-                        <Button
-                                Command="{Binding onNextButtonClickedCommand}"
+                        <Button Command="{Binding onNextButtonClickedCommand}"
                                 CommandParameter="Upload Passport Documents Page"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom"
@@ -213,14 +208,14 @@
                                 Style="{StaticResource RoundedButtonStyle}">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <TextBlock Text="Save Details"
-                                FontFamily="Consolas"
-                                VerticalAlignment="Center"
-                                Foreground="White"
-                                FontWeight="Bold"/>
+                                           FontFamily="Consolas"
+                                           VerticalAlignment="Center"
+                                           Foreground="White"
+                                           FontWeight="Bold"/>
                                 <Image Source="/Assets/arrow.png"
-                                        Width="20"
-                                        Height="20"
-                                        Margin="8,0,0,0"/>  
+                                       Width="20"
+                                       Height="20"
+                                       Margin="8,0,0,0"/>  
                             </StackPanel>
                         </Button>
                     </StackPanel>

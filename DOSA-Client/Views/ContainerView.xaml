@@ -47,7 +47,6 @@
                     FontFamily="Consolas"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Center">
-                    
                 </TextBlock>
             </DataTemplate>
         </TabControl.ItemTemplate>

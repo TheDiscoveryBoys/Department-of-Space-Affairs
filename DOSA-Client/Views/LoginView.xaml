@@ -6,29 +6,27 @@
              mc:Ignorable="d">
 
     <Grid Background="#ECEFF1">
-        <!-- Layer 1: Vertical Blue Stripes (Ribbons) between the left side and the center -->
+        <!-- Ribbon -->
         <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20">
-                <!-- First Ribbon (Dark Blue) -->
+                <!-- Ribbon 1 -->
                 <Rectangle Width="15" Height="200" Fill="#5b2bd2" Margin="0,0,0,5"/>
-                <!-- Second Ribbon (Medium Blue) -->
+                <!-- Ribbon2  -->
                 <Rectangle Width="15" Height="200" Fill="#b832b8" Margin="0,0,0,5"/>
-                <!-- Third Ribbon (Light Blue) -->
+                <!-- Ribbon 3 -->
                 <Rectangle Width="15" Height="200" Fill="#d690d3"/>
             </StackPanel>
         </Grid>
 
-        <!-- Layer 2: Centered login card -->
-
+        <!-- Centered login card -->
         <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Border 
-                CornerRadius="10"
+            <Border CornerRadius="10"
                     BorderThickness="3"
-                Padding="40"
-                Width="600">
+                    Padding="40"
+                    Width="600">
                 <Border.BorderBrush>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                         <GradientStop Color="#462AD8" Offset="0" />
@@ -39,38 +37,36 @@
                 
                 <StackPanel>
                     <TextBlock Text="WELCOME TO"
-                       FontSize="28"
-                       FontWeight="Bold"
-                       Foreground="#111111"
-                       TextAlignment="Center"
-                       TextWrapping="Wrap"
-                       Margin="0,0,0,0"
-                       FontFamily="Segoe UI"/>
-
+                               FontSize="28"
+                               FontWeight="Bold"
+                               Foreground="#111111"
+                               TextAlignment="Center"
+                               TextWrapping="Wrap"
+                               Margin="0,0,0,0"
+                               FontFamily="Segoe UI"/>
+                    
                     <Image Source="/Assets/SPACE.png" Height="250"/>
 
                     <TextBlock Text="{Binding LoginViewDescription}" 
-                           FontSize="18" 
-                           Foreground="#333333"
-                           TextAlignment="Center"
-                           TextWrapping="Wrap"
-                           Margin="0,0,0,10"
-                           FontStyle="Italic"
-                               />
+                               FontSize="18" 
+                               Foreground="#333333"
+                               TextAlignment="Center"
+                               TextWrapping="Wrap"
+                               Margin="0,0,0,10"
+                               FontStyle="Italic" />
 
-                    <Button
-                        Width="300"
-                        Height="40"
-                        FontSize="16"
-                        Command="{Binding LoginCommand}"
-                        HorizontalAlignment="Center"
-                        Margin="0,20,0,0"
-                        Background="#7F5AF0"
-                        Foreground="White"
-                        Padding="10,5"
-                        FontFamily="Segoe UI"
-                        Cursor="Hand"
-                        Style="{StaticResource RoundedButtonStyle}">
+                    <Button Width="300"
+                            Height="40"
+                            FontSize="16"
+                            Command="{Binding LoginCommand}"
+                            HorizontalAlignment="Center"
+                            Margin="0,20,0,0"
+                            Background="#7F5AF0"
+                            Foreground="White"
+                            Padding="10,5"
+                            FontFamily="Segoe UI"
+                            Cursor="Hand"
+                            Style="{StaticResource RoundedButtonStyle}">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Image Source="/Assets/google.png" Width="20" Height="20" Margin="0,0,10,0"/>
                             <TextBlock Text="Login via Google"

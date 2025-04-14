@@ -11,17 +11,14 @@
     <Grid Background="#ECEFF1">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <!-- Title -->
             <RowDefinition Height="*"/>
-            <!-- Content -->
             <RowDefinition Height="Auto"/>
-            <!-- Button -->
         </Grid.RowDefinitions>
 
         <!-- Header -->
         <controls:HeaderRibbon DataContext="{Binding}"/>
 
-        <!-- Guidelines Content -->
+        <!-- Content -->
         <Grid Grid.Row="1"
               HorizontalAlignment="Stretch"
               VerticalAlignment="Stretch"
@@ -41,54 +38,36 @@
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <StackPanel>
                         <TextBlock Text="Galactic Visa Application Protocols"
-                                   FontSize="22"
-                                   FontFamily="Consolas"
-                                   FontWeight="Bold"
-                                   Margin="0,0,0,20"/>
-
+                                   FontSize="22" FontFamily="Consolas" FontWeight="Bold" Margin="0,0,0,20"/>
+                        
                         <StackPanel Margin="10,0,0,0">
-                            <TextBlock FontSize="14"
-                                       FontFamily="Consolas"
-                                    Margin="0,0,0,10">
+                            <TextBlock FontSize="14" FontFamily="Consolas" Margin="0,0,0,10">
                                 <Run Text="# "/>
-                                <Run Text="Duration of Visit: "
-                                     FontWeight="Bold"/>
+                                <Run Text="Duration of Visit: " FontWeight="Bold"/>
                                 <Run Text="Visits exceeding 12 standard months are strictly prohibited without Imperial reassignment orders."/>
                             </TextBlock>
 
-                            <TextBlock FontSize="14"
-                                       FontFamily="Consolas"
-                                    Margin="0,0,0,10">
+                            <TextBlock FontSize="14" FontFamily="Consolas" Margin="0,0,0,10">
                                 <Run Text="# "/>
-                                <Run Text="Destination Planet: "
-                                     FontWeight="Bold"/>
+                                <Run Text="Destination Planet: " FontWeight="Bold"/>
                                 <Run Text="Travel to restricted systems such as Mustafar, Scarif, or Kessel is not permitted under any circumstances."/>
                             </TextBlock>
 
-                            <TextBlock FontSize="14"
-                                       FontFamily="Consolas"
-                                    Margin="0,0,0,10">
+                            <TextBlock FontSize="14" FontFamily="Consolas" Margin="0,0,0,10">
                                 <Run Text="# "/>
-                                <Run Text="Applicant Age: "
-                                     FontWeight="Bold"/>
+                                <Run Text="Applicant Age: " FontWeight="Bold"/>
                                 <Run Text="Applicants below maturity threshold are not to be issued a visa."/>
                             </TextBlock>
 
-                            <TextBlock FontSize="14"
-                                       FontFamily="Consolas"
-                                    Margin="0,0,0,10">
+                            <TextBlock FontSize="14" FontFamily="Consolas" Margin="0,0,0,10">
                                 <Run Text="# "/>
-                                <Run Text="Application Completeness: "
-                                     FontWeight="Bold"/>
+                                <Run Text="Application Completeness: " FontWeight="Bold"/>
                                 <Run Text="All mandatory fields must be filled and verified."/>
                             </TextBlock>
 
-                            <TextBlock FontSize="14"
-                                       FontFamily="Consolas"
-                                    Margin="0,0,0,10">
+                            <TextBlock FontSize="14" FontFamily="Consolas" Margin="0,0,0,10">
                                 <Run Text="# "/>
-                                <Run Text="Travel Reason: "
-                                     FontWeight="Bold"/>
+                                <Run Text="Travel Reason: " FontWeight="Bold"/>
                                 <Run Text="The reason for travel must be clearly stated and align with approved categories: commerce, research, or family relocation."/>
                             </TextBlock>
                         </StackPanel>
@@ -97,11 +76,8 @@
             </Border>
         </Grid>
 
-        <!-- Button -->
-        <Grid Grid.Row="2"
-              Margin="30,0,30,20">
-            <Button
-                    Command="{Binding GetNextVisaApplication}"
+        <Grid Grid.Row="2" Margin="30,0,30,20">
+            <Button Command="{Binding GetNextVisaApplication}"
                     CommandParameter="Process Visa Application Page"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
@@ -116,13 +92,13 @@
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <TextBlock Text="Get Next Visa Application"
                                FontFamily="Consolas"
-                   VerticalAlignment="Center"
-                   Foreground="White"
-                   FontWeight="Bold"/>
+                               VerticalAlignment="Center"
+                               Foreground="White"
+                               FontWeight="Bold"/>
                     <Image Source="/Assets/arrow.png"
-               Width="20"
-               Height="20"
-               Margin="8,0,0,0"/>
+                           Width="20"
+                           Height="20"
+                           Margin="8,0,0,0"/>
                 </StackPanel>
             </Button>
         </Grid>
