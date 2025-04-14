@@ -3,7 +3,7 @@ using IntergalacticPassportAPI.Models;
 
 namespace IntergalacticPassportAPI.Data
 {
-    public class UsersRepository(IConfiguration config) : BaseRepository<Users>(config, "users")
+    public class UsersRepository(IConfiguration config) : BaseRepository<Users>(config), IUsersRepository
     { 
         
         public async Task<IEnumerable<Roles>> GetUserRoles(string googleId)
@@ -60,7 +60,7 @@ namespace IntergalacticPassportAPI.Data
 
         public async override Task<bool> Exists(Users model)
         {
-             var existingUser = await GetById(model.google_id ?? throw new Exception("No google id"));
+             var existingUser = await GetById(model.GoogleId ?? throw new Exception("No google id"));
              
               if (existingUser == null){
                     return false;

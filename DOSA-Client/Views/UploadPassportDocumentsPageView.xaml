@@ -6,104 +6,139 @@
     <Grid Background="#ECEFF1">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <!-- Title -->
             <RowDefinition Height="*" />
-            <!-- Content -->
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Title and Horizontal Line -->
+        <!-- Header -->
         <controls:HeaderRibbon DataContext="{Binding}" />
 
-        <!-- Layer 2: Centered content in a card -->
+        <!-- Content -->
         <Grid Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="30,10,30,20">
             <Border Background="White"
                     CornerRadius="10"
                     Padding="40"
+                    BorderThickness="3"
                     VerticalAlignment="Stretch">
-                <!-- Upload Section -->
+                <Border.BorderBrush>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#462AD8" Offset="0" />
+                        <GradientStop Color="#DA34AE" Offset="0.75" />
+                        <GradientStop Color="#8A16C1" Offset="1" />
+                    </LinearGradientBrush>
+                </Border.BorderBrush>
+                <!-- Upload -->
                 <StackPanel Grid.Row="1"
-                        VerticalAlignment="Top"
-                        HorizontalAlignment="Stretch"
-                        Margin="30,20,30,20">
+                            VerticalAlignment="Top"
+                            HorizontalAlignment="Stretch"
+                            Margin="30,20,30,20">
 
-                    <!-- Required Documents List -->
+                    <!-- Required Documents -->
                     <StackPanel Margin="0,0,0,20">
                         <TextBlock Text="Documents Required for Intergalactic Passport Clearance"
                                    FontSize="20"
+                                   FontFamily="Consolas"
                                    FontWeight="Bold"
                                    Margin="0,0,0,10"/>
                         
-                        <TextBlock FontSize="14" Margin="0,0,0,5" Text="- Galactic Citizenship Holo-ID (e.g., Coruscant Central ID, Tatooine Homestead Record)"/>
-                        <TextBlock FontSize="14" Margin="0,0,0,5" Text="- Affiliation Clearance (must confirm no ties to Sith, Rebellion, or First Order)"/>
-
+                        <TextBlock FontSize="14" FontFamily="Consolas" Margin="0,0,0,5" Text="- Galactic Citizenship Holo-ID (e.g., Coruscant Central ID, Tatooine Homestead Record)"/>
+                        <TextBlock FontSize="14" FontFamily="Consolas" Margin="0,0,0,5" Text="- Affiliation Clearance (must confirm no ties to Sith, Rebellion, or First Order)"/>
 
                         <!-- Important Note -->
                         <TextBlock FontSize="14"
                                    FontStyle="Italic"
                                    Foreground="Red"
+                                   FontFamily="Consolas"
                                    Margin="0,10,0,0"
                                    Text="Note: Missing or incorrect documents will result in the denial of your application."/>
                     </StackPanel>
 
-                    <!-- Button container to align Upload and Submit buttons next to each other -->
+                    <!-- Buttons -->
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10">
-                        <!-- Upload Button -->
-                        <Button Content="Upload Document"
-                            Command="{Binding uploadDocumentCommand}"
-                            Width="180"
-                            Height="40"
-                            Background="#7F5AF0"
-                            Foreground="White"
-                            FontWeight="Bold"
-                            FontSize="16"
-                            Margin="0,0,20,0"
-                            Style="{StaticResource RoundedButtonStyle}"/>
+                        <Button Command="{Binding uploadDocumentCommand}"
+                                Width="180"
+                                Height="40"
+                                Background="#7F5AF0"
+                                Foreground="White"
+                                FontWeight="Bold"
+                                Cursor="Hand"
+                                FontSize="16"
+                                Margin="0,0,20,0"
+                                Style="{StaticResource RoundedButtonStyle}">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <TextBlock Text="Upload Document"
+                                           FontFamily="Consolas"
+                                           VerticalAlignment="Center"
+                                           Foreground="White"
+                                           FontWeight="Bold"/>
+                                <Image Source="/Assets/upload.png"
+                                       Width="15"
+                                       Height="20"
+                                       Margin="8,0,0,0"/>     
+                            </StackPanel>
+                        </Button>
 
-                        <!-- Submit Button -->
-                        <Button Content="Submit Documents"
-                            Command="{Binding submitDocumentsCommand}"
-                            HorizontalAlignment="Center"
-                            Width="180"
-                            Height="40"
-                            Background="#7F5AF0"
-                            Foreground="White"
-                            FontWeight="Bold"
-                            FontSize="16"
-                            Margin="0,0,0,0"
-                            Style="{StaticResource RoundedButtonStyle}"/>
+                        <Button Command="{Binding submitDocumentsCommand}"
+                                HorizontalAlignment="Center"
+                                Width="180"
+                                Height="40"
+                                Cursor="Hand"
+                                Background="#7F5AF0"
+                                Foreground="White"
+                                FontWeight="Bold"
+                                FontSize="16"
+                                Margin="0,0,0,0"
+                                Style="{StaticResource RoundedButtonStyle}">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <TextBlock Text="Submit Documents"
+                                           FontFamily="Consolas"
+                                           VerticalAlignment="Center"
+                                           Foreground="White"
+                                           FontWeight="Bold"/>
+                                <Image Source="/Assets/check.png"
+                                       Width="15"
+                                       Height="20"
+                                       Margin="8,0,0,0"/>     
+                            </StackPanel>
+                        </Button>
                     </StackPanel>
 
-                    <!-- Uploaded Documents List -->
-                    <Border BorderBrush="Gray" 
-                            BorderThickness="2" 
-                            Margin="0,20,0,10" 
+                    <!-- Uploaded Documents -->
+                    <Border Margin="0,20,0,10" 
                             HorizontalAlignment="Stretch" 
                             MinHeight="150"
                             CornerRadius="5"
+                            BorderThickness="3"
                             Background="White">
+                        <Border.BorderBrush>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Color="#462AD8" Offset="0" />
+                                <GradientStop Color="#DA34AE" Offset="0.75" />
+                                <GradientStop Color="#8A16C1" Offset="1" />
+                            </LinearGradientBrush>
+                        </Border.BorderBrush>
                         <ScrollViewer VerticalScrollBarVisibility="Auto" 
-                                        HorizontalScrollBarVisibility="Disabled">
+                                      HorizontalScrollBarVisibility="Disabled">
                             <ItemsControl ItemsSource="{Binding UploadedDocuments}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <Border BorderThickness="1" BorderBrush="Gray" Padding="10" Margin="5">
                                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                                 <Button Command="{Binding DataContext.RemoveDocumentCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                                        CommandParameter="{Binding}"
+                                                        CommandParameter="{Binding FileName}"
                                                         Width="30" Height="30"
                                                         Margin="0,0,10,0"
                                                         Background="Transparent"
                                                         BorderBrush="{x:Null}">
-                                                    <Image Source="/Assets/bin_icon.png" Width="20" Height="20"/>
+                                                    <Image Source="/Assets/bin_icon.png" Width="20" Height="20" Cursor="Hand"/>
                                                 </Button>
-                                                <TextBlock Text="{Binding FileName}" FontSize="14" VerticalAlignment="Center"/>
+                                                <TextBlock FontFamily ="Consolas" Text="{Binding FileName}" FontSize="14" VerticalAlignment="Center"/>
                                             </StackPanel>
                                         </Border>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
 
-                                <!-- Show something if it's empty -->
+                                <!-- No uploads box -->
                                 <ItemsControl.Style>
                                     <Style TargetType="ItemsControl">
                                         <Style.Triggers>
@@ -113,6 +148,7 @@
                                                         <ControlTemplate TargetType="ItemsControl">
                                                             <TextBlock Text="No documents uploaded yet."
                                                                        FontStyle="Italic"
+                                                                       FontFamily="Consolas"
                                                                        Foreground="Gray"
                                                                        HorizontalAlignment="Center"
                                                                        VerticalAlignment="Center"

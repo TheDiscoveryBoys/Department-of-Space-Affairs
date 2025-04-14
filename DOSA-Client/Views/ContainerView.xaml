@@ -44,9 +44,9 @@
                     Text="{Binding Title}"
                     FontSize="16"
                     FontWeight="Normal"
+                    FontFamily="Consolas"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Center">
-                    
                 </TextBlock>
             </DataTemplate>
         </TabControl.ItemTemplate>

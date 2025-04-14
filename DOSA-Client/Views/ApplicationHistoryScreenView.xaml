@@ -5,10 +5,13 @@
              xmlns:vm="clr-namespace:DOSA_Client.ViewModels"
              xmlns:views="clr-namespace:DOSA_Client.Views">
     <UserControl.Resources>
+        
         <DataTemplate DataType="{x:Type vm:ApplicationHistoryPageViewModel}">
             <views:ApplicationHistoryPageView />
         </DataTemplate>
+        
     </UserControl.Resources>
+    
     <Grid>
         <ContentControl Content="{Binding PageManager.CurrentPage}"
                         HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />

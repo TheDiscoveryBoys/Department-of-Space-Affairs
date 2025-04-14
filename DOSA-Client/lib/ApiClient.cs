@@ -45,7 +45,7 @@ namespace DOSA_Client.lib
             return await RestClient.UpdateUser(user);
         }
 
-        public static async Task<PassportApplication> CreatePassportApplication(PassportApplication passportApplication)
+        public static async Task<PassportApplication?> CreatePassportApplication(PassportApplication passportApplication)
         {
             return await RestClient.CreatePassportApplication(passportApplication);
         }
@@ -60,11 +60,6 @@ namespace DOSA_Client.lib
             return await RestClient.GetJwt(authCode);
         }
 
-        public static async Task<bool> CreateUser(string sub, string email, string name)
-        {
-            User user = new User(sub, email, name, null, null, null, null);
-            return await RestClient.CreateUser(user);
-        }
         public static async Task<User> GetUserProfile(string googleId)
         {
             return await RestClient.GetUserByGoogleId(googleId);

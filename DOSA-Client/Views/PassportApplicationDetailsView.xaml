@@ -11,41 +11,49 @@
     <Grid Background="#ECEFF1">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <!-- Header -->
             <RowDefinition Height="*"/>
-            <!-- Guidelines -->
             <RowDefinition Height="Auto"/>
-            <!-- Button -->
         </Grid.RowDefinitions>
 
         <!-- Header -->
-        <controls:HeaderRibbon DataContext="{Binding}"/>
+        <controls:HeaderRibbon Grid.Row="0" DataContext="{Binding}"/>
 
         <!-- Content -->
         <Grid Grid.Row="1"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch"
-                Margin="30,10,30,20">
+              HorizontalAlignment="Stretch"
+              VerticalAlignment="Stretch"
+              Margin="30,10,30,20">
             <Border Background="White"
+                    BorderThickness="3"
                     CornerRadius="10"
                     Padding="40"
                     VerticalAlignment="Stretch">
+                <Border.BorderBrush>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#462AD8" Offset="0" />
+                        <GradientStop Color="#DA34AE" Offset="0.75" />
+                        <GradientStop Color="#8A16C1" Offset="1" />
+                    </LinearGradientBrush>
+                </Border.BorderBrush>
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <StackPanel>
                         <TextBlock Text="Intergalactic Passport Application Guidelines"
                                    FontSize="22"
+                                   FontFamily="Consolas"
                                    FontWeight="Bold"
                                    Margin="0,0,0,20"/>
                         <StackPanel Margin="10,0,0,0">
                             <TextBlock FontSize="14"
+                                       FontFamily="Consolas"
+                                       TextWrapping="Wrap"
                                        Margin="0,0,0,10">
                                 <Run Text="# "/>
                                 <Run Text="Galactic Citizenship Holo-ID: "
                                      FontWeight="Bold"/>
                                 <Run Text="Applicants must present a valid Holo-ID issued by a recognized planetary authority (e.g., Coruscant Central Identification, Tatooine Homestead Record)."/>
                             </TextBlock>
-
                             <TextBlock FontSize="14"
+                                       FontFamily="Consolas"
                                        Margin="0,0,0,10">
                                 <Run Text="# "/>
                                 <Run Text="Affiliation Clearance: "
@@ -60,19 +68,32 @@
 
         <!-- Button -->
         <Grid Grid.Row="2"
-                Margin="30,0,30,20">
-            <Button Content="Get Next Passport Application"
-                    Command="{Binding GetNextPassportApplication}"
+              Margin="30,0,30,20">
+            <Button Command="{Binding GetNextPassportApplication}"
                     CommandParameter="Process Passport Application Page"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
-                    Width="250"
+                    Width="300"
                     Height="40"
                     Background="#7F5AF0"
                     Foreground="White"
+                    Cursor="Hand"
                     FontWeight="Bold"
                     FontSize="16"
-                    Style="{StaticResource RoundedButtonStyle}"/>
+                    Style="{StaticResource RoundedButtonStyle}">
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock Text="Get Next Passport Application"
+                               FontFamily="Consolas"
+                               VerticalAlignment="Center"
+                               Foreground="White"
+                               FontWeight="Bold"/>
+                    <Image Source="/Assets/arrow.png"
+                           Width="20"
+                           Height="20"
+                           Margin="8,0,0,0"/>
+                </StackPanel>
+            </Button>
         </Grid>
     </Grid>
 </UserControl>

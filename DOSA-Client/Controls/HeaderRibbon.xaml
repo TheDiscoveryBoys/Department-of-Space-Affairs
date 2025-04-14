@@ -4,9 +4,12 @@
              Height="Auto" Width="Auto">
     <StackPanel Orientation="Vertical" Margin="30,20,30,20">
         <TextBlock Text="{Binding Title}"
-                   FontSize="26"
+                   FontSize="25"
                    FontWeight="Bold"
-                   HorizontalAlignment="Left" />
+                   HorizontalAlignment="Left" 
+                   FontFamily="Consolas"
+                   />
+
         <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -17,9 +20,9 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Rectangle Grid.Column="0" HorizontalAlignment="Stretch" Height="5" Fill="#0D47A1" Margin="0,5,5,0"/>
-            <Rectangle Grid.Column="1" HorizontalAlignment="Stretch" Height="5" Fill="#1976D2" Margin="0,5,5,0"/>
-            <Rectangle Grid.Column="2" HorizontalAlignment="Stretch" Height="5" Fill="#42A5F5" Margin="0,5,5,0"/>
+            <Rectangle Grid.Column="0" HorizontalAlignment="Stretch" Height="5" Fill="#602cd1" Margin="0,5,5,0"/>
+            <Rectangle Grid.Column="1" HorizontalAlignment="Stretch" Height="5" Fill="#ad31bb" Margin="0,5,5,0"/>
+            <Rectangle Grid.Column="2" HorizontalAlignment="Stretch" Height="5" Fill="#d434b0" Margin="0,5,5,0"/>
         </Grid>
     </StackPanel>
 </UserControl>

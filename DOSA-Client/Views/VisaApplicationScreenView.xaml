@@ -4,9 +4,11 @@
              xmlns:vm="clr-namespace:DOSA_Client.ViewModels"
              xmlns:views="clr-namespace:DOSA_Client.Views">
     <UserControl.Resources>
+        
         <DataTemplate DataType="{x:Type vm:VisaApplicationViewModel}">
             <views:VisaApplicationView />
         </DataTemplate>
+        
     </UserControl.Resources>
     
     <Grid>

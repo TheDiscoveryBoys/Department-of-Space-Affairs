@@ -7,13 +7,13 @@ using Dapper;
 
 namespace IntergalacticPassportAPI.Models
 {
-    [Table("passport_document")]
+    [Table("passport_application_documents")]
     public class PassportDocument 
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [PrimaryKey]
         [Column("id")]
-        public int? Id { get; set; }
+        public int Id { get; set; }
 
         [Required]
         [Column("filename")]
