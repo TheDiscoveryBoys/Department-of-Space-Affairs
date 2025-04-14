@@ -13,7 +13,7 @@ namespace IntergalacticPassportAPI.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [PrimaryKey]
         [Column("id")]
-        public int? Id { get; set; }
+        public int Id { get; set; }
 
         [Required]
         [Column("filename")]

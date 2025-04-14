@@ -6,16 +6,8 @@ namespace IntergalacticPassportAPI.Models
 
     [Table("visa_applications")]
 
-    public class Visa
+    public class Visa : Application
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [PrimaryKey]
-        [Column("id")]
-        public int? Id { get; set; }
-
-        [Required]
-        [Column("user_id")]
-        public string UserId { get; set; }
 
         [Required]
         [Column("destination_planet")]
@@ -32,19 +24,6 @@ namespace IntergalacticPassportAPI.Models
         [Required]
         [Column("end_date")]
         public DateTime EndDate { get; set; }
-
-        [Column("status_id")]
-        public int? StatusId { get; set; }
-
-        [Required]
-        [Column("submitted_at")]
-        public DateTime SubmittedAt { get; set; }
-
-        [Column("processed_at")]
-        public DateTime? ProcessedAt { get; set; }
-
-        [Column("officer_id")]
-        public string? OfficerId { get; set; }
     }
 
 }

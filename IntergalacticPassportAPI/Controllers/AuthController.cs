@@ -37,11 +37,11 @@ namespace IntergalacticPassportAPI.Controllers
 
             if(googleID != null && email != null && name != null){
                 Console.WriteLine("Trying to create a new user");
-                var user = new Users{google_id = claims["sub"].ToString(), email=claims["email"].ToString(), name=claims["name"].ToString()};
+                var user = new Users{GoogleId = claims["sub"].ToString(), Email=claims["email"].ToString(), Name=claims["name"].ToString()};
                 if(! await UserRepo.Exists(user)){
                     await UserRepo.Create(user);
                     var applicantRole = RolesRepo.GetRolesByName("APPLICANT");
-                    var userRole = new UserRoles{RoleId=applicantRole.Id, UserId=user.google_id};
+                    var userRole = new UserRoles{RoleId=applicantRole.Id, UserId=user.GoogleId};
                     await UserRolesRepo.Create(userRole);
                 }
                 return Ok(new LoginResponse{Token = googleTokenResp.id_token});

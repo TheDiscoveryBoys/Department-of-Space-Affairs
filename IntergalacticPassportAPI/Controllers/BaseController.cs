@@ -17,7 +17,7 @@ namespace IntergalacticPassportAPI.Controllers
 
         [HttpGet("{id}")]
         // [Authorize(Roles = "Citizen")]
-        public async Task<ActionResult<Model>> GetById(string id)
+        public async Task<ActionResult<Model?>> GetById(string id)
         {
 
             // if (typeof(Model) == typeof(Users))
