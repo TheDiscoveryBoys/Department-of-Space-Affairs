@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Windows;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using DOSA_Client.lib;
@@ -55,6 +56,11 @@ namespace DOSA_Client.ViewModels
 
         public void RejectApplication()
         {
+            if (Reason.Length > 255)
+            {
+                Reason = Reason.Substring(0, 255);
+                MessageBox.Show("Reason exceeds 255 characters. Input will be truncated.");
+            }
             // call API to reject application
             Task.Run(async ()=>{
                 // eish, same issue with structs here
@@ -70,6 +76,11 @@ namespace DOSA_Client.ViewModels
 
         public void ApproveApplication()
         {
+            if (Reason.Length > 255)
+            {
+                Reason = Reason.Substring(0, 255);
+                MessageBox.Show("Reason exceeds 255 characters. Input will be truncated.");
+            }
             Task.Run(async ()=>{
                 var status = new Status(VisaApplication.VisaApplication.StatusId, "APPROVED", Reason);
                 var visa = new VisaApplication(VisaApplication.VisaApplication.Id, VisaApplication.Applicant.google_id, status.Id, VisaApplication.VisaApplication.DestinationPlanet, VisaApplication.VisaApplication.TravelReason, VisaApplication.VisaApplication.StartDate, VisaApplication.VisaApplication.EndDate, VisaApplication.VisaApplication.SubmittedAt, DateTime.Now, Officer.google_id);

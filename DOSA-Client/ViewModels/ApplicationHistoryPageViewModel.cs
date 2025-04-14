@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using CommunityToolkit.Mvvm.Input;
 using DOSA_Client.lib;
 using DOSA_Client.lib.Constants;
 using DOSA_Client.Models;
@@ -30,12 +31,12 @@ namespace DOSA_Client.ViewModels
         {
             PageManager = pageManager;
             onNextButtonClickedCommand = new DelegateCommand<string>(OnNext);
+            RefreshCommand = new RelayCommand(RefreshHistory);
             // Call API to get list of passport applications and their statuses
-            Task.Run(async ()=>{
-                Applications = new ObservableCollection<Application>(await ApiClient.GetApplications(Context.Get<User>(ContextKeys.USER).google_id));
-            });
+            RefreshHistory();
         }
         public ICommand onNextButtonClickedCommand { get; }
+        public ICommand RefreshCommand { get; }
         public void OnNext(String pageName)
         {
             PageManager.NavigateTo(pageName);
@@ -44,5 +45,12 @@ namespace DOSA_Client.ViewModels
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string name) =>
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+
+        private void RefreshHistory()
+        {
+            Task.Run(async () => {
+                Applications = new ObservableCollection<Application>(await ApiClient.GetApplications(Context.Get<User>(ContextKeys.USER).google_id));
+            });
+        }
     }
 }
