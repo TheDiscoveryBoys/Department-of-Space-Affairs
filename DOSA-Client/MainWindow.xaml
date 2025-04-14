@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:DOSA_Client"
         mc:Ignorable="d"
         WindowState="Maximized"
-        Title="Department of Galactic Affairs" Height="450" Width="800">
+        Title="Department of Space Affairs" Height="450" Width="800">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="VisibilityOfBool" />
     </Window.Resources>

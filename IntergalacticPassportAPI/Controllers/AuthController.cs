@@ -40,7 +40,6 @@ namespace IntergalacticPassportAPI.Controllers
                 var user = new Users{google_id = claims["sub"].ToString(), email=claims["email"].ToString(), name=claims["name"].ToString()};
                 if(! await UserRepo.Exists(user)){
                     await UserRepo.Create(user);
-                    var applicantRole = RolesRepo.GetRolesByName("APPLICANT");
                     var userRole = new UserRoles{RoleId=1, UserId=user.google_id};
                     await UserRolesRepo.Create(userRole);
                 }

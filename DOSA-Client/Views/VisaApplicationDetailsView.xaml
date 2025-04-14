@@ -28,17 +28,27 @@
               Margin="30,10,30,20">
             <Border Background="White"
                     CornerRadius="10"
+                    BorderThickness="3"
                     Padding="40"
                     VerticalAlignment="Stretch">
+                <Border.BorderBrush>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#462AD8" Offset="0" />
+                        <GradientStop Color="#DA34AE" Offset="0.75" />
+                        <GradientStop Color="#8A16C1" Offset="1" />
+                    </LinearGradientBrush>
+                </Border.BorderBrush>
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <StackPanel>
                         <TextBlock Text="Galactic Visa Application Protocols"
                                    FontSize="22"
+                                   FontFamily="Consolas"
                                    FontWeight="Bold"
                                    Margin="0,0,0,20"/>
 
                         <StackPanel Margin="10,0,0,0">
                             <TextBlock FontSize="14"
+                                       FontFamily="Consolas"
                                     Margin="0,0,0,10">
                                 <Run Text="# "/>
                                 <Run Text="Duration of Visit: "
@@ -47,6 +57,7 @@
                             </TextBlock>
 
                             <TextBlock FontSize="14"
+                                       FontFamily="Consolas"
                                     Margin="0,0,0,10">
                                 <Run Text="# "/>
                                 <Run Text="Destination Planet: "
@@ -55,6 +66,7 @@
                             </TextBlock>
 
                             <TextBlock FontSize="14"
+                                       FontFamily="Consolas"
                                     Margin="0,0,0,10">
                                 <Run Text="# "/>
                                 <Run Text="Applicant Age: "
@@ -63,6 +75,7 @@
                             </TextBlock>
 
                             <TextBlock FontSize="14"
+                                       FontFamily="Consolas"
                                     Margin="0,0,0,10">
                                 <Run Text="# "/>
                                 <Run Text="Application Completeness: "
@@ -71,6 +84,7 @@
                             </TextBlock>
 
                             <TextBlock FontSize="14"
+                                       FontFamily="Consolas"
                                     Margin="0,0,0,10">
                                 <Run Text="# "/>
                                 <Run Text="Travel Reason: "
@@ -86,18 +100,31 @@
         <!-- Button -->
         <Grid Grid.Row="2"
               Margin="30,0,30,20">
-            <Button Content="Get Next Visa Application"
+            <Button
                     Command="{Binding GetNextVisaApplication}"
                     CommandParameter="Process Visa Application Page"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
-                    Width="220"
+                    Width="250"
+                    Cursor="Hand"
                     Height="40"
                     Background="#7F5AF0"
                     Foreground="White"
                     FontWeight="Bold"
                     FontSize="16"
-                    Style="{StaticResource RoundedButtonStyle}"/>
+                    Style="{StaticResource RoundedButtonStyle}">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock Text="Get Next Visa Application"
+                               FontFamily="Consolas"
+                   VerticalAlignment="Center"
+                   Foreground="White"
+                   FontWeight="Bold"/>
+                    <Image Source="/Assets/arrow.png"
+               Width="20"
+               Height="20"
+               Margin="8,0,0,0"/>
+                </StackPanel>
+            </Button>
         </Grid>
     </Grid>
 </UserControl>

@@ -23,10 +23,20 @@
               Margin="30,10,30,20">
             <Border Background="White"
                     CornerRadius="10"
+                    BorderThickness="3"
                     Padding="40">
+
+                <Border.BorderBrush>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#462AD8" Offset="0" />
+                        <GradientStop Color="#DA34AE" Offset="0.75" />
+                        <GradientStop Color="#8A16C1" Offset="1" />
+                    </LinearGradientBrush>
+                </Border.BorderBrush>
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <StackPanel>
                         <TextBlock Text="Applicant Details"
+                                   FontFamily="Consolas"
                                    FontSize="22"
                                    FontWeight="Bold"/>
 
@@ -39,30 +49,51 @@
                             <!-- Left Column -->
                             <StackPanel Grid.Column="0" Margin="0,10,20,10">
                                 <StackPanel Orientation="Horizontal" Margin="0,5">
-                                    <TextBlock Text="Name:" FontWeight="Bold" Margin="0,0,5,0"/>
-                                    <TextBlock Text="{Binding PassportApplication.Applicant.name}"/>
+                                    <Image Source="/Assets/user.png"
+                                           Width="16"
+                                           Height="16"
+                                           Margin="0,0,5,0"
+                                           VerticalAlignment="Center"/>
+                                    <TextBlock Text="Name:" FontWeight="Bold" Margin="0,0,5,0" FontFamily="Consolas"/>
+                                    <TextBlock Text="{Binding PassportApplication.Applicant.name}" FontFamily="Consolas"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,5">
-                                    <TextBlock Text="Email:" FontWeight="Bold" Margin="0,0,5,0"/>
-                                    <TextBlock Text="{Binding PassportApplication.Applicant.email}"/>
+                                    <Image Source="/Assets/mail.png"
+                                        Width="16"
+                                        Height="16"
+                                        Margin="0,0,5,0"
+                                        VerticalAlignment="Center"/>
+                                    <TextBlock Text="Email:" FontWeight="Bold" Margin="0,0,5,0" FontFamily="Consolas"/>
+                                    <TextBlock Text="{Binding PassportApplication.Applicant.email}" FontFamily="Consolas"/>
                                 </StackPanel>
                             </StackPanel>
 
                             <!-- Right Column-->
                             <StackPanel Grid.Column="1" Margin="20,10,0,10">
                                 <StackPanel Orientation="Horizontal" Margin="0,5">
-                                    <TextBlock Text="Species:" FontWeight="Bold" Margin="0,0,5,0"/>
-                                    <TextBlock Text="{Binding PassportApplication.Applicant.species}"/>
+                                    <Image Source="/Assets/aliens.png"
+                                             Width="16"
+                                             Height="16"
+                                             Margin="0,0,5,0"
+                                             VerticalAlignment="Center"/>
+                                    <TextBlock Text="Species:" FontWeight="Bold" Margin="0,0,5,0" FontFamily="Consolas"/>
+                                    <TextBlock Text="{Binding PassportApplication.Applicant.species}" FontFamily="Consolas"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,5">
-                                    <TextBlock Text="Planet of Origin:" FontWeight="Bold" Margin="0,0,5,0"/>
-                                    <TextBlock Text="{Binding PassportApplication.Applicant.planet_of_origin}"/>
+                                    <Image Source="/Assets/asteroid.png"
+                                         Width="16"
+                                         Height="16"
+                                         Margin="0,0,5,0"
+                                         VerticalAlignment="Center"/>               
+                                    <TextBlock Text="Planet of Origin:" FontWeight="Bold" Margin="0,0,5,0" FontFamily="Consolas"/>
+                                    <TextBlock Text="{Binding PassportApplication.Applicant.planet_of_origin}" FontFamily="Consolas"/>
                                 </StackPanel>
                             </StackPanel>
                         </Grid>
 
                         <TextBlock Text="Passport Application Details"
                                    FontSize="22"
+                                   FontFamily="Consolas"
                                    FontWeight="Bold"/>
 
 
@@ -70,6 +101,7 @@
                             <StackPanel>
                                 <!-- Section Title -->
                                 <TextBlock Text="Submitted documents:"
+                                           FontFamily="Consolas"
                                            FontSize="18"
                                            FontWeight="SemiBold"
                                            Margin="0,10,0,10"/>
@@ -119,7 +151,7 @@
                         <StackPanel Margin="30,10,30,20">
                             <TextBlock Text="Enter any relevant notes or instructions here..."
                                        Foreground="Gray"
-                                       
+                                       FontFamily="Consolas"
                                        FontSize="14"
                                        IsHitTestVisible="False"
                                        VerticalAlignment="Top"
@@ -147,7 +179,7 @@
               Margin="30,0,30,20">
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Right">
-                <Button Content="Reject"
+                <Button 
                         Command="{Binding RejectCommand}"
                         IsEnabled="{Binding IsRejectEnabled}"
                         Margin="0,0,30,0"
@@ -157,8 +189,20 @@
                         Foreground="White"
                         FontWeight="Bold"
                         FontSize="16"
-                        Style="{StaticResource RoundedButtonStyle}"/>
-                <Button Content="Approve"
+                        Style="{StaticResource RoundedButtonStyle}">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <TextBlock Text="Reject"
+                        FontFamily="Consolas"
+                        VerticalAlignment="Center"
+                        Foreground="White"
+                        FontWeight="Bold"/>
+                        <Image Source="/Assets/close.png"
+                        Width="15"
+                        Height="20"
+                        Margin="8,0,0,0"/>
+                    </StackPanel>
+                </Button>
+                <Button 
                         Command="{Binding ApproveCommand}"
                         Width="150"
                         Height="40"
@@ -166,7 +210,19 @@
                         Foreground="White"
                         FontWeight="Bold"
                         FontSize="16"
-                        Style="{StaticResource RoundedButtonStyle}"/>
+                        Style="{StaticResource RoundedButtonStyle}">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <TextBlock Text="Approve"
+                                   FontFamily="Consolas"
+                   VerticalAlignment="Center"
+                   Foreground="White"
+                   FontWeight="Bold"/>
+                        <Image Source="/Assets/check.png"
+                   Width="20"
+                   Height="20"
+                   Margin="8,0,0,0"/>   
+                    </StackPanel>
+                </Button>
             </StackPanel>
         </Grid>
     </Grid>

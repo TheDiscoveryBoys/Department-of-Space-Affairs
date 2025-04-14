@@ -22,9 +22,17 @@
 
         <Grid Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="30,10,30,20">
             <Border Background="White"
+                    BorderThickness="3"
                     CornerRadius="10"
                     Padding="40"
                     VerticalAlignment="Stretch">
+                <Border.BorderBrush>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#462AD8" Offset="0" />
+                        <GradientStop Color="#DA34AE" Offset="0.75" />
+                        <GradientStop Color="#8A16C1" Offset="1" />
+                    </LinearGradientBrush>
+                </Border.BorderBrush>
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -50,10 +58,10 @@
                             <!-- Reason -->
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Grid.Column="0" Text="Document Type" FontWeight="Bold" />
-                        <TextBlock Grid.Column="1" Text="Application Date" FontWeight="Bold" />
-                        <TextBlock Grid.Column="2" Text="Status" FontWeight="Bold" />
-                        <TextBlock Grid.Column="3" Text="Reason" FontWeight="Bold" />
+                        <TextBlock Grid.Column="0" Text="Document Type" FontWeight="Bold" FontFamily="Consolas"/>
+                        <TextBlock Grid.Column="1" Text="Application Date" FontWeight="Bold" FontFamily="Consolas" />
+                        <TextBlock Grid.Column="2" Text="Status" FontWeight="Bold" FontFamily="Consolas"/>
+                        <TextBlock Grid.Column="3" Text="Reason" FontWeight="Bold" FontFamily="Consolas"/>
                     </Grid>
 
 
@@ -72,15 +80,16 @@
                                             </Grid.ColumnDefinitions>
 
                                             <!-- Document Type -->
-                                            <TextBlock Grid.Column="0" Text="{Binding ApplicationType}" />
+                                            <TextBlock Grid.Column="0" Text="{Binding ApplicationType}" FontFamily="Consolas" FontSize="11"/>
 
                                             <!-- Date -->
                                             <TextBlock Grid.Column="1"
-                                                       Text="{Binding SubmittedAt, StringFormat={}{0:MM/dd/yyyy}}" />
+                                                       Text="{Binding SubmittedAt, StringFormat={}{0:MM/dd/yyyy}}" FontFamily="Consolas"/>
 
                                             <!-- Status -->
                                             <TextBlock Grid.Column="2"
                                                        FontWeight="Bold"
+                                                       FontFamily="Consolas"
                                                        Text="{Binding Status.Name}">
                                                 <TextBlock.Style>
                                                     <Style TargetType="TextBlock">
@@ -103,6 +112,7 @@
                                             <!-- Reason -->
                                             <TextBlock Grid.Column="3"
                                                        Text="{Binding Status.Reason, TargetNullValue='-'}"
+                                                       FontFamily="Consolas"
                                                        TextWrapping="Wrap" />
                                         </Grid>
                                     </Border>

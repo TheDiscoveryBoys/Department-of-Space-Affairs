@@ -19,11 +19,20 @@
         <controls:HeaderRibbon DataContext="{Binding}" />
 
         <!-- Main Form -->
+        
         <Grid Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="30,10,30,20">
-            <Border Background="White"
+            <Border  BorderThickness="3"
+                     Background="White"
                     CornerRadius="10"
                     Padding="40"
                     VerticalAlignment="Stretch">
+                <Border.BorderBrush>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#462AD8" Offset="0" />
+                        <GradientStop Color="#DA34AE" Offset="0.75" />
+                        <GradientStop Color="#8A16C1" Offset="1" />
+                    </LinearGradientBrush>
+                </Border.BorderBrush>
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                         <Grid Margin="100,10,100,20">
@@ -41,11 +50,15 @@
                             </Grid.RowDefinitions>
 
                             <!-- Destination Planet -->
-                            <TextBlock Grid.Row="0" Grid.Column="0" 
+                            <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,15,10,15">
+                                <Image Source="/Assets/asteroid.png" Width="20" Height="20" Margin="0,0,5,0"/>
+                                <TextBlock Grid.Row="0" Grid.Column="0" 
                                        Text="Destination Planet:" 
                                        FontWeight="Bold" 
                                        VerticalAlignment="Center"
+                                           FontFamily="Consolas"
                                        Margin="0,15,10,15"/>
+                            </StackPanel>
                             <ComboBox Grid.Row="0" Grid.Column="1" 
                                         ItemsSource="{Binding PlanetsList}"
                                         DisplayMemberPath="Name"
@@ -53,20 +66,26 @@
                                         SelectedValue="{Binding DestinationPlanet, Mode=TwoWay}"
                                         Height="30" 
                                         FontSize="14"
+                                        FontFamily="Consolas"
                                         VerticalContentAlignment="Center"
                                         Padding="5,0"
                                         Margin="0,10"/>
 
                             <!-- Travel Reason -->
-                            <TextBlock Grid.Row="1" Grid.Column="0" 
+                            <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,15,10,15">
+                                <Image Source="/Assets/idea.png" Width="20" Height="20" Margin="0,0,5,0"/>
+                                <TextBlock Grid.Row="1" Grid.Column="0" 
                                        Text="Reason for Travel:" 
+                                       FontFamily="Consolas"
                                        FontWeight="Bold" 
                                        VerticalAlignment="Center"
                                        Margin="0,15,10,15"/>
+                            </StackPanel>
                             <TextBox Grid.Row="1" Grid.Column="1" 
                                      Height="60" 
                                      FontSize="14"
                                      AcceptsReturn="True"
+                                     FontFamily="Consolas"
                                      TextWrapping="Wrap"
                                      VerticalContentAlignment="Top"
                                      Padding="5"
@@ -74,11 +93,15 @@
                                      Margin="0,10"/>
 
                             <!-- Start Date -->
-                            <TextBlock Grid.Row="2" Grid.Column="0" 
+                            <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,15,10,15">
+                                <Image Source="/Assets/calendar.png" Width="20" Height="20" Margin="0,0,5,0"/>
+                                <TextBlock Grid.Row="2" Grid.Column="0" 
                                        Text="Start Date:" 
+                                       FontFamily="Consolas"
                                        FontWeight="Bold" 
                                        VerticalAlignment="Center"
                                        Margin="0,15,10,15"/>
+                            </StackPanel>
                             <DatePicker Grid.Row="2" Grid.Column="1" 
                                         Height="30" 
                                         FontSize="14"
@@ -86,11 +109,15 @@
                                         Margin="0,10"/>
 
                             <!-- End Date -->
-                            <TextBlock Grid.Row="3" Grid.Column="0" 
+                            <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,15,10,15">
+                                <Image Source="/Assets/calendar.png" Width="20" Height="20" Margin="0,0,5,0"/>
+                                <TextBlock Grid.Row="3" Grid.Column="0" 
                                        Text="End Date:" 
                                        FontWeight="Bold" 
+                                           FontFamily="Consolas"
                                        VerticalAlignment="Center"
                                        Margin="0,15,10,15"/>
+                            </StackPanel>
                             <DatePicker Grid.Row="3" Grid.Column="1" 
                                         Height="30" 
                                         FontSize="14"
@@ -100,7 +127,7 @@
                         </Grid>
 
                         <!-- Submit Button -->
-                        <Button Content="Submit Application"
+                        <Button
                                 Command="{Binding OnSubmitVisaCommand}"
                                 IsEnabled="{Binding IsSubmitEnabled}"
                                 HorizontalAlignment="Right"
@@ -112,7 +139,20 @@
                                 FontWeight="Bold"
                                 FontSize="16"
                                 Margin="100,10,100,20"
-                                Style="{StaticResource RoundedButtonStyle}"/>
+                                Cursor="Hand"
+                                Style="{StaticResource RoundedButtonStyle}">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <TextBlock Text="Submit Application"
+                                                   VerticalAlignment="Center"
+                                                   Foreground="White"
+                                                   FontWeight="Bold"/>  
+                                <Image Source="/Assets/arrow.png"
+                                   Width="20"
+                                   Height="20"
+                                   Margin="8,0,0,0"/>       
+                            </StackPanel>
+                        </Button>
+
                     </StackPanel>
                 </ScrollViewer>
             </Border>
