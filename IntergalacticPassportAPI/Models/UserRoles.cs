@@ -4,15 +4,17 @@ using Dapper;
 
 namespace IntergalacticPassportAPI.Models
 {
-    public class UserRoles{
+    [Table("user_roles")]
+    public class UserRoles
+    {
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [PrimaryKey]
         [Column("id")]
-        public int? Id {get; set;}
+        public int Id {get; set;}
         [Column("user_id")]
-        public string UserId {get; set;}
+        public string UserId { get; set; }
         [Column("role_id")]
-        public int RoleId {get; set;}
+        public int RoleId { get; set; }
     }
 }

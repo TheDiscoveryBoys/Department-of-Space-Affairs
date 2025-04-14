@@ -5,43 +5,54 @@ using System.ComponentModel.DataAnnotations;
 using Dapper;
 using Npgsql;
 using IntergalacticPassportAPI.Models;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IntergalacticPassportAPI.Data
 {
-    public abstract class BaseRepository<Model>(IConfiguration config, string tableName)
+    public abstract class BaseRepository<Model> : IBaseRepository<Model>
     {
 
-        private readonly string _connectionString = config.GetConnectionString("DefaultConnection");
+        private readonly string _connectionString;
+        private readonly string tableName;
+        private readonly string PKIdentifier;
+
+        public BaseRepository(IConfiguration config)
+        {
+            _connectionString = config.GetConnectionString("DefaultConnection");
+            tableName = GetTableNameFromModel();
+            PKIdentifier = GetPrimaryKeyIdentifier();
+        }
+
 
         protected IDbConnection CreateDBConnection()
         {
             return new NpgsqlConnection(_connectionString);
         }
 
-        public async Task<Model> GetById(object id) // Object to handle string or int ids.
+        public async Task<Model> GetById(object id)
         {
-            string PKIdentifier = GetPrimaryKeyIdentifier(typeof(Model));
             using var db = CreateDBConnection();
-            var sql = $"SELECT * FROM {tableName} WHERE {tableName}.{CamelToSnake(PKIdentifier)} = '{id}'";
-            return await db.QueryFirstOrDefaultAsync<Model>(sql);
+            var typedParam = ConvertToExpectedType(id);
+            Console.WriteLine(typedParam.GetType());
+            var sql = $"SELECT * FROM {tableName} WHERE {tableName}.{CamelToSnake(PKIdentifier)} = @id";
+            return await db.QueryFirstOrDefaultAsync<Model>(sql, new { id = typedParam });
 
         }
-        public async Task<IEnumerable<Model>> GetAll()
+        public virtual async Task<IEnumerable<Model>> GetAll()
         {
             using var db = CreateDBConnection();
             var sql = $"SELECT * FROM {tableName}";
             return await db.QueryAsync<Model>(sql);
         }
-        public async Task<Model> Create(Model model)
+        public virtual async Task<Model> Create(Model model)
         {
             using var db = CreateDBConnection();
             var sql = ModelToSQLInsert(model);
             return await db.QuerySingleAsync<Model>(sql, model);
         }
 
-        public async Task<Model> Update(Model model)
+        public virtual async Task<Model> Update(Model model)
         {
-            string PKIdentifier = GetPrimaryKeyIdentifier(typeof(Model));
             using var db = CreateDBConnection();
             List<string> reflectedAttributes = GetPropertyNamesFromModel(model);
             string sqlSetCode = "";
@@ -57,13 +68,12 @@ namespace IntergalacticPassportAPI.Data
 
         }
 
-        public async Task<bool> Delete(string id) 
+        public async Task<bool> Delete(object id)
         {
-            string PKIdentifier = GetPrimaryKeyIdentifier(typeof(Model));
             using var db = CreateDBConnection();
-            var sql = $"DELETE FROM {tableName} WHERE {CamelToSnake(PKIdentifier)} = '{id}';";
-            Console.WriteLine(sql);
-            var rowsAffected = await db.ExecuteAsync(sql);
+            var typedParam = ConvertToExpectedType(id);
+            var sql = $"DELETE FROM {tableName} WHERE {tableName}.{CamelToSnake(PKIdentifier)} = @id";
+            var rowsAffected = await db.ExecuteAsync(sql, new { id = typedParam });
 
             return rowsAffected > 0;
         }
@@ -114,13 +124,12 @@ namespace IntergalacticPassportAPI.Data
             return modelAttributes;
         }
 
-        private string GetPrimaryKeyIdentifier(Type model)
+        private string GetPrimaryKeyIdentifier()
         {
-            PropertyInfo[] properties = model.GetProperties();
+            PropertyInfo[] properties = typeof(Model).GetProperties();
             foreach (PropertyInfo property in properties)
             {
                 string propertyName = property.Name;
-                //var pkAttr = property.GetCustomAttribute<PrimaryKeyAttribute>();
                 var pkAttr = property.GetCustomAttribute<PrimaryKeyAttribute>();
                 if (pkAttr != null)
                 {
@@ -129,6 +138,33 @@ namespace IntergalacticPassportAPI.Data
 
             }
             throw new Exception("Model doesn't contain primary key");
+        }
+
+        private Type GetPrimaryKeyType()
+        {
+            PropertyInfo[] properties = typeof(Model).GetProperties();
+            foreach (PropertyInfo property in properties)
+            {
+                var pkAttr = property.GetCustomAttribute<PrimaryKeyAttribute>();
+                if (pkAttr != null)
+                {
+                    return property.PropertyType;
+                }
+
+            }
+            throw new Exception("Model doesn't contain primary key");
+        }
+
+        private object ConvertToExpectedType(object id)
+        {
+            Type expectedType = GetPrimaryKeyType();
+            if (expectedType == typeof(int) && id is string str && int.TryParse(str, out var intVal))
+                return intVal;
+
+            if (expectedType == typeof(string))
+                return id.ToString();
+
+            return id;
         }
 
         private string truncateEndOfSql(string sqlString)
@@ -151,10 +187,10 @@ namespace IntergalacticPassportAPI.Data
             return result;
         }
 
-        private string GetTableNameFromModel(Model model)
+        private string GetTableNameFromModel()
         {
-            PropertyInfo prop = model.GetType().GetProperty("tableName");
-            return prop?.GetValue(model)?.ToString();
+            var tableAttr = typeof(Model).GetCustomAttribute<TableAttribute>();
+            return tableAttr.Name;
         }
 
     }

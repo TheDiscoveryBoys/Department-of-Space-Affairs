@@ -7,35 +7,36 @@ namespace IntergalacticPassportAPI.Controllers
 {
     [ApiController]
     [Route("api/users")]
-    public class UserController : BaseController<Users, UsersRepository>
+    public class UserController : BaseController<Users, IUsersRepository>
     {
-        public UserController(UsersRepository repo) : base(repo) { }
+        public UserController(IUsersRepository repo) : base(repo) { }
 
-        [HttpPost]
-        public override async Task<ActionResult<Users>> Create([FromBody] Users user)
-        {
-            return await BaseRequest(async () =>
-            {
-                if (!ModelState.IsValid)
-                    return BadRequest(ModelState);
+        //[HttpPost]
+        //public override async Task<ActionResult<Users>> Create([FromBody] Users user)
+        //{
+        //    return await BaseRequest(async () =>
+        //    {
+        //        if (!ModelState.IsValid)
+        //            return BadRequest(ModelState);
 
-                var existingUser = await _repo.Exists(user);
+        //        var existingUser = await _repo.Exists(user);
 
-                if (!existingUser)
-                {
-                    var registeredUser = await _repo.Create(user);
-                    return Ok(registeredUser);
-                }
-                else
-                {
-                    return Ok(user);
-                }
-            });
+        //        if (!existingUser)
+        //        {
+        //            var registeredUser = await _repo.Create(user);
+        //            return Ok(registeredUser);
+        //        }
+        //        else
+        //        {
+        //            return Ok(user);
+        //        }
+        //    });
 
-        }
+        //}
 
         [HttpGet]
         [Route("email/{email}")]
+        [Authorize(Roles="Officer")]
         public async Task<ActionResult<Users>> GetUserByEmail(string email){
             Console.WriteLine($"Trying to get user by email {email}");
             return Ok(await _repo.GetUserByEmail(email));
