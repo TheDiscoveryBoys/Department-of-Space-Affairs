@@ -15,7 +15,6 @@ namespace IntergalacticPassportportAPI.Controllers
 		public PassportDocumentController(IPassportDocumentRepository repo) : base(repo) { }
 
 		[HttpGet("passport-application/{id}")]
-		// TODO: Add authorization.
 		public async Task<ActionResult<IEnumerable<PassportDocument>>> GetByPassportApplicationId(int id)
 		{
 			return await BaseRequest(async () =>
