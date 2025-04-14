@@ -59,18 +59,18 @@ namespace DOSA_Client.ViewModels
                 {
                     // we have someone who has a passport so they can see their history and the visa application page
                     UpdatedTabs.Add(new VisaApplicationScreenViewModel(() => this.UpdateTabsAsync()));
-                    UpdatedTabs.Add(new ApplicationHistoryScreenViewModel());
+                    UpdatedTabs.Add(new ApplicationHistoryScreenViewModel(() => this.UpdateTabsAsync()));
                 }
                 else if (applications.Any(application => application.Status.Name == "PENDING" && application.ApplicationType == "PASSPORT"))
                 {
                     // we have someone with a currently open application for a passport so they can only see their history
-                    UpdatedTabs.Add(new ApplicationHistoryScreenViewModel());
+                    UpdatedTabs.Add(new ApplicationHistoryScreenViewModel(() => this.UpdateTabsAsync()));
                 }
                 else if (applications.Any(application => application.Status.Name == "REJECTED" && application.ApplicationType == "PASSPORT"))
                 {
                     // We have someone that has a recently rejected passport application
                     UpdatedTabs.Add(new PassportApplicationScreenViewModel(() => this.UpdateTabsAsync()));
-                    UpdatedTabs.Add(new ApplicationHistoryScreenViewModel());
+                    UpdatedTabs.Add(new ApplicationHistoryScreenViewModel(() => this.UpdateTabsAsync()));
                 }
                 else
                 {
@@ -88,7 +88,7 @@ namespace DOSA_Client.ViewModels
             // Delay setting the selected index to ensure the UI has time to bind
 
             // Force the SelectedIndex update to happen *after* the UI re-renders the new Tabs
-            await Task.Delay(150); // wait a tiny bit to ensure binding completes
+            await Task.Delay(300); // wait a tiny bit to ensure binding completes
             System.Windows.Application.Current.Dispatcher.Invoke(() =>
             {
                 SelectedIndex = 0;

@@ -76,7 +76,7 @@ namespace DOSA_Client.ViewModels
             // delete old roles?
 
             // add new role
-            var success = await ApiClient.AddUserRole(new UserRole(null, user.google_id, SelectedRole.id));
+            var success = await ApiClient.AddUserRole(new UserRole(-1, user.google_id, SelectedRole.id));
 
             if (success)
             {

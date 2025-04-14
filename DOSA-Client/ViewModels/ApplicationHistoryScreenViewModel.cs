@@ -6,16 +6,20 @@ namespace DOSA_Client.ViewModels
     {
         public string Title => "Application History";
         public PageManager PageManager { get; set; }
+        private Func<Task> _updateTabsCallback;
 
-        public ApplicationHistoryScreenViewModel()
+        public ApplicationHistoryScreenViewModel(Func<Task> updateTabsCallback)
         {
             PageManager = new PageManager();
+            _updateTabsCallback = updateTabsCallback;
+
             RegisterPages();
             PageManager.NavigateTo(PageNames.ApplicationHistory);
+
         }
         public void RegisterPages()
         {
-            PageManager.RegisterPage(PageNames.ApplicationHistory, new ApplicationHistoryPageViewModel(PageManager));
+            PageManager.RegisterPage(PageNames.ApplicationHistory, new ApplicationHistoryPageViewModel(PageManager, _updateTabsCallback));
         }
     }
 }
