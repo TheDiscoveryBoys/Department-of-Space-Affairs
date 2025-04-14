@@ -18,6 +18,7 @@ namespace DOSA_Client.ViewModels
         public string Title => "List of Previous Passport and Visa Applications";
         public PageManager PageManager { get; set; }
         private ObservableCollection<Application> _applications;
+        private Func<Task> _updateTabsCallback;
         public ObservableCollection<Application> Applications { 
             get => _applications;
         
@@ -27,13 +28,17 @@ namespace DOSA_Client.ViewModels
             }
         }
 
-        public ApplicationHistoryPageViewModel(PageManager pageManager)
+        public ApplicationHistoryPageViewModel(PageManager pageManager, Func<Task> updateTabsCallback)
         {
             PageManager = pageManager;
+            _updateTabsCallback = updateTabsCallback;
+
             onNextButtonClickedCommand = new DelegateCommand<string>(OnNext);
             RefreshCommand = new RelayCommand(RefreshHistory);
             // Call API to get list of passport applications and their statuses
-            RefreshHistory();
+            Task.Run(async () => {
+                Applications = new ObservableCollection<Application>(await ApiClient.GetApplications(Context.Get<User>(ContextKeys.USER).google_id));
+            });
         }
         public ICommand onNextButtonClickedCommand { get; }
         public ICommand RefreshCommand { get; }
@@ -48,9 +53,7 @@ namespace DOSA_Client.ViewModels
 
         private void RefreshHistory()
         {
-            Task.Run(async () => {
-                Applications = new ObservableCollection<Application>(await ApiClient.GetApplications(Context.Get<User>(ContextKeys.USER).google_id));
-            });
+            _updateTabsCallback();
         }
     }
 }
