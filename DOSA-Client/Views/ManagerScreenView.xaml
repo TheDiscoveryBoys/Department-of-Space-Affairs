@@ -8,6 +8,7 @@
             <views:ManagerPageView />
         </DataTemplate>
     </UserControl.Resources>
+    
     <Grid>
         <ContentControl Content="{Binding PageManager.CurrentPage}"
                         HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />

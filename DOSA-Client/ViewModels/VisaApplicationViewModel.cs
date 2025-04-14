@@ -4,6 +4,7 @@ using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using DOSA_Client.lib.Constants;
+using System.Net.Http;
 
 namespace DOSA_Client.ViewModels
 {
@@ -74,8 +75,19 @@ namespace DOSA_Client.ViewModels
             Console.WriteLine("Submitting visa!");
             Task.Run(async () =>
             {
-                var visaApplication = await ApiClient.CreateVisaApplication(new VisaApplication(null, Context.Get<User>(ContextKeys.USER).google_id, null, DestinationPlanet, TravelReason, StartDate, EndDate, DateTime.Now, null, null) ?? throw new Exception("Failed to create a visa application"));
-                await UpdateTabsCallback();
+                try {
+                    var visaApplication = await ApiClient.CreateVisaApplication(new VisaApplication(null, Context.Get<User>(ContextKeys.USER).google_id, null, DestinationPlanet, TravelReason, StartDate, EndDate, DateTime.Now, null, null) ?? throw new Exception("Failed to create a visa application"));
+                    await UpdateTabsCallback();
+                }
+                catch (HttpRequestException ex) when (ex.StatusCode == System.Net.HttpStatusCode.Conflict)
+                {
+                    System.Windows.MessageBox.Show(ex.Message, "Error");
+                }
+                catch (Exception ex)
+                {
+                    System.Windows.MessageBox.Show("Error occurred when applying for VISA. Please try again later", "Error");
+                }
+
             });
         }
 

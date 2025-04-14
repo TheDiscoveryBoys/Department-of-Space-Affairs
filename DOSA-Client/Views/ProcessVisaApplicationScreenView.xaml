@@ -5,13 +5,17 @@
              xmlns:views="clr-namespace:DOSA_Client.Views">
     
     <UserControl.Resources>
+        
         <DataTemplate DataType="{x:Type vm:ProcessVisaApplicationViewModel}">
             <views:ProcessVisaApplicationView />
         </DataTemplate>
+        
         <DataTemplate DataType="{x:Type vm:VisaApplicationDetailsViewModel}">
             <views:VisaApplicationDetailsView />
         </DataTemplate>
+        
     </UserControl.Resources>
+    
     <Grid>
         <ContentControl Content="{Binding PageManager.CurrentPage}"
                         HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />

@@ -6,56 +6,76 @@
              mc:Ignorable="d">
 
     <Grid Background="#ECEFF1">
-        <!-- Layer 1: Vertical Blue Stripes (Ribbons) between the left side and the center -->
+        <!-- Ribbon -->
         <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20">
-                <!-- First Ribbon (Dark Blue) -->
-                <Rectangle Width="15" Height="200" Fill="#0D47A1" Margin="0,0,0,5"/>
-                <!-- Second Ribbon (Medium Blue) -->
-                <Rectangle Width="15" Height="200" Fill="#1976D2" Margin="0,0,0,5"/>
-                <!-- Third Ribbon (Light Blue) -->
-                <Rectangle Width="15" Height="200" Fill="#42A5F5"/>
+                <!-- Ribbon 1 -->
+                <Rectangle Width="15" Height="200" Fill="#5b2bd2" Margin="0,0,0,5"/>
+                <!-- Ribbon2  -->
+                <Rectangle Width="15" Height="200" Fill="#b832b8" Margin="0,0,0,5"/>
+                <!-- Ribbon 3 -->
+                <Rectangle Width="15" Height="200" Fill="#d690d3"/>
             </StackPanel>
         </Grid>
 
-        <!-- Layer 2: Centered login card -->
+        <!-- Centered login card -->
         <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Border Background="White"
-                CornerRadius="10"
-                Padding="40"
-                Width="600">
+            <Border CornerRadius="10"
+                    BorderThickness="3"
+                    Padding="40"
+                    Width="600">
+                <Border.BorderBrush>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#462AD8" Offset="0" />
+                        <GradientStop Color="#DA34AE" Offset="0.75" />
+                        <GradientStop Color="#8A16C1" Offset="1" />
+                    </LinearGradientBrush>
+                </Border.BorderBrush>
+                
                 <StackPanel>
-                    <TextBlock Text="Welcome to the Department of Galactic Affairs"
-                       FontSize="28"
-                       FontWeight="Bold"
-                       Foreground="#111111"
-                       TextAlignment="Center"
-                       TextWrapping="Wrap"
-                       Margin="0,0,0,10"
-                       FontFamily="Segoe UI"/>
+                    <TextBlock Text="WELCOME TO"
+                               FontSize="28"
+                               FontWeight="Bold"
+                               Foreground="#111111"
+                               TextAlignment="Center"
+                               TextWrapping="Wrap"
+                               Margin="0,0,0,0"
+                               FontFamily="Segoe UI"/>
+                    
+                    <Image Source="/Assets/SPACE.png" Height="250"/>
 
                     <TextBlock Text="{Binding LoginViewDescription}" 
-                           FontSize="18" 
-                           Foreground="#333333"
-                           TextAlignment="Center"
-                           TextWrapping="Wrap"
-                           Margin="0,0,0,10"/>
+                               FontSize="18" 
+                               Foreground="#333333"
+                               TextAlignment="Center"
+                               TextWrapping="Wrap"
+                               Margin="0,0,0,10"
+                               FontStyle="Italic" />
 
-                    <Button Content="Login via Google"
-                        Width="150"
-                        Height="40"
-                        FontSize="16"
-                        Command="{Binding LoginCommand}"
-                        HorizontalAlignment="Center"
-                        Margin="0,20,0,0"
-                        Background="#7F5AF0"
-                        Foreground="White"
-                        Padding="10,5"
-                        FontFamily="Segoe UI"
-                        Style="{StaticResource RoundedButtonStyle}"/>
+                    <Button Width="300"
+                            Height="40"
+                            FontSize="16"
+                            Command="{Binding LoginCommand}"
+                            HorizontalAlignment="Center"
+                            Margin="0,20,0,0"
+                            Background="#7F5AF0"
+                            Foreground="White"
+                            Padding="10,5"
+                            FontFamily="Segoe UI"
+                            Cursor="Hand"
+                            Style="{StaticResource RoundedButtonStyle}">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Image Source="/Assets/google.png" Width="20" Height="20" Margin="0,0,10,0"/>
+                            <TextBlock Text="Login via Google"
+                                       VerticalAlignment="Center"
+                                       FontSize="16"
+                                       FontWeight="SemiBold"
+                                       FontStyle="Normal"/> 
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
             </Border>
         </Grid>

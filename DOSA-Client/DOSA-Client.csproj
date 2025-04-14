@@ -1,4 +1,4 @@
- <Project Sdk="Microsoft.NET.Sdk">
+﻿ <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -14,8 +14,33 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\aliens.png" />
+    <None Remove="Assets\arrow.png" />
+    <None Remove="Assets\asteroid.png" />
     <None Remove="Assets\bin_icon.png" />
+    <None Remove="Assets\calendar.png" />
+    <None Remove="Assets\check.png" />
+    <None Remove="Assets\close.png" />
     <None Remove="Assets\download.png" />
+    <None Remove="Assets\google.png" />
+    <None Remove="Assets\idea-fill.png" />
+    <None Remove="Assets\idea-filled.png" />
+    <None Remove="Assets\idea.png" />
+    <None Remove="Assets\mail.png" />
+    <None Remove="Assets\SPACE.png" />
+    <None Remove="Assets\translate.png" />
+    <None Remove="Assets\upload.png" />
+    <None Remove="Assets\user.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\aliens.png" />
+    <Resource Include="Assets\arrow.png" />
+    <Resource Include="Assets\asteroid.png" />
+    <Resource Include="Assets\calendar.png" />
+    <Resource Include="Assets\check.png" />
+    <Resource Include="Assets\close.png" />
+    <Resource Include="Assets\google.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,6 +50,13 @@
   <ItemGroup>
     <Resource Include="Assets\bin_icon.png" />
     <Resource Include="Assets\download.png" />
+    <Resource Include="Assets\idea-filled.png" />
+    <Resource Include="Assets\idea.png" />
+    <Resource Include="Assets\mail.png" />
+    <Resource Include="Assets\SPACE.png" />
+    <Resource Include="Assets\translate.png" />
+    <Resource Include="Assets\upload.png" />
+    <Resource Include="Assets\user.png" />
   </ItemGroup>
 
 </Project>

@@ -261,6 +261,11 @@ public static class RestClient
                 Console.WriteLine("Failed to deserialise");
             }
         }
+        else
+        {
+            var message = await response.Content.ReadAsStringAsync();
+            throw new HttpRequestException(message, null, response.StatusCode);
+        }
         Console.WriteLine(await response.Content.ReadAsStringAsync());
         return null;
     }

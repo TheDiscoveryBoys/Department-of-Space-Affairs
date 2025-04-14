@@ -4,15 +4,19 @@
              xmlns:vm="clr-namespace:DOSA_Client.ViewModels"
              xmlns:views="clr-namespace:DOSA_Client.Views"> 
     <UserControl.Resources>
+        
         <DataTemplate DataType="{x:Type vm:ProcessPassportApplicationViewModel}">
             <views:ProcessPassportApplicationView />
         </DataTemplate>
+        
         <DataTemplate DataType="{x:Type vm:PassportApplicationDetailsViewModel}">
             <views:PassportApplicationDetailsView />
         </DataTemplate>
+        
     </UserControl.Resources>
     <Grid>
         <ContentControl Content="{Binding PageManager.CurrentPage}"
-                        HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                        HorizontalAlignment="Stretch" 
+                        VerticalAlignment="Stretch" />
     </Grid>
 </UserControl>
