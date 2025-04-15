@@ -1,5 +1,4 @@
 using IntergalacticPassportAPI.Data;
-using IntergalacticPassportAPI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,33 +15,18 @@ namespace IntergalacticPassportAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        // [Authorize(Roles = "Citizen")]
         public async Task<ActionResult<Model?>> GetById(string id)
         {
-
-            // if (typeof(Model) == typeof(Users))
-            // {
                 return await BaseRequest(async () =>
                 {
                     var model = await _repo.GetById(id);
                     return model == null ? NoContent() : Ok(model);
 
                 });
-         //   }
-
-            // else 
-            // {
-            //     return await BaseRequest(async () =>
-            //     {
-            //         var model = await _repo.GetById(Int32.Parse(id));
-            //         return model == null ? NoContent() : Ok(model);
-
-            //     });
-            // }
         }
 
         [HttpGet]
-        // [Authorize(Roles = "Citizen")]
+        [Authorize(Roles="OFFICER")]
         public async Task<ActionResult<IEnumerable<Model>>> GetAll()
         {
             return await BaseRequest(async () =>
@@ -95,6 +79,7 @@ namespace IntergalacticPassportAPI.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles="OFFICER")]
         public async Task<ActionResult> Delete(string id)
         {
             return await BaseRequest(async () =>

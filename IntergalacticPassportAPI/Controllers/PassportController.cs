@@ -8,6 +8,7 @@ namespace IntergalacticPassportAPI.Controllers
 {
     [ApiController]
     [Route("api/passport")]
+    [Authorize(Roles="APPLICANT")]
     public class PassportController : BaseController<Passport, IPassportRepository>
     {
         IStatusRepository statusRepo;
@@ -40,6 +41,7 @@ namespace IntergalacticPassportAPI.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles="OFFICER")]
         [Route("getnext")]
         public async Task<ActionResult<Passport>> GetPassportApplicationByOfficerId(string officerId)
         {
