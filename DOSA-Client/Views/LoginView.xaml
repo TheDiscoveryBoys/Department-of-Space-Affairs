@@ -53,7 +53,15 @@
                                TextAlignment="Center"
                                TextWrapping="Wrap"
                                Margin="0,0,0,10"
-                               FontStyle="Italic" />
+                                />
+
+                    <TextBlock Text="Subject to network issues" 
+                                   FontSize="10" 
+                                   Foreground="#333333"
+                                   TextAlignment="Center"
+                                   TextWrapping="Wrap"
+                                   Margin="0,0,0,10"
+                                   FontStyle="Italic" />            
 
                     <Button Width="300"
                             Height="40"

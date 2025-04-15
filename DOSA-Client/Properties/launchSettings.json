@@ -1,9 +1,0 @@
-{
-  "profiles": {
-    "DOSA-Client": {
-      "commandName": "Project",
-      "workingDirectory": "C:\\Users\\bbdnet3320\\Desktop\\C# Level Up\\Department-of-Space-Affairs\\DOSA-Client\\bin\\Debug\\net9.0-windows",
-      "remoteDebugEnabled": false
-    }
-  }
-}
