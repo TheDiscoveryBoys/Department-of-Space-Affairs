@@ -55,12 +55,6 @@
 
                             <TextBlock FontSize="14" FontFamily="Consolas" Margin="0,0,0,10">
                                 <Run Text="# "/>
-                                <Run Text="Applicant Age: " FontWeight="Bold"/>
-                                <Run Text="Applicants below maturity threshold are not to be issued a visa."/>
-                            </TextBlock>
-
-                            <TextBlock FontSize="14" FontFamily="Consolas" Margin="0,0,0,10">
-                                <Run Text="# "/>
                                 <Run Text="Application Completeness: " FontWeight="Bold"/>
                                 <Run Text="All mandatory fields must be filled and verified."/>
                             </TextBlock>

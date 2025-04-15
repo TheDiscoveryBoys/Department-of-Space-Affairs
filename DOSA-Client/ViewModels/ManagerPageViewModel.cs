@@ -49,16 +49,17 @@ namespace DOSA_Client.ViewModels
             PageManager = pageManager;
 
             OnUpdateUserRoles = new RelayCommand(updateRoles);
+            OnRemoveUserRoles = new RelayCommand(removeRoles);
             IsUpdateButtonEnabled = false;
 
-            Task.Run(async () =>
+            System.Windows.Application.Current.Dispatcher.InvokeAsync(async () =>
             {
                 Roles = await ApiClient.GetAllRoles();
             });
         }
 
         public ICommand OnUpdateUserRoles { get; }
-        public async void updateRoles()
+        private async void updateRoles()
         {
             // get user id by email
             User? user = await ApiClient.GetUserByEmail(UserEmail);
@@ -73,10 +74,8 @@ namespace DOSA_Client.ViewModels
                 return;
             }
 
-            // delete old roles?
-
             // add new role
-            var success = await ApiClient.AddUserRole(new UserRole(-1, user.google_id, SelectedRole.id));
+            var success = await ApiClient.AddUserRole(new UserRole(null, user.google_id, SelectedRole.id));
 
             if (success)
             {
@@ -90,6 +89,38 @@ namespace DOSA_Client.ViewModels
             else
             {
                 System.Windows.MessageBox.Show("Unable to assign user this role.", "Error");
+            }
+        }
+
+        public ICommand OnRemoveUserRoles { get; }
+        private async void removeRoles()
+        {
+            // get user id by email
+            User? user = await ApiClient.GetUserByEmail(UserEmail);
+
+            if (user == null)
+            {
+                System.Windows.MessageBox.Show(
+                    "No user found with that email address.",
+                    "User Not Found");
+                return;
+            }
+
+            // add new role
+            var success = await ApiClient.RemoveUserRole(new UserRole(null, user.google_id, SelectedRole.id));
+
+            if (success)
+            {
+                System.Windows.MessageBox.Show("User role successfully removed.", "Success");
+                // reset form
+                UserEmail = string.Empty;
+                SelectedRole = null;
+                OnPropertyChanged(nameof(UserEmail));
+                OnPropertyChanged(nameof(SelectedRole));
+            }
+            else
+            {
+                System.Windows.MessageBox.Show("User does not have this role.", "Error");
             }
         }
     }

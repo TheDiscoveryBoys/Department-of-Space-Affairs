@@ -80,6 +80,11 @@ namespace DOSA_Client.lib
             return await RestClient.AddUserRole(userRole);
         }
 
+        public static async Task<bool> RemoveUserRole(UserRole userRole)
+        {
+            return await RestClient.RemoveUserRole(userRole);
+        }
+
         public static async Task<List<Role>> GetAllRoles()
         {
             return await RestClient.GetRoles();

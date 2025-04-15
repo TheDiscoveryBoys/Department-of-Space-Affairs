@@ -58,6 +58,38 @@ namespace IntergalacticPassportAPI.Data
             }
         }
 
+        public async Task<bool> DeleteRoleFromUser(string googleId, int roleId)
+        {
+
+            using var db = CreateDBConnection();
+
+            var sqlCheck = @"
+                SELECT * FROM user_roles 
+                WHERE user_id = @GoogleId
+                AND role_id = @RoleId;
+            ";
+
+            Console.WriteLine(sqlCheck);
+            var resultRows = await db.QueryAsync<UserRoles>(sqlCheck, new { GoogleId = googleId, RoleId = roleId });
+
+            if (resultRows.Count() > 0) {
+
+                var sql = @"
+                    DELETE FROM user_roles
+                    WHERE user_id = @GoogleId
+                    AND role_id = @RoleId;
+                ";
+
+                Console.WriteLine(sql);
+                var rowsAffected = await db.ExecuteAsync(sql, new { GoogleId = googleId, RoleId = roleId });
+
+                return rowsAffected > 0;
+                
+            } else {
+                return false;
+            }
+        }
+
         public async override Task<bool> Exists(Users model)
         {
              var existingUser = await GetById(model.GoogleId ?? throw new Exception("No google id"));

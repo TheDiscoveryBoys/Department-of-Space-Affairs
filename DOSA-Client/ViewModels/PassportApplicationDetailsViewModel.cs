@@ -26,22 +26,20 @@ namespace DOSA_Client.ViewModels
             _updateTabsCallback = updateTabsCallback;
         }
 
-        private void OnNext(string pageName)
+        private async void OnNext(string pageName)
         {
-            Console.WriteLine($"Navigating to: {pageName}");
-            Task.Run(async () =>
+            var Officer = Context.Get<User>(ContextKeys.USER);
+            var PassportApplication = await ApiClient.GetPassportApplication(Officer.google_id);
+
+            if (PassportApplication != null)
             {
-                var Officer = Context.Get<User>(ContextKeys.USER);
-                var PassportApplication = await ApiClient.GetPassportApplication(Officer.google_id);
-                if (PassportApplication != null)
-                {
-                    Context.Add("Current Passport Application", PassportApplication);
-                    PageManager.NavigateTo(pageName);
-                }
-                else{
-                    MessageBox.Show("There are no applications for you right now, please try again later.");
-                }
-            });
+                Context.Add("Current Passport Application", PassportApplication);
+                PageManager.NavigateTo(pageName);
+            }
+            else
+            {
+                MessageBox.Show("There are no applications for you right now, please try again later.");
+            }
         }
     }
 }

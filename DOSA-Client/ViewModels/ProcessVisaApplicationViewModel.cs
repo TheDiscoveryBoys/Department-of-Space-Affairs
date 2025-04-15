@@ -54,42 +54,44 @@ namespace DOSA_Client.ViewModels
             }
         }
 
-        public void RejectApplication()
+        public async void RejectApplication()
         {
             if (Reason.Length > 255)
             {
                 Reason = Reason.Substring(0, 255);
                 MessageBox.Show("Reason exceeds 255 characters. Input will be truncated.");
             }
-            // call API to reject application
-            Task.Run(async ()=>{
-                // eish, same issue with structs here
-                var status = new Status(VisaApplication.VisaApplication.StatusId, "REJECTED", Reason);
-                var visa = new VisaApplication(VisaApplication.VisaApplication.Id, VisaApplication.Applicant.google_id, status.Id, VisaApplication.VisaApplication.DestinationPlanet, VisaApplication.VisaApplication.TravelReason, VisaApplication.VisaApplication.StartDate, VisaApplication.VisaApplication.EndDate, VisaApplication.VisaApplication.SubmittedAt, DateTime.Now, Officer.google_id);
-                await ApiClient.ProcessVisaApplication(visa, status); 
-                Reason = "";
-                VisaApplication = null;
-            });
-            PageManager.NavigateTo("Passprot Application Details Page");
-            _updateTabsCallback();
+
+            var status = new Status(VisaApplication.VisaApplication.StatusId, "REJECTED", Reason);
+            var visa = new VisaApplication(VisaApplication.VisaApplication.Id, VisaApplication.Applicant.google_id, status.Id, VisaApplication.VisaApplication.DestinationPlanet, VisaApplication.VisaApplication.TravelReason, VisaApplication.VisaApplication.StartDate, VisaApplication.VisaApplication.EndDate, VisaApplication.VisaApplication.SubmittedAt, DateTime.Now, Officer.google_id);
+
+            await ApiClient.ProcessVisaApplication(visa, status);
+
+            // reset form
+            Reason = "";
+            VisaApplication = null;
+
+            await _updateTabsCallback();
         }
 
-        public void ApproveApplication()
+        public async void ApproveApplication()
         {
             if (Reason.Length > 255)
             {
                 Reason = Reason.Substring(0, 255);
                 MessageBox.Show("Reason exceeds 255 characters. Input will be truncated.");
             }
-            Task.Run(async ()=>{
-                var status = new Status(VisaApplication.VisaApplication.StatusId, "APPROVED", Reason);
-                var visa = new VisaApplication(VisaApplication.VisaApplication.Id, VisaApplication.Applicant.google_id, status.Id, VisaApplication.VisaApplication.DestinationPlanet, VisaApplication.VisaApplication.TravelReason, VisaApplication.VisaApplication.StartDate, VisaApplication.VisaApplication.EndDate, VisaApplication.VisaApplication.SubmittedAt, DateTime.Now, Officer.google_id);
-                await ApiClient.ProcessVisaApplication(visa, status);
-                Reason = "";
-                VisaApplication = null;
-            });
-            PageManager.NavigateTo("Passprot Application Details Page");
-            _updateTabsCallback();
+
+            var status = new Status(VisaApplication.VisaApplication.StatusId, "APPROVED", Reason);
+            var visa = new VisaApplication(VisaApplication.VisaApplication.Id, VisaApplication.Applicant.google_id, status.Id, VisaApplication.VisaApplication.DestinationPlanet, VisaApplication.VisaApplication.TravelReason, VisaApplication.VisaApplication.StartDate, VisaApplication.VisaApplication.EndDate, VisaApplication.VisaApplication.SubmittedAt, DateTime.Now, Officer.google_id);
+
+            await ApiClient.ProcessVisaApplication(visa, status);
+
+            // reset form
+            Reason = "";
+            VisaApplication = null;
+
+            await _updateTabsCallback();
         }
 
         public ProcessVisaApplicationViewModel(PageManager pageManager, Func<Task> updateTabsCallback)
@@ -100,26 +102,25 @@ namespace DOSA_Client.ViewModels
             PageManager = pageManager;
             _updateTabsCallback = updateTabsCallback;
 
-            Task.Run(async () =>
+            System.Windows.Application.Current.Dispatcher.InvokeAsync(async () =>
             {
                 Officer = await ApiClient.GetUserProfile(Context.Get<User>(ContextKeys.USER).google_id);
             });
         }
 
-        public void Load(bool visibility)
+        public async void Load(bool visibility)
         {
             // make API call
             if(visibility){
-                Task.Run(async () => {
-                    VisaApplication = Context.Get<OfficerVisaApplication>(ContextKeys.CURRENT_VISA_APPLICATION);
-                    Reason = "";
-                    if (VisaApplication != null)
-                    {
-                        // assign the application to the current officer
-                        var visa = new VisaApplication(VisaApplication.VisaApplication.Id, VisaApplication.Applicant.google_id, VisaApplication.VisaApplication.StatusId, VisaApplication.VisaApplication.DestinationPlanet, VisaApplication.VisaApplication.TravelReason, VisaApplication.VisaApplication.StartDate, VisaApplication.VisaApplication.EndDate, VisaApplication.VisaApplication.SubmittedAt, null, Officer.google_id);
-                        await RestClient.UpdateVisaApplication(visa);
-                    }
-                });
+                VisaApplication = Context.Get<OfficerVisaApplication>(ContextKeys.CURRENT_VISA_APPLICATION);
+                Reason = "";
+
+                if (VisaApplication != null)
+                {
+                    // assign the application to the current officer
+                    var visa = new VisaApplication(VisaApplication.VisaApplication.Id, VisaApplication.Applicant.google_id, VisaApplication.VisaApplication.StatusId, VisaApplication.VisaApplication.DestinationPlanet, VisaApplication.VisaApplication.TravelReason, VisaApplication.VisaApplication.StartDate, VisaApplication.VisaApplication.EndDate, VisaApplication.VisaApplication.SubmittedAt, null, Officer.google_id);
+                    await RestClient.UpdateVisaApplication(visa);
+                }
             }
         }
 

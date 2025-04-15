@@ -70,30 +70,29 @@ namespace DOSA_Client.ViewModels
             EndDate = DateTime.Now.AddDays(7);
         }
 
-        public void OnSubmitVisa()
+        public async void OnSubmitVisa()
         {
             Console.WriteLine("Submitting visa!");
-            Task.Run(async () =>
-            {
-                try {
-                    var visaApplication = await ApiClient.CreateVisaApplication(new VisaApplication(-1, Context.Get<User>(ContextKeys.USER).google_id, null, DestinationPlanet, TravelReason, StartDate, EndDate, DateTime.Now, null, null) ?? throw new Exception("Failed to create a visa application"));
-                    await UpdateTabsCallback();
-                }
-                catch (HttpRequestException ex) when (ex.StatusCode == System.Net.HttpStatusCode.Conflict)
-                {
-                    System.Windows.MessageBox.Show(ex.Message, "Error");
-                }
-                catch (Exception ex)
-                {
-                    System.Windows.MessageBox.Show("Error occurred when applying for VISA. Please try again later", "Error");
-                }
 
-            });
+            try
+            {
+                var visaApplication = await ApiClient.CreateVisaApplication(new VisaApplication(-1, Context.Get<User>(ContextKeys.USER).google_id, null, DestinationPlanet, TravelReason, StartDate, EndDate, DateTime.Now, null, null) ?? throw new Exception("Failed to create a visa application"));
+            }
+            catch (HttpRequestException ex) when (ex.StatusCode == System.Net.HttpStatusCode.Conflict)
+            {
+                System.Windows.MessageBox.Show(ex.Message, "Error");
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show("Error occurred when applying for VISA. Please try again later", "Error");
+            }
+
+            await UpdateTabsCallback();
         }
 
         private void LoadSwapiOptions()
         {
-            Task.Run(async () =>
+            System.Windows.Application.Current.Dispatcher.InvokeAsync(async () =>
             {
                 List<SwapiRecord> planets = await StarWarsClient.GetPlanets();
                 PlanetsList = new ObservableCollection<SwapiRecord>(planets);

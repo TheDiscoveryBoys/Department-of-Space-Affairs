@@ -56,7 +56,7 @@ namespace DOSA_Client.ViewModels
 
         private void LoadSwapiOptions()
         {
-            Task.Run(async () =>
+            System.Windows.Application.Current.Dispatcher.InvokeAsync(async () =>
             {
                 List<SwapiRecord> species = await StarWarsClient.GetSpecies();
                 SpeciesList = new ObservableCollection<SwapiRecord>(species);

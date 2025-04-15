@@ -86,6 +86,16 @@ public static class RestClient
         return false;
     }
 
+    public static async Task<bool> RemoveUserRole(UserRole userRole)
+    {
+        var response = await HttpClient.DeleteAsync($"{Constants.BaseURI}api/users/{userRole.UserId}/roles/{userRole.RoleId}");
+        if (response.IsSuccessStatusCode)
+        {
+            return true;
+        }
+        return false;
+    }
+
     public static async Task<bool> UpdateUser(User user)
     {
         var response = await HttpClient.PutAsJsonAsync($"{Constants.BaseURI}api/users", user);
