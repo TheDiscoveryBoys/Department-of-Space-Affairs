@@ -38,7 +38,7 @@
                                FontWeight="Bold" 
                                FontFamily="Consolas"
                                Margin="0,0,0,20" />
-                    <TextBlock Text="Use this page to assign a role to a user of the system. You can make users an Applicant, Officer, or Manager."
+                    <TextBlock Text="Use this page to manage the roles of users in the system. System roles include an Applicant, Officer, or a Manager."
                                TextWrapping="Wrap"
                                FontSize="14"
                                FontFamily="Consolas"
@@ -91,7 +91,7 @@
                             FontSize="16"
                             Style="{StaticResource RoundedButtonStyle}" >
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <TextBlock Text="Remove User Role"
+                                <TextBlock Text="Remove Role"
                                        FontFamily="Consolas"
                                        VerticalAlignment="Center"
                                        Foreground="White"
@@ -115,7 +115,7 @@
                             FontSize="16"
                             Style="{StaticResource RoundedButtonStyle}" >
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <TextBlock Text="Add User Role"
+                                <TextBlock Text="Add Role"
                                        FontFamily="Consolas"
                                        VerticalAlignment="Center"
                                        Foreground="White"
