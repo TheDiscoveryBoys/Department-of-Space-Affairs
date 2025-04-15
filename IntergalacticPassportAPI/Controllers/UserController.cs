@@ -54,6 +54,24 @@ namespace IntergalacticPassportAPI.Controllers
                 }
             });
         }
+
+        [HttpDelete("{userId}/roles/{roleId}")]
+        [Authorize(Roles="MANAGER")]
+        public async Task<ActionResult> DeleteRoleFromUser(string userId, int roleId)
+        {
+            return await BaseRequest(async () =>
+            {
+                var succesfullyAssigned = await _repo.DeleteRoleFromUser(userId, roleId);
+                if (succesfullyAssigned)
+                {
+                    return Ok();
+                }
+                else
+                {
+                    return Conflict();
+                }
+            });
+        }
     }
 }
 

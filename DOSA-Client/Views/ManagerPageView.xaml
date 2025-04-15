@@ -76,12 +76,37 @@
                               Margin="30,0,30,30"
                               VerticalContentAlignment="Center" />
 
-                    <!-- Submit Button -->
-                    <Button Command="{Binding OnUpdateUserRoles}"
+                    <!-- Buttons -->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="30,0,30,30">
+                        <Button Command="{Binding OnRemoveUserRoles}"
                             IsEnabled="{Binding IsUpdateButtonEnabled}"
-                            Width="250"
+                            Width="150"
                             Height="40"
-                            Margin="30,0,30,30"
+                            HorizontalAlignment="Right"
+                            Background="Red"
+                            Foreground="White"
+                            Margin="0,0,30,0"
+                            Cursor="Hand"
+                            FontWeight="Bold"
+                            FontSize="16"
+                            Style="{StaticResource RoundedButtonStyle}" >
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <TextBlock Text="Remove User Role"
+                                       FontFamily="Consolas"
+                                       VerticalAlignment="Center"
+                                       Foreground="White"
+                                       FontWeight="Bold"/>
+                                <Image Source="/Assets/close.png"
+                                   Width="20"
+                                   Height="20"
+                                   Margin="8,0,0,0"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Command="{Binding OnUpdateUserRoles}"
+                            IsEnabled="{Binding IsUpdateButtonEnabled}"
+                            Width="150"
+                            Height="40"
                             HorizontalAlignment="Right"
                             Background="#7F5AF0"
                             Foreground="White"
@@ -89,18 +114,19 @@
                             FontWeight="Bold"
                             FontSize="16"
                             Style="{StaticResource RoundedButtonStyle}" >
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <TextBlock Text="Update User Roles"
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <TextBlock Text="Add User Role"
                                        FontFamily="Consolas"
                                        VerticalAlignment="Center"
                                        Foreground="White"
                                        FontWeight="Bold"/>
-                            <Image Source="/Assets/check.png"
+                                <Image Source="/Assets/check.png"
                                    Width="20"
                                    Height="20"
-                                   Margin="8,0,0,0"/>  
-                        </StackPanel>
-                    </Button>
+                                   Margin="8,0,0,0"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
                 </StackPanel>
             </Border>
         </Grid>
