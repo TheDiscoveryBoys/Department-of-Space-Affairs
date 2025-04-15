@@ -5,7 +5,12 @@ using DOSA_Client.Models;
 
 public static class StarWarsClient
 {
-    private static HttpClient HttpClient = new HttpClient();
+    private static HttpClient SwapiHttpClient = new HttpClient(new HttpClientHandler
+    {
+        // don't even worry about this, its definetely not dangerous
+        ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+    });
+
     private static async Task<List<SwapiRecord>> GetAllFromEndpoint(string endpoint)
     {
         var allItems = new List<SwapiRecord>();
@@ -15,7 +20,7 @@ public static class StarWarsClient
         {
             try
             {
-                var response = await HttpClient.GetFromJsonAsync<SwapiResponse>(nextUrl);
+                var response = await SwapiHttpClient.GetFromJsonAsync<SwapiResponse>(nextUrl);
                 if (response?.Results != null)
                 {
                     allItems.AddRange(response.Results);

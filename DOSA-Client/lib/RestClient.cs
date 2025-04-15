@@ -38,9 +38,14 @@ public static class RestClient
 
     public static async Task<List<Role>> GetRoles()
     {
-        var roles = await HttpClient.GetFromJsonAsync<List<Role>>($"{Constants.BaseURI}api/roles");
-        Console.WriteLine(JsonSerializer.Serialize(roles));
-        return roles ?? [];
+        try
+        {
+            return await HttpClient.GetFromJsonAsync<List<Role>>($"{Constants.BaseURI}api/roles");
+        }catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return [];
+        }
     }
 
     public static string DynStatus = "APPROVED";

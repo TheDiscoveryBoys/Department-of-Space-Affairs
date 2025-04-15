@@ -7,7 +7,7 @@ namespace IntergalacticPassportAPI.Controllers
 {
     [ApiController]
     [Route("api/users")]
-    [Authorize(Roles="APPLICANT")]
+    [Authorize(Roles="APPLICANT, OFFICER, MANAGER")]
     public class UserController : BaseController<Users, IUsersRepository>
     {
         public UserController(IUsersRepository repo) : base(repo) { }
@@ -38,7 +38,7 @@ namespace IntergalacticPassportAPI.Controllers
         }
 
         [HttpPost("{userId}/roles/{roleId}")]
-        [Authorize(Roles="OFFICER")]
+        [Authorize(Roles="MANAGER")]
         public async Task<ActionResult> AssignRoleToUser(string userId, int roleId)
         {
             return await BaseRequest(async () =>
