@@ -9,7 +9,7 @@
     <UseWPF>true</UseWPF>
     <SelfContained>true</SelfContained>
     <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
-    <ApplicationIcon>Assets\planet_icon.ico</ApplicationIcon>
+    <ApplicationIcon>Assets\SPACE.ico</ApplicationIcon>
     <Platforms>AnyCPU</Platforms>
   </PropertyGroup>
 

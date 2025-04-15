@@ -15,13 +15,13 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_E44EC29E13F84097B876848CA021181C"
+        "MsmKey" = "8:_69E9AB530433466BADBB330EC65F1851"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_FA68A2F7E2824772980EA44E7BCF7DBD"
+        "MsmKey" = "8:_E44EC29E13F84097B876848CA021181C"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -132,10 +132,10 @@
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_FA68A2F7E2824772980EA44E7BCF7DBD"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_69E9AB530433466BADBB330EC65F1851"
             {
-            "SourcePath" = "8:planet_icon.ico"
-            "TargetName" = "8:planet_icon.ico"
+            "SourcePath" = "8:..\\..\\..\\..\\Downloads\\Space_Icon.ico"
+            "TargetName" = "8:Space_Icon.ico"
             "Tag" = "8:"
             "Folder" = "8:_DA08560128F244C78E344CE9D75A948C"
             "Condition" = "8:"
@@ -340,7 +340,7 @@
             "Target" = "8:_E44EC29E13F84097B876848CA021181C"
             "Folder" = "8:_D522606290024262B69D4BA6EBADA679"
             "WorkingFolder" = "8:_DA08560128F244C78E344CE9D75A948C"
-            "Icon" = "8:_FA68A2F7E2824772980EA44E7BCF7DBD"
+            "Icon" = "8:_69E9AB530433466BADBB330EC65F1851"
             "Feature" = "8:"
             }
         }
@@ -744,7 +744,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_E44EC29E13F84097B876848CA021181C"
             {
-            "SourcePath" = "8:..\\DOSA-Client\\obj\\Release\\net9.0-windows\\win-x64\\apphost.exe"
+            "SourcePath" = "8:..\\DOSA-Client\\obj\\Debug\\net9.0-windows\\win-x64\\apphost.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_DA08560128F244C78E344CE9D75A948C"
