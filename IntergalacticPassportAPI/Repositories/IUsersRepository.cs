@@ -8,5 +8,6 @@ namespace IntergalacticPassportAPI.Data
         Task<IEnumerable<Roles>> GetUserRoles(string googleId);
         Task<Users?> GetUserByEmail(string email);
         Task<bool> AssignRoleToUser(string googleId, int roleId);
+        Task<bool> DeleteRoleFromUser(string googleId, int roleId);
     }
 }
