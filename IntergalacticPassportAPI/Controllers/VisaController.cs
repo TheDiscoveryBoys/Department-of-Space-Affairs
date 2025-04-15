@@ -8,6 +8,7 @@ namespace IntergalacticPassportAPI.Controllers
 {
     [ApiController]
     [Route("api/visa")]
+    [Authorize(Roles="APPLICANT")]
     public class VisaController : BaseController<Visa, IVisaRepository>
     {
         IStatusRepository statusRepo;
@@ -74,6 +75,7 @@ namespace IntergalacticPassportAPI.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles="OFFICER")]
         [Route("getnext")]
         public async Task<ActionResult<Visa>> GetVisaApplicationByOfficerId(string officerId)
         {

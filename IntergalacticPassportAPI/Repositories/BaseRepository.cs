@@ -33,7 +33,6 @@ namespace IntergalacticPassportAPI.Data
         {
             using var db = CreateDBConnection();
             var typedParam = ConvertToExpectedType(id);
-            Console.WriteLine(typedParam.GetType());
             var sql = $"SELECT * FROM {tableName} WHERE {tableName}.{CamelToSnake(PKIdentifier)} = @id";
             return await db.QueryFirstOrDefaultAsync<Model>(sql, new { id = typedParam });
 
@@ -99,7 +98,6 @@ namespace IntergalacticPassportAPI.Data
                 }
             }
             string sql = $"INSERT INTO {tableName} ({sqlCols}) VALUES ({sqlValues}) RETURNING *";
-            Console.WriteLine(sql);
             return sql;
         }
 
