@@ -136,6 +136,7 @@ namespace DOSA_Client.ViewModels
            string downloadsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
            string filePath = Path.Combine(downloadsPath, doc.FileName);
            await DocumentHelpers.DownloadFileAsync(doc.S3Url, filePath);
+           MessageBox.Show($"Downloaded file: '{doc.FileName}'. Please navigate to '{filePath}' to view the document.");
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
