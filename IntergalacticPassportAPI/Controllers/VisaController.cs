@@ -8,7 +8,7 @@ namespace IntergalacticPassportAPI.Controllers
 {
     [ApiController]
     [Route("api/visa")]
-    [Authorize(Roles="APPLICANT")]
+    [Authorize(Roles="APPLICANT, OFFICER")]
     public class VisaController : BaseController<Visa, IVisaRepository>
     {
         IStatusRepository statusRepo;

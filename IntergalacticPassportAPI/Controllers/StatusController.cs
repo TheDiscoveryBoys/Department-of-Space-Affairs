@@ -7,7 +7,7 @@ namespace IntergalacticPassportAPI.Controllers
 {
     [ApiController]
     [Route("api/status")]
-    [Authorize(Roles="APPLICANT")]
+    [Authorize(Roles="APPLICANT, OFFICER")]
     // TODO: ADD AUTHORIZATION
     public class StatusController : BaseController<Status, IStatusRepository>
     {
