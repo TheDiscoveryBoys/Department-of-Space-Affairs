@@ -51,7 +51,7 @@ namespace DOSA_Client.ViewModels
             OnUpdateUserRoles = new RelayCommand(updateRoles);
             IsUpdateButtonEnabled = false;
 
-            Task.Run(async () =>
+            System.Windows.Application.Current.Dispatcher.InvokeAsync(async () =>
             {
                 Roles = await ApiClient.GetAllRoles();
             });

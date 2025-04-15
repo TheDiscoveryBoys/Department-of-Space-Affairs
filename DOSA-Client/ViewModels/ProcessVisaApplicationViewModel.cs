@@ -102,7 +102,7 @@ namespace DOSA_Client.ViewModels
             PageManager = pageManager;
             _updateTabsCallback = updateTabsCallback;
 
-            Task.Run(async () =>
+            System.Windows.Application.Current.Dispatcher.InvokeAsync(async () =>
             {
                 Officer = await ApiClient.GetUserProfile(Context.Get<User>(ContextKeys.USER).google_id);
             });

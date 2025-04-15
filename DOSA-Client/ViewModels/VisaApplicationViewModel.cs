@@ -92,7 +92,7 @@ namespace DOSA_Client.ViewModels
 
         private void LoadSwapiOptions()
         {
-            Task.Run(async () =>
+            System.Windows.Application.Current.Dispatcher.InvokeAsync(async () =>
             {
                 List<SwapiRecord> planets = await StarWarsClient.GetPlanets();
                 PlanetsList = new ObservableCollection<SwapiRecord>(planets);

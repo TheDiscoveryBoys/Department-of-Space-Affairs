@@ -11,6 +11,7 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace DOSA_Client.ViewModels
 {
@@ -71,7 +72,7 @@ namespace DOSA_Client.ViewModels
             ApproveCommand = new RelayCommand(ApproveApplication);
             DownloadDocumentCommand = new RelayCommand<ApplicationDocument>(DownloadDocumentAsync);
 
-            Task.Run(async () =>
+            System.Windows.Application.Current.Dispatcher.InvokeAsync(async () =>
             {
                 Officer = await ApiClient.GetUserProfile(Context.Get<User>(ContextKeys.USER).google_id);
             });
