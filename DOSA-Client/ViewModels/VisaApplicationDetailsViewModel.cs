@@ -28,21 +28,22 @@ namespace DOSA_Client.ViewModels
         }
 
         public ICommand GetNextVisaApplication { get; }
-        public void OnNext(string pageName)
+        public async void OnNext(string pageName)
         {
             Console.WriteLine(pageName);
-            Task.Run(async () =>
+
+            var Officer = Context.Get<User>(ContextKeys.USER);
+            var VisaApplication = await ApiClient.GetVisaApplication(Officer.google_id);
+
+            if (VisaApplication != null)
             {
-                var Officer = Context.Get<User>(ContextKeys.USER);
-                var VisaApplication = await ApiClient.GetVisaApplication(Officer.google_id);
-                if (VisaApplication != null)
-                {
-                    Context.Add("Current Visa Application", VisaApplication);
-                    PageManager.NavigateTo(pageName);
-                }else{
-                    MessageBox.Show("There are no Visa Applications for you at the moment, please try again later.");
-                }
-            });
+                Context.Add("Current Visa Application", VisaApplication);
+                PageManager.NavigateTo(pageName);
+            }
+            else
+            {
+                MessageBox.Show("There are no Visa Applications for you at the moment, please try again later.");
+            }
         }
     }
 }

@@ -77,57 +77,59 @@ namespace DOSA_Client.ViewModels
             });
         }
 
-         public void Load(bool visibility)
+         public async void Load(bool visibility)
         {
             // make API call
             if(visibility){
-                Task.Run(async () => {
-                    PassportApplication = Context.Get<OfficerPassportApplication>(ContextKeys.CURRENT_PASSPORT_APPLICATION);
-                    if (PassportApplication != null)
-                    {
-                        // assign application to current officer
-                        var passport = new PassportApplication(PassportApplication.PassportApplication.Id, PassportApplication.Applicant.google_id, PassportApplication.PassportApplication.StatusId, PassportApplication.PassportApplication.SubmittedAt, null, Officer.google_id);
-                        await RestClient.UpdatePassportApplication(passport);
-                    }
-                });
+                PassportApplication = Context.Get<OfficerPassportApplication>(ContextKeys.CURRENT_PASSPORT_APPLICATION);
+
+                if (PassportApplication != null)
+                {
+                    // assign application to current officer
+                    var passport = new PassportApplication(PassportApplication.PassportApplication.Id, PassportApplication.Applicant.google_id, PassportApplication.PassportApplication.StatusId, PassportApplication.PassportApplication.SubmittedAt, null, Officer.google_id);
+                    await RestClient.UpdatePassportApplication(passport);
+                }
             }
         }
 
-        public void RejectApplication()
+        public async void RejectApplication()
         {
             if (Reason.Length > 255)
             {
                 Reason = Reason.Substring(0, 255);
                 MessageBox.Show("Reason exceeds 255 characters. Input will be truncated.");
             }
-            Task.Run(async ()=>{
-                // using records makes this very shit (I think we should have stuck to classes imo)
-                var status = new Status(PassportApplication.PassportApplication.StatusId, "REJECTED", Reason);
-                var passport = new PassportApplication(PassportApplication.PassportApplication.Id, PassportApplication.Applicant.google_id, status.Id, PassportApplication.PassportApplication.SubmittedAt, DateTime.Now, Officer.google_id);
-                await ApiClient.ProcessPassportApplication(passport, status); 
-                Reason = "";
-                PassportApplication = null;
-            });
-            PageManager.NavigateTo("Passprot Application Details Page");
-            _updateTabsCallback();
+
+            var status = new Status(PassportApplication.PassportApplication.StatusId, "REJECTED", Reason);
+            var passport = new PassportApplication(PassportApplication.PassportApplication.Id, PassportApplication.Applicant.google_id, status.Id, PassportApplication.PassportApplication.SubmittedAt, DateTime.Now, Officer.google_id);
+
+            await ApiClient.ProcessPassportApplication(passport, status);
+
+            // reset form
+            Reason = "";
+            PassportApplication = null;
+
+            await _updateTabsCallback();
         }
 
-        public void ApproveApplication()
+        public async void ApproveApplication()
         {
             if (Reason.Length > 255)
             {
                 Reason = Reason.Substring(0, 255);
                 MessageBox.Show("Reason exceeds 255 characters. Input will be truncated.");
             }
-            Task.Run(async ()=>{
-                var status = new Status(PassportApplication.PassportApplication.StatusId, "APPROVED", Reason);
-                var passport = new PassportApplication(PassportApplication.PassportApplication.Id, PassportApplication.Applicant.google_id, status.Id, PassportApplication.PassportApplication.SubmittedAt, DateTime.Now, Officer.google_id);
-                await ApiClient.ProcessPassportApplication(passport, status);
-                Reason = "";
-                PassportApplication = null;
-            });
-            PageManager.NavigateTo("Passprot Application Details Page");
-            _updateTabsCallback();
+
+            var status = new Status(PassportApplication.PassportApplication.StatusId, "APPROVED", Reason);
+            var passport = new PassportApplication(PassportApplication.PassportApplication.Id, PassportApplication.Applicant.google_id, status.Id, PassportApplication.PassportApplication.SubmittedAt, DateTime.Now, Officer.google_id);
+
+            await ApiClient.ProcessPassportApplication(passport, status);
+
+            // reset form
+            Reason = "";
+            PassportApplication = null;
+
+            await _updateTabsCallback();
         }
 
         private async void DownloadDocumentAsync(ApplicationDocument doc)

@@ -51,9 +51,9 @@ namespace DOSA_Client.ViewModels
         protected void OnPropertyChanged(string name) =>
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 
-        private void RefreshHistory()
+        private async void RefreshHistory()
         {
-            _updateTabsCallback();
+            await _updateTabsCallback();
         }
     }
 }
