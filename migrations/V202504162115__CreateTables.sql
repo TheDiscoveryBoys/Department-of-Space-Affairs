@@ -12,7 +12,7 @@ CREATE TABLE "users" (
 -- Create Roles Lookup Table
 CREATE TABLE "roles" (
   "id" SERIAL PRIMARY KEY,
-  "role" varchar(255) UNIQUE NOT NULL -- Added UNIQUE constraint here too for data integrity
+  "role" varchar(59) UNIQUE NOT NULL -- Added UNIQUE constraint here too for data integrity
 );
  
 -- Create User Roles Junction Table (Many-to-Many relationship)
