@@ -14,8 +14,8 @@ namespace IntergalacticPassportAPI.Models
         public string DestinationPlanet { get; set; }
 
         [Required]
-        [Column("travel_reason")]
-        public string TravelReason { get; set; }
+        [Column("travel_reason_id")]
+        public string TravelReasonId { get; set; }
 
         [Required]
         [Column("start_date")]

@@ -26,5 +26,8 @@ namespace IntergalacticPassportAPI.Models
 
         [Column("officer_id")]
         public string? OfficerId { get; set; }
+
+        [Column("officer_comment")]
+        public string? OfficerComment { get; set; }
     }
 }

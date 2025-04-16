@@ -7,7 +7,7 @@ using Dapper;
 
 namespace IntergalacticPassportAPI.Models
 {
-	[Table("statuses")]
+	[Table("application_statuses")]
 	public class Status
 	{
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -18,20 +18,17 @@ namespace IntergalacticPassportAPI.Models
         [Column("name")]
         public string Name { get; set; }
 
-        [Column("reason")]
-        public string? Reason { get; set; }
+        //public Status(String name, String reason){
+        //    this.Name = name;
+        //    this.Reason = reason;
+        //}
 
-        public Status(String name, String reason){
-            this.Name = name;
-            this.Reason = reason;
-        }
-
-        public Status(int id, String name, String reason){
-            this.Id = id;
-            this.Name = name;
-            this.Reason= reason;
-        }
-        public Status(){}
+        //public Status(int id, String name, String reason){
+        //    this.Id = id;
+        //    this.Name = name;
+        //    this.Reason= reason;
+        //}
+        //public Status(){}
 
 	}
 }

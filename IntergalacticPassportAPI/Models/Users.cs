@@ -26,8 +26,7 @@ namespace IntergalacticPassportAPI.Models
 
         [Column("planet_of_origin")]
         public string? PlanetOfOrigin { get; set; }
-        [Column("primary_language")]
-        public string? PrimaryLanguage { get; set; }
+
         [Column("date_of_birth")]
         public DateTime? DateOfBirth { get; set; }
     }
