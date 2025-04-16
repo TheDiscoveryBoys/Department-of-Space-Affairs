@@ -8,13 +8,13 @@ namespace IntergalacticPassportAPI.Controllers
 {
     [ApiController]
     [Route("api/visa")]
-    [Authorize(Roles="APPLICANT, OFFICER")]
+    [Authorize(Roles = "APPLICANT, OFFICER")]
     public class VisaController : BaseController<Visa, IVisaRepository>
     {
-        IStatusRepository statusRepo;
-        public VisaController(IVisaRepository repo, IStatusRepository statusRepo) : base(repo)
+        IApplicationStatusRepository applicationStatusRepo;
+        public VisaController(IVisaRepository repo, IApplicationStatusRepository applicationStatusRepo) : base(repo)
         {
-            this.statusRepo = statusRepo;
+            this.applicationStatusRepo = applicationStatusRepo;
         }
 
         [HttpGet]
@@ -42,7 +42,7 @@ namespace IntergalacticPassportAPI.Controllers
                 var userCurrentVisas = await _repo.GetVisaApplicationsByGoogleId(visa.UserId);
                 var hasPendingVisas = userCurrentVisas.Any(v =>
                     v.DestinationPlanet == visa.DestinationPlanet &&
-                    statusRepo.GetById(v.StatusId).Result?.Name == "PENDING");
+                    applicationStatusRepo.GetById(v.StatusId).Result?.Name == "PENDING");
 
 
                 if (hasPendingVisas)
@@ -58,15 +58,15 @@ namespace IntergalacticPassportAPI.Controllers
                     v.DestinationPlanet == visa.DestinationPlanet &&
                     v.StartDate.Date == visa.StartDate.Date &&
                     v.EndDate.Date == visa.EndDate.Date &&
-                    statusRepo.GetById(v.StatusId).Result?.Name == "APPROVED");
+                    applicationStatusRepo.GetById(v.StatusId).Result?.Name == "APPROVED");
 
                 if (hasApprovedVisaWithSameDetails)
                 {
                     return Conflict("Could not create VISA. An approved VISA already exists for this planet for this time.");
                 }
 
-                var status = await statusRepo.Create(new Status("PENDING", null));
-                visa.StatusId = status.Id;
+                // var status = await statusRepo.Create(new Status("PENDING", null));
+                visa.StatusId = 1;
                 var visaDB = await _repo.Create(visa);
                 Console.WriteLine($"Successfully created visa with id {visaDB}");
                 return Ok(visaDB);
@@ -75,7 +75,7 @@ namespace IntergalacticPassportAPI.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles="OFFICER")]
+        [Authorize(Roles = "OFFICER")]
         [Route("getnext")]
         public async Task<ActionResult<Visa>> GetVisaApplicationByOfficerId(string officerId)
         {

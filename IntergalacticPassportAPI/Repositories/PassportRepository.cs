@@ -43,9 +43,9 @@ namespace IntergalacticPassportAPI.Data
 
                 foreach (var app in openApplications)
                 {
-                    var statusSql = $"SELECT * FROM statuses WHERE id = {app.StatusId}";
+                    var statusSql = $"SELECT * FROM application_statuses WHERE id = {app.StatusId}";
 
-                    var status = await db.QueryFirstAsync<Status>(statusSql);
+                    var status = await db.QueryFirstAsync<ApplicationStatus>(statusSql);
 
                     if (status.Name == "PENDING")
                     {

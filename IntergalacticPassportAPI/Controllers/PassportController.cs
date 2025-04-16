@@ -8,12 +8,13 @@ namespace IntergalacticPassportAPI.Controllers
 {
     [ApiController]
     [Route("api/passport")]
-    [Authorize(Roles="APPLICANT, OFFICER")]
+    [Authorize(Roles = "APPLICANT, OFFICER")]
     public class PassportController : BaseController<Passport, IPassportRepository>
     {
-        IStatusRepository statusRepo;
-        public PassportController(IPassportRepository repo, IStatusRepository statusRepo) : base(repo) {
-            this.statusRepo = statusRepo;
+        IApplicationStatusRepository applicationStatusRepo;
+        public PassportController(IPassportRepository repo, IApplicationStatusRepository applicationStatusRepo) : base(repo)
+        {
+            this.applicationStatusRepo = applicationStatusRepo;
         }
 
         [HttpPost]
@@ -21,12 +22,10 @@ namespace IntergalacticPassportAPI.Controllers
         {
             return await BaseRequest(async () =>
             {
-                var status = await statusRepo.Create(new Status("PENDING", null));
-                passport.StatusId = status.Id;
+                passport.StatusId = 1;
                 var passportDB = await _repo.Create(passport);
                 return Ok(passportDB);
             });
-
         }
 
         [HttpGet]
@@ -37,18 +36,17 @@ namespace IntergalacticPassportAPI.Controllers
             {
                 return Ok(await _repo.GetPassportApplicationsByGoogleId(google_id));
             });
-
         }
 
         [HttpGet]
-        [Authorize(Roles="OFFICER")]
+        [Authorize(Roles = "OFFICER")]
         [Route("getnext")]
         public async Task<ActionResult<Passport>> GetPassportApplicationByOfficerId(string officerId)
         {
-            return await BaseRequest(async () => {
+            return await BaseRequest(async () =>
+            {
                 return Ok(await _repo.GetPassportApplicationByOfficerId(officerId));
             });
-           
         }
     }
 

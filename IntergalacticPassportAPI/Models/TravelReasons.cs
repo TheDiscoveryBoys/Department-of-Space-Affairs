@@ -8,7 +8,7 @@ using Dapper;
 
 namespace IntergalacticPassportAPI.Models
 {
-    [Table("roles")]
+    [Table("travel_reasons")]
     public class TravelReasons
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
