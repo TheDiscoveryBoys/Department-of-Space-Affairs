@@ -26,8 +26,8 @@ namespace IntergalacticPassportAPI.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "APPLICANT, OFFICER, MANAGER")]
-        public async Task<ActionResult<IEnumerable<Model>>> GetAll()
+        [Authorize(Roles = "OFFICER, MANAGER")]
+        public virtual async Task<ActionResult<IEnumerable<Model>>> GetAll()
         {
             return await BaseRequest(async () =>
             {

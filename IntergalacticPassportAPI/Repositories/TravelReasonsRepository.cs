@@ -10,5 +10,11 @@ namespace IntergalacticPassportAPI.Data
             var travelReasons = await GetAll();
             return travelReasons.Any(tr => tr.Reason.Equals(model.Reason, StringComparison.CurrentCultureIgnoreCase));
         }
+
+        public override async Task<IEnumerable<TravelReasons>> GetAll()
+        {
+            return await base.GetAll();
+        }
+
     }
 }

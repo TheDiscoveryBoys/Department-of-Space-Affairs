@@ -12,5 +12,15 @@ namespace IntergalacticPassportAPI.Controllers
     public class TravelReasonsController : BaseController<TravelReasons, ITravelReasonsRepository>
     {
         public TravelReasonsController(ITravelReasonsRepository repo) : base(repo) { }
+
+        [HttpGet]
+        [Authorize(Roles="APPLICANT")]
+        public async override Task<ActionResult<IEnumerable<TravelReasons>>> GetAll()
+        {
+            return await BaseRequest(async () =>
+            {
+                return Ok(await _repo.GetAll());
+            });
+        }
     }
 }
