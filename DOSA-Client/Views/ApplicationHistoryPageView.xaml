@@ -90,7 +90,7 @@
 
                                                 <!-- Date -->
                                                 <TextBlock Grid.Column="1"
-                                       Text="{Binding SubmittedAt, StringFormat={}{0:MM/dd/yyyy}}" FontFamily="Consolas" FontSize="13"/>
+                                       Text="{Binding SubmittedAt, StringFormat={}{0:dd/MM/yyyy}}" FontFamily="Consolas" FontSize="13"/>
 
                                                 <!-- Status -->
                                                 <TextBlock Grid.Column="2"
