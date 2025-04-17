@@ -25,7 +25,11 @@ public static class RestClient
         }
     }
 
-    public static async Task<List<TravelReason>> GetTravelReasons(){
+    public static async Task<TravelReason?> GetTravelReasonById(int id){
+        return await HttpClient.GetFromJsonAsync<TravelReason>($"{Constants.BaseURI}api/travel_reasons/{id}");
+    }
+
+    public static async Task<List<TravelReason>?> GetTravelReasons(){
         try
         {
             return await HttpClient.GetFromJsonAsync<List<TravelReason>>($"{Constants.BaseURI}api/travel_reasons/all");
