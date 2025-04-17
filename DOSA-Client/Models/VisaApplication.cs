@@ -7,7 +7,7 @@ namespace DOSA_Client.Models
         [property: JsonPropertyName("userId")] string UserId,
         [property: JsonPropertyName("statusId")] int? StatusId,
         [property: JsonPropertyName("destinationPlanet")] string DestinationPlanet,
-        [property: JsonPropertyName("travelReason")] string TravelReason,
+        [property: JsonPropertyName("travelReason")] int TravelReason,
         [property: JsonPropertyName("startDate")] DateTime? StartDate,
         [property: JsonPropertyName("endDate")] DateTime? EndDate,
         [property: JsonPropertyName("submittedAt")] DateTime SubmittedAt,

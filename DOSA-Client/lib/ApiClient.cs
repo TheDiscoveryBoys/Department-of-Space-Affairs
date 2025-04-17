@@ -149,29 +149,20 @@ namespace DOSA_Client.lib
 
         public static async Task<bool> ProcessVisaApplication(VisaApplication visa, Status status)
         {
-            // update status
             if (!await RestClient.UpdateApplicationStatus(status))
             {
                 return false;
             }
 
-            // update visa
             return await RestClient.UpdateVisaApplication(visa);
         }
 
-        public static async Task<bool> ProcessPassportApplication(PassportApplication passport, Status status)
+        public static async Task<bool> ProcessPassportApplication(PassportApplication passport)
         {
-            // update status
-            if (!await RestClient.UpdateApplicationStatus(status))
-            {
-                return false;
-            }
-
-            // update passport
             return await RestClient.UpdatePassportApplication(passport);
         }
 
-        public static async Task<bool> UpdatePassportApplication(PassportApplication passport, Status status)
+        public static async Task<bool> UpdatePassportApplication(PassportApplication passport)
         {
             // update passport
             return await RestClient.UpdatePassportApplication(passport);
