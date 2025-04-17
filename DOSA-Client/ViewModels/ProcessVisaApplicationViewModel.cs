@@ -63,7 +63,7 @@ namespace DOSA_Client.ViewModels
                 MessageBox.Show("Reason exceeds 255 characters. Input will be truncated.");
             }
 
-            var visa = new VisaApplication(VisaApplication.VisaApplication.Id, VisaApplication.Applicant.google_id, Constants.REJECTED_STATUS, VisaApplication.VisaApplication.DestinationPlanet, VisaApplication.VisaApplication.TravelReason, VisaApplication.VisaApplication.StartDate, VisaApplication.VisaApplication.EndDate, VisaApplication.VisaApplication.SubmittedAt, DateTime.Now, Officer.google_id, Reason);
+            var visa = new VisaApplication(VisaApplication.VisaApplication.Id, VisaApplication.Applicant.google_id, Constants.REJECTED_STATUS, VisaApplication.VisaApplication.DestinationPlanet, VisaApplication.VisaApplication.TravelReasonId, VisaApplication.VisaApplication.StartDate, VisaApplication.VisaApplication.EndDate, VisaApplication.VisaApplication.SubmittedAt, DateTime.Now, Officer.google_id, Reason);
 
             await ApiClient.ProcessVisaApplication(visa);
 
@@ -82,7 +82,7 @@ namespace DOSA_Client.ViewModels
                 MessageBox.Show("Reason exceeds 255 characters. Input will be truncated.");
             }
 
-            var visa = new VisaApplication(VisaApplication.VisaApplication.Id, VisaApplication.Applicant.google_id, Constants.APPROVED_STATUS, VisaApplication.VisaApplication.DestinationPlanet, VisaApplication.VisaApplication.TravelReason, VisaApplication.VisaApplication.StartDate, VisaApplication.VisaApplication.EndDate, VisaApplication.VisaApplication.SubmittedAt, DateTime.Now, Officer.google_id, Reason);
+            var visa = new VisaApplication(VisaApplication.VisaApplication.Id, VisaApplication.Applicant.google_id, Constants.APPROVED_STATUS, VisaApplication.VisaApplication.DestinationPlanet, VisaApplication.VisaApplication.TravelReasonId, VisaApplication.VisaApplication.StartDate, VisaApplication.VisaApplication.EndDate, VisaApplication.VisaApplication.SubmittedAt, DateTime.Now, Officer.google_id, Reason);
 
             await ApiClient.ProcessVisaApplication(visa);
 
@@ -117,7 +117,7 @@ namespace DOSA_Client.ViewModels
                 if (VisaApplication != null)
                 {
                     // assign the application to the current officer
-                    var visa = new VisaApplication(VisaApplication.VisaApplication.Id, VisaApplication.Applicant.google_id, VisaApplication.VisaApplication.StatusId, VisaApplication.VisaApplication.DestinationPlanet, VisaApplication.VisaApplication.TravelReason, VisaApplication.VisaApplication.StartDate, VisaApplication.VisaApplication.EndDate, VisaApplication.VisaApplication.SubmittedAt, null, Officer.google_id, VisaApplication.VisaApplication.OfficerComment);
+                    var visa = new VisaApplication(VisaApplication.VisaApplication.Id, VisaApplication.Applicant.google_id, VisaApplication.VisaApplication.StatusId, VisaApplication.VisaApplication.DestinationPlanet, VisaApplication.VisaApplication.TravelReasonId, VisaApplication.VisaApplication.StartDate, VisaApplication.VisaApplication.EndDate, VisaApplication.VisaApplication.SubmittedAt, null, Officer.google_id, VisaApplication.VisaApplication.OfficerComment);
                     await RestClient.UpdateVisaApplication(visa);
                 }
             }

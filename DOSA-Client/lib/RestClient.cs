@@ -242,10 +242,9 @@ public static class RestClient
             {
                 return await response.Content.ReadFromJsonAsync<PassportApplication>();
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                Console.WriteLine("Failed to deserialise");
+            catch (JsonException e)
+            {   
+                Console.WriteLine("Failed to deserialise the response.");
             }
         }
         Console.WriteLine(await response.Content.ReadAsStringAsync());
