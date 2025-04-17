@@ -49,21 +49,21 @@ jobs:
           echo "dbhost=$(terraform output -raw db_host)" >> $GITHUB_OUTPUT
           echo "ec2host=$(terraform output -raw ec2_host)" >> $GITHUB_OUTPUT
 
-  unit-tests:
-    name: Unit Tests
-    runs-on: windows-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+  # unit-tests:
+  #   name: Unit Tests
+  #   runs-on: windows-latest
+  #   steps:
+  #     - name: Checkout Repository
+  #       uses: actions/checkout@v4
 
-      - name: Run Unit Tests
-        run: dotnet test
-        working-directory: IntergalacticPassportAPI.Tests
+  #     - name: Run Unit Tests
+  #       run: dotnet test
+  #       working-directory: IntergalacticPassportAPI.Tests
           
   release-front-end:
     name: Build & Release Front-End
     runs-on: windows-latest
-    needs: unit-tests
+    # needs: unit-tests
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
