@@ -8,7 +8,6 @@ namespace DOSA_Client.Models
         [property: JsonPropertyName("name")] string name,
         [property: JsonPropertyName("species")] string? species = null,
         [property: JsonPropertyName("planetOfOrigin")] string? planet_of_origin = null,
-        [property: JsonPropertyName("primaryLanguage")] string? primary_language = null,
         [property: JsonPropertyName("dateOfBirth")] DateTime? date_of_birth = null
     );
 }
