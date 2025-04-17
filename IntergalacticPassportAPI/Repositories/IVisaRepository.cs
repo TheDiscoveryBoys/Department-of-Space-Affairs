@@ -3,10 +3,10 @@ using IntergalacticPassportAPI.Models;
 
 namespace IntergalacticPassportAPI.Data
 {
-    public interface IVisaRepository : IBaseRepository<Visa>
+    public interface IVisaRepository : IBaseRepository<VisaApplication>
     {
-        Task<IEnumerable<Visa>> GetVisaApplicationsByGoogleId(string googleId);
-        Task<Visa?> GetVisaApplicationByOfficerId(string officerId);
+        Task<IEnumerable<VisaApplication>> GetVisaApplicationsByGoogleId(string googleId);
+        Task<VisaApplication?> GetVisaApplicationByOfficerId(string officerId);
     }
 
 }

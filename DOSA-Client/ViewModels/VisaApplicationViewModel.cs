@@ -14,16 +14,23 @@ namespace DOSA_Client.ViewModels
         public PageManager PageManager { get; set; }
         public string DestinationPlanet { get; set; }
 
-        private List<TravelReason> _travelReasons;
+        private TravelReason _travelReason;
+        public TravelReason TravelReason {
+            get => _travelReason;
+            set
+            {
+                _travelReason = value;
+                IsSubmitEnabled = true;
+            }
+        }
 
-        public TravelReason TravelReason {get; set;}
+        private List<TravelReason> _travelReasons;
 
         public List<TravelReason> TravelReasons {
             get => _travelReasons;
             set{
                 _travelReasons = value;
                 OnPropertyChanged(nameof(TravelReasons));
-                IsSubmitEnabled = true;
             }
         }
         
@@ -61,9 +68,13 @@ namespace DOSA_Client.ViewModels
             PageManager = pageManager;
             OnSubmitVisaCommand = new RelayCommand(OnSubmitVisa);
             UpdateTabsCallback = updateTabsCallback;
+
             LoadSwapiOptions();
+
             StartDate = DateTime.Now.AddDays(1);
             EndDate = DateTime.Now.AddDays(7);
+            IsSubmitEnabled = false;
+
             System.Windows.Application.Current.Dispatcher.InvokeAsync(async () =>
             {
                 TravelReasons = await ApiClient.GetTravelReasons();

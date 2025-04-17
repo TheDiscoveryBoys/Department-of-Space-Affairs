@@ -9,7 +9,7 @@ namespace IntergalacticPassportAPI.Controllers
     [ApiController]
     [Route("api/visa")]
     [Authorize(Roles = "APPLICANT, OFFICER")]
-    public class VisaController : BaseController<Visa, IVisaRepository>
+    public class VisaController : BaseController<VisaApplication, IVisaRepository>
     {
         IApplicationStatusRepository applicationStatusRepo;
         public VisaController(IVisaRepository repo, IApplicationStatusRepository applicationStatusRepo) : base(repo)
@@ -19,7 +19,7 @@ namespace IntergalacticPassportAPI.Controllers
 
         [HttpGet]
         [Route("user")]
-        public async Task<ActionResult<IEnumerable<Visa>>> GetVisaApplicationById(string google_id)
+        public async Task<ActionResult<IEnumerable<VisaApplication>>> GetVisaApplicationById(string google_id)
         {
             return await BaseRequest(async () =>
             {
@@ -33,10 +33,9 @@ namespace IntergalacticPassportAPI.Controllers
         }
 
         [HttpPost]
-        public override async Task<ActionResult<Visa>> Create(Visa visa)
+        public override async Task<ActionResult<VisaApplication>> Create(VisaApplication visa)
         {
-            return await BaseRequest(async () =>
-            {
+        
                 Console.WriteLine($"Trying to create visa");
                 //check if there exists a VISA for same DestinationPlanet, StatusId = 2 -> cannot create because pending VISA application exists for user
                 var userCurrentVisas = await _repo.GetVisaApplicationsByGoogleId(visa.UserId);
@@ -70,14 +69,14 @@ namespace IntergalacticPassportAPI.Controllers
                 var visaDB = await _repo.Create(visa);
                 Console.WriteLine($"Successfully created visa with id {visaDB}");
                 return Ok(visaDB);
-            });
+    
 
         }
 
         [HttpGet]
         [Authorize(Roles = "OFFICER")]
         [Route("getnext")]
-        public async Task<ActionResult<Visa>> GetVisaApplicationByOfficerId(string officerId)
+        public async Task<ActionResult<VisaApplication>> GetVisaApplicationByOfficerId(string officerId)
         {
             return await BaseRequest(async () =>
            {
