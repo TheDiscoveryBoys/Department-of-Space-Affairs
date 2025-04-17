@@ -23,6 +23,7 @@ namespace DOSA_Client.ViewModels
             set{
                 _travelReasons = value;
                 OnPropertyChanged(nameof(TravelReasons));
+                IsSubmitEnabled = true;
             }
         }
         
