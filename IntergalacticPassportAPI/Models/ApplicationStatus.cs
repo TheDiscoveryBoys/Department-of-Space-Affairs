@@ -18,17 +18,5 @@ namespace IntergalacticPassportAPI.Models
         [Column("name")]
         public string Name { get; set; }
 
-        //public Status(String name, String reason){
-        //    this.Name = name;
-        //    this.Reason = reason;
-        //}
-
-        //public Status(int id, String name, String reason){
-        //    this.Id = id;
-        //    this.Name = name;
-        //    this.Reason= reason;
-        //}
-        //public Status(){}
-
     }
 }
