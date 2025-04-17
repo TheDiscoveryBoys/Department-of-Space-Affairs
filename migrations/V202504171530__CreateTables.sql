@@ -26,7 +26,7 @@ CREATE TABLE "user_roles" (
 -- Create Statuses Lookup Table
 CREATE TABLE "application_statuses" (
   "id" SERIAL PRIMARY KEY,
-  "status" varchar(30) UNIQUE NOT NULL -- Added UNIQUE constraint here too for data integrity
+  "name" varchar(30) UNIQUE NOT NULL -- Added UNIQUE constraint here too for data integrity
 );
 
 -- Create Travel Reasons Lookup Table
