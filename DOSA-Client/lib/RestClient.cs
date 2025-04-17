@@ -28,7 +28,7 @@ public static class RestClient
     public static async Task<List<TravelReason>> GetTravelReasons(){
         try
         {
-            return await HttpClient.GetFromJsonAsync<List<TravelReason>>($"{Constants.BaseURI}api/travel_reasons");
+            return await HttpClient.GetFromJsonAsync<List<TravelReason>>($"{Constants.BaseURI}api/travel_reasons/all");
         } catch (Exception e)
         {
             Console.WriteLine(e);

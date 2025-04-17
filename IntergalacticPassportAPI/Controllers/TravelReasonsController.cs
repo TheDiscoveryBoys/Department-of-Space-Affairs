@@ -14,7 +14,8 @@ namespace IntergalacticPassportAPI.Controllers
         public TravelReasonsController(ITravelReasonsRepository repo) : base(repo) { }
 
         [HttpGet]
-        public async override Task<ActionResult<IEnumerable<TravelReasons>>> GetAll()
+        [Route("all")]
+        public async Task<ActionResult<IEnumerable<TravelReasons>>> All()
         {
             return await BaseRequest(async () =>
             {
