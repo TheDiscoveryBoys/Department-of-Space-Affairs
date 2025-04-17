@@ -14,16 +14,16 @@ BEGIN
     END IF;
 
     -- statuses
-    IF NOT EXISTS (SELECT 1 FROM application_statuses WHERE status = 'PENDING') THEN
-        INSERT INTO application_statuses (status) VALUES ('PENDING');
+    IF NOT EXISTS (SELECT 1 FROM application_statuses WHERE name = 'PENDING') THEN
+        INSERT INTO application_statuses (name) VALUES ('PENDING');
     END IF;
 
-    IF NOT EXISTS (SELECT 1 FROM application_statuses WHERE status = 'APPROVED') THEN
-        INSERT INTO application_statuses (status) VALUES ('APPROVED');
+    IF NOT EXISTS (SELECT 1 FROM application_statuses WHERE name = 'APPROVED') THEN
+        INSERT INTO application_statuses (name) VALUES ('APPROVED');
     END IF;
 
-    IF NOT EXISTS (SELECT 1 FROM application_statuses WHERE status = 'REJECTED') THEN
-        INSERT INTO application_statuses (status) VALUES ('REJECTED');
+    IF NOT EXISTS (SELECT 1 FROM application_statuses WHERE name = 'REJECTED') THEN
+        INSERT INTO application_statuses (name) VALUES ('REJECTED');
     END IF;
 
     -- travel reasons
