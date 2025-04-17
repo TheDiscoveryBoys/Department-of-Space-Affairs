@@ -29,14 +29,14 @@ namespace DOSA_Client.lib
             foreach (var passportApplication in passportApplications)
             {
                 var Status = await RestClient.GetStatusByStatusId(passportApplication.StatusId ?? throw new Exception("An application must have a status id"));
-                applications.Add(new Application(Status, passportApplication.SubmittedAt, "PASSPORT", passportApplication.ProcessedAt));
+                applications.Add(new Application(Status, passportApplication.SubmittedAt, "PASSPORT", passportApplication.OfficerComment, passportApplication.ProcessedAt));
             }
             foreach (var visaApplication in visaApplications)
             {
                 var Status = await RestClient.GetStatusByStatusId(visaApplication.StatusId ?? throw new Exception("An application must have a status id"));
                 var formattedStartDate = visaApplication.StartDate?.ToString("MM/dd/yy");
                 var formattedEndDate = visaApplication.EndDate?.ToString("MM/dd/yy"); ;
-                applications.Add(new Application(Status, visaApplication.SubmittedAt, $"VISA - {visaApplication.DestinationPlanet} ({formattedStartDate} - {formattedEndDate})", null));
+                applications.Add(new Application(Status, visaApplication.SubmittedAt, $"VISA - {visaApplication.DestinationPlanet} ({formattedStartDate} - {formattedEndDate})",visaApplication.OfficerComment, visaApplication.ProcessedAt));
             }
             Console.WriteLine(applications.Count);
             return [.. applications.OrderByDescending(app => app.SubmittedAt)];
