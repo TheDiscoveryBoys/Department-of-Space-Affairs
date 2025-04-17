@@ -65,7 +65,7 @@ namespace DOSA_Client.ViewModels
             EndDate = DateTime.Now.AddDays(7);
             System.Windows.Application.Current.Dispatcher.InvokeAsync(async () =>
             {
-                List<TravelReason> TravelReasons = await ApiClient.GetTravelReasons();
+                TravelReasons = await ApiClient.GetTravelReasons();
             });
         }
 

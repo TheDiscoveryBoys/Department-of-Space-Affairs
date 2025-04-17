@@ -7,7 +7,7 @@ namespace IntergalacticPassportAPI.Controllers
 {
     [ApiController]
     [Route("api/travel_reasons")]
-
+    [Authorize(Roles="APPLICANT")]
 
     public class TravelReasonsController : BaseController<TravelReasons, ITravelReasonsRepository>
     {
