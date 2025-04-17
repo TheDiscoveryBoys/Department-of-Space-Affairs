@@ -81,16 +81,18 @@
                                            VerticalAlignment="Center"
                                            Margin="0,15,10,15"/>
                             </StackPanel>
-                            <TextBox Grid.Row="1" Grid.Column="1" 
-                                     Height="60" 
-                                     FontSize="14"
-                                     AcceptsReturn="True"
-                                     FontFamily="Consolas"
-                                     TextWrapping="Wrap"
-                                     VerticalContentAlignment="Top"
-                                     Padding="5"
-                                     Text="{Binding TravelReason, UpdateSourceTrigger=PropertyChanged}" 
-                                     Margin="0,10"/>
+                             <ComboBox Grid.Row="0" Grid.Column="1" 
+                                      ItemsSource="{Binding TravelReasons}"
+                                      DisplayMemberPath="Reason"
+                                      SelectedValuePath="Reason"
+                                      SelectedValue="{Binding TravelReason, Mode=TwoWay}"
+                                      Height="30" 
+                                      FontSize="14"
+                                      FontFamily="Consolas"
+                                      VerticalContentAlignment="Center"
+                                      Padding="5,0"
+                                      Margin="0,10"/>
+                           
 
                             <!-- Start Date -->
                             <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,15,10,15">

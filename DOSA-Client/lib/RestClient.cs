@@ -6,6 +6,7 @@ using static DOSA_Client.ViewModels.UploadPassportDocumentsViewModel;
 using System.IO;
 using System.Net.Http.Headers;
 using System.Text.Json;
+using System.Windows.Media;
 
 public static class RestClient
 {
@@ -24,28 +25,18 @@ public static class RestClient
         }
     }
 
+    public static async Task<List<TravelReason>> GetTravelReasons(){
+        return await HttpClient.GetFromJsonAsync<List<TravelReason>>($"{Constants.BaseURI}api/travel_reasons");
+    }
+
     public static async Task<User?> GetUserByEmail(string email)
     {
-        try
-        {
-            return await HttpClient.GetFromJsonAsync<User>($"{Constants.BaseURI}api/users/email/{email}");
-        } catch (Exception e)
-        {
-            Console.WriteLine(e);
-            return null;
-        }
+        return await HttpClient.GetFromJsonAsync<User>($"{Constants.BaseURI}api/users/email/{email}");
     }
 
     public static async Task<List<Role>> GetRoles()
     {
-        try
-        {
-            return await HttpClient.GetFromJsonAsync<List<Role>>($"{Constants.BaseURI}api/roles");
-        }catch (Exception e)
-        {
-            Console.WriteLine(e);
-            return [];
-        }
+        return await HttpClient.GetFromJsonAsync<List<Role>>($"{Constants.BaseURI}api/roles");
     }
 
     public static string DynStatus = "APPROVED";
@@ -181,7 +172,7 @@ public static class RestClient
     public static async Task<Status> GetStatusByStatusId(int statusId)
     {
         try{
-            return await HttpClient.GetFromJsonAsync<Status>($"{Constants.BaseURI}api/status/{statusId}") ?? throw new Exception("Failed to fetch status");
+            return await HttpClient.GetFromJsonAsync<Status>($"{Constants.BaseURI}api/application_status/{statusId}") ?? throw new Exception("Failed to fetch status");
         }catch(Exception e){
             Console.WriteLine(e);
             return null;

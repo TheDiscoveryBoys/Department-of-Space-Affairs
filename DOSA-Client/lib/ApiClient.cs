@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Formats.Asn1;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Documents;
+using System.Windows.Media;
 using DOSA_Client.Models;
 using DOSA_Client.ViewModels;
 using static DOSA_Client.ViewModels.UploadPassportDocumentsViewModel;
@@ -117,6 +119,10 @@ namespace DOSA_Client.lib
             }
         }
 
+        public static async Task<List<TravelReason>> GetTravelReasons(){
+            return await RestClient.GetTravelReasons();
+        }
+
         public static async Task<OfficerPassportApplication?> GetPassportApplication(string officerId)
         {
             try
@@ -147,13 +153,8 @@ namespace DOSA_Client.lib
         }
 
 
-        public static async Task<bool> ProcessVisaApplication(VisaApplication visa, Status status)
+        public static async Task<bool> ProcessVisaApplication(VisaApplication visa)
         {
-            if (!await RestClient.UpdateApplicationStatus(status))
-            {
-                return false;
-            }
-
             return await RestClient.UpdateVisaApplication(visa);
         }
 
