@@ -36,7 +36,7 @@ namespace DOSA_Client.ViewModels
 
         public async void OnSubmitDocuments()
         {
-            var passportApplication = await ApiClient.CreatePassportApplication(new PassportApplication(-1, Context.Get<User>(ContextKeys.USER).google_id, null, DateTime.Now, null, null)) ?? throw new Exception("Failed to create an application");
+            var passportApplication = await ApiClient.CreatePassportApplication(new PassportApplication(-1, Context.Get<User>(ContextKeys.USER).google_id, null, DateTime.Now, null, null, null)) ?? throw new Exception("Failed to create an application");
             await ApiClient.UploadFiles([.. UploadedDocuments], passportApplication.Id ?? throw new Exception("Something diabolical has occurred"));
             await UpdateTabsCallback();
         }

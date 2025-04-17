@@ -90,7 +90,7 @@
 
                                                 <!-- Date -->
                                                 <TextBlock Grid.Column="1"
-                                       Text="{Binding SubmittedAt, StringFormat={}{0:MM/dd/yyyy}}" FontFamily="Consolas" FontSize="13"/>
+                                       Text="{Binding SubmittedAt, StringFormat={}{0:dd/MM/yyyy}}" FontFamily="Consolas" FontSize="13"/>
 
                                                 <!-- Status -->
                                                 <TextBlock Grid.Column="2"
@@ -118,7 +118,7 @@
 
                                                 <!-- Reason -->
                                                 <TextBlock Grid.Column="3"
-                                       Text="{Binding Status.Reason, TargetNullValue='-'}"
+                                       Text="{Binding OfficerComment, TargetNullValue='-'}"
                                        FontSize="13"
                                        FontFamily="Consolas"
                                        TextWrapping="Wrap" />

@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Formats.Asn1;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Documents;
+using System.Windows.Media;
 using DOSA_Client.Models;
 using DOSA_Client.ViewModels;
 using static DOSA_Client.ViewModels.UploadPassportDocumentsViewModel;
@@ -27,14 +29,14 @@ namespace DOSA_Client.lib
             foreach (var passportApplication in passportApplications)
             {
                 var Status = await RestClient.GetStatusByStatusId(passportApplication.StatusId ?? throw new Exception("An application must have a status id"));
-                applications.Add(new Application(Status, passportApplication.SubmittedAt, "PASSPORT", passportApplication.ProcessedAt));
+                applications.Add(new Application(Status, passportApplication.SubmittedAt, "PASSPORT", passportApplication.OfficerComment, passportApplication.ProcessedAt));
             }
             foreach (var visaApplication in visaApplications)
             {
                 var Status = await RestClient.GetStatusByStatusId(visaApplication.StatusId ?? throw new Exception("An application must have a status id"));
                 var formattedStartDate = visaApplication.StartDate?.ToString("MM/dd/yy");
                 var formattedEndDate = visaApplication.EndDate?.ToString("MM/dd/yy"); ;
-                applications.Add(new Application(Status, visaApplication.SubmittedAt, $"VISA - {visaApplication.DestinationPlanet} ({formattedStartDate} - {formattedEndDate})", null));
+                applications.Add(new Application(Status, visaApplication.SubmittedAt, $"VISA - {visaApplication.DestinationPlanet} ({formattedStartDate} - {formattedEndDate})",visaApplication.OfficerComment, visaApplication.ProcessedAt));
             }
             Console.WriteLine(applications.Count);
             return [.. applications.OrderByDescending(app => app.SubmittedAt)];
@@ -107,7 +109,8 @@ namespace DOSA_Client.lib
             {
                 var visaApplication = await RestClient.GetOfficerVisaApplicationByGoogleId(googleId);
                 User? user = await RestClient.GetUserByGoogleId(visaApplication.UserId) ?? throw new Exception("An application with no user was returned");
-                return new OfficerVisaApplication(visaApplication, user);
+                var travelReason = await RestClient.GetTravelReasonById(visaApplication.TravelReasonId) ;
+                return new OfficerVisaApplication(visaApplication, user, travelReason);
             }
             catch (Exception e)
             {
@@ -115,6 +118,10 @@ namespace DOSA_Client.lib
                 Console.WriteLine(e.Message);
                 return null;
             }
+        }
+
+        public static async Task<List<TravelReason>> GetTravelReasons(){
+            return await RestClient.GetTravelReasons();
         }
 
         public static async Task<OfficerPassportApplication?> GetPassportApplication(string officerId)
@@ -147,31 +154,17 @@ namespace DOSA_Client.lib
         }
 
 
-        public static async Task<bool> ProcessVisaApplication(VisaApplication visa, Status status)
+        public static async Task<bool> ProcessVisaApplication(VisaApplication visa)
         {
-            // update status
-            if (!await RestClient.UpdateApplicationStatus(status))
-            {
-                return false;
-            }
-
-            // update visa
             return await RestClient.UpdateVisaApplication(visa);
         }
 
-        public static async Task<bool> ProcessPassportApplication(PassportApplication passport, Status status)
+        public static async Task<bool> ProcessPassportApplication(PassportApplication passport)
         {
-            // update status
-            if (!await RestClient.UpdateApplicationStatus(status))
-            {
-                return false;
-            }
-
-            // update passport
             return await RestClient.UpdatePassportApplication(passport);
         }
 
-        public static async Task<bool> UpdatePassportApplication(PassportApplication passport, Status status)
+        public static async Task<bool> UpdatePassportApplication(PassportApplication passport)
         {
             // update passport
             return await RestClient.UpdatePassportApplication(passport);

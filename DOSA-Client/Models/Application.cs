@@ -7,6 +7,7 @@
         Status Status,
         DateTime SubmittedAt,
         String ApplicationType,
+        String? OfficerComment = null,
         DateTime? ProcessedAt = null
     );
 }

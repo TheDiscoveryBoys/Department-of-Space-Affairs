@@ -87,7 +87,7 @@ namespace DOSA_Client.ViewModels
                 if (PassportApplication != null)
                 {
                     // assign application to current officer
-                    var passport = new PassportApplication(PassportApplication.PassportApplication.Id, PassportApplication.Applicant.google_id, PassportApplication.PassportApplication.StatusId, PassportApplication.PassportApplication.SubmittedAt, null, Officer.google_id);
+                    var passport = new PassportApplication(PassportApplication.PassportApplication.Id, PassportApplication.Applicant.google_id, PassportApplication.PassportApplication.StatusId, PassportApplication.PassportApplication.SubmittedAt, null, Officer.google_id, PassportApplication.PassportApplication.OfficerComment);
                     await RestClient.UpdatePassportApplication(passport);
                 }
             }
@@ -101,10 +101,8 @@ namespace DOSA_Client.ViewModels
                 MessageBox.Show("Reason exceeds 255 characters. Input will be truncated.");
             }
 
-            var status = new Status(PassportApplication.PassportApplication.StatusId, "REJECTED", Reason);
-            var passport = new PassportApplication(PassportApplication.PassportApplication.Id, PassportApplication.Applicant.google_id, status.Id, PassportApplication.PassportApplication.SubmittedAt, DateTime.Now, Officer.google_id);
-
-            await ApiClient.ProcessPassportApplication(passport, status);
+            var passport = new PassportApplication(PassportApplication.PassportApplication.Id, PassportApplication.Applicant.google_id, Constants.REJECTED_STATUS , PassportApplication.PassportApplication.SubmittedAt, DateTime.Now, Officer.google_id, Reason);
+            await ApiClient.ProcessPassportApplication(passport);
 
             // reset form
             Reason = "";
@@ -120,11 +118,8 @@ namespace DOSA_Client.ViewModels
                 Reason = Reason.Substring(0, 255);
                 MessageBox.Show("Reason exceeds 255 characters. Input will be truncated.");
             }
-
-            var status = new Status(PassportApplication.PassportApplication.StatusId, "APPROVED", Reason);
-            var passport = new PassportApplication(PassportApplication.PassportApplication.Id, PassportApplication.Applicant.google_id, status.Id, PassportApplication.PassportApplication.SubmittedAt, DateTime.Now, Officer.google_id);
-
-            await ApiClient.ProcessPassportApplication(passport, status);
+            var passport = new PassportApplication(PassportApplication.PassportApplication.Id, PassportApplication.Applicant.google_id, Constants.APPROVED_STATUS, PassportApplication.PassportApplication.SubmittedAt, DateTime.Now, Officer.google_id, Reason);
+            await ApiClient.ProcessPassportApplication(passport);
 
             // reset form
             Reason = "";

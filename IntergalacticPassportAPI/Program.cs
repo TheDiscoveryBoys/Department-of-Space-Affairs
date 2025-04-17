@@ -10,20 +10,14 @@ var builder = WebApplication.CreateBuilder(args);
 Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true; // This line ensures that PascalCase prpoperties are correctly mapped to snake case in the DB.
 
 builder.Services.AddControllers();
-//builder.Services.AddScoped<PassportRepository>();
-//builder.Services.AddScoped<UsersRepository>();
-//builder.Services.AddScoped<VisaRepository>();
-//builder.Services.AddScoped<StatusRepository>();
-//builder.Services.AddScoped<PassportDocumentRepository>();
-//builder.Services.AddScoped<RolesRepository>();
-//builder.Services.AddScoped<UserRolesRepository>();
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 builder.Services.AddScoped<IPassportRepository, PassportRepository>();
 builder.Services.AddScoped<IVisaRepository, VisaRepository>();
 builder.Services.AddScoped<IPassportDocumentRepository, PassportDocumentRepository>();
-builder.Services.AddScoped<IStatusRepository, StatusRepository>();
+builder.Services.AddScoped<IApplicationStatusRepository, ApplicationStatusRepository>();
 builder.Services.AddScoped<IRolesRepository, RolesRepository>();
 builder.Services.AddScoped<IUserRolesRepository, UserRolesRepository>();
+builder.Services.AddScoped<ITravelReasonsRepository, TravelReasonsRepository>();
 builder.Services.AddScoped<IGoogleAuthService, GoogleAuthService>();
 
 
@@ -62,11 +56,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 Console.WriteLine($"User roles: {JsonSerializer.Serialize(userRoles)}");
 
                 var identity = context.Principal.Identity as ClaimsIdentity;
-                
+
                 foreach (var role in userRoles)
                 {
                     Console.WriteLine($"Adding claim role: {role}");
-                    identity?.AddClaim(new Claim(ClaimTypes.Role, role.Role));  
+                    identity?.AddClaim(new Claim(ClaimTypes.Role, role.Role));
                 }
 
                 await Task.CompletedTask;

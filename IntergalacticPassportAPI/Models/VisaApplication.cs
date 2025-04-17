@@ -6,7 +6,7 @@ namespace IntergalacticPassportAPI.Models
 
     [Table("visa_applications")]
 
-    public class Visa : Application
+    public class VisaApplication : Application
     {
 
         [Required]
@@ -14,8 +14,8 @@ namespace IntergalacticPassportAPI.Models
         public string DestinationPlanet { get; set; }
 
         [Required]
-        [Column("travel_reason")]
-        public string TravelReason { get; set; }
+        [Column("travel_reason_id")]
+        public int TravelReasonId { get; set; }
 
         [Required]
         [Column("start_date")]

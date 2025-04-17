@@ -14,20 +14,26 @@ namespace DOSA_Client.ViewModels
         public PageManager PageManager { get; set; }
         public string DestinationPlanet { get; set; }
 
-        private string _travelReason;
-        public string TravelReason
-        {
+        private TravelReason _travelReason;
+        public TravelReason TravelReason {
             get => _travelReason;
             set
             {
                 _travelReason = value;
-                IsSubmitEnabled = string.IsNullOrWhiteSpace(_travelReason) ? false : true;
-
-                Console.WriteLine($"Enabled: {IsSubmitEnabled}");
-                Console.WriteLine($"Reason: '{TravelReason}'");
-
+                IsSubmitEnabled = true;
             }
         }
+
+        private List<TravelReason> _travelReasons;
+
+        public List<TravelReason> TravelReasons {
+            get => _travelReasons;
+            set{
+                _travelReasons = value;
+                OnPropertyChanged(nameof(TravelReasons));
+            }
+        }
+        
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 
@@ -60,7 +66,6 @@ namespace DOSA_Client.ViewModels
         public VisaApplicationViewModel(PageManager pageManager, Func<Task> updateTabsCallback)
         {
             PageManager = pageManager;
-
             OnSubmitVisaCommand = new RelayCommand(OnSubmitVisa);
             UpdateTabsCallback = updateTabsCallback;
 
@@ -68,6 +73,12 @@ namespace DOSA_Client.ViewModels
 
             StartDate = DateTime.Now.AddDays(1);
             EndDate = DateTime.Now.AddDays(7);
+            IsSubmitEnabled = false;
+
+            System.Windows.Application.Current.Dispatcher.InvokeAsync(async () =>
+            {
+                TravelReasons = await ApiClient.GetTravelReasons();
+            });
         }
 
         public async void OnSubmitVisa()
@@ -76,7 +87,7 @@ namespace DOSA_Client.ViewModels
 
             try
             {
-                var visaApplication = await ApiClient.CreateVisaApplication(new VisaApplication(-1, Context.Get<User>(ContextKeys.USER).google_id, null, DestinationPlanet, TravelReason, StartDate, EndDate, DateTime.Now, null, null) ?? throw new Exception("Failed to create a visa application"));
+                var visaApplication = await ApiClient.CreateVisaApplication(new VisaApplication(-1, Context.Get<User>(ContextKeys.USER).google_id, null, DestinationPlanet, TravelReason.Id, StartDate, EndDate, DateTime.Now, null, null, null) ?? throw new Exception("Failed to create a visa application"));
             }
             catch (HttpRequestException ex) when (ex.StatusCode == System.Net.HttpStatusCode.Conflict)
             {
@@ -98,7 +109,6 @@ namespace DOSA_Client.ViewModels
                 PlanetsList = new ObservableCollection<SwapiRecord>(planets);
             });
         }
-
     }
 }
 

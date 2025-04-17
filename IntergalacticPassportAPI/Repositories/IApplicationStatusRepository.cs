@@ -3,7 +3,7 @@ using IntergalacticPassportAPI.Models;
 
 namespace IntergalacticPassportAPI.Data
 {
-    public interface IStatusRepository : IBaseRepository<Status>
+    public interface IApplicationStatusRepository : IBaseRepository<ApplicationStatus>
     {
     }
 

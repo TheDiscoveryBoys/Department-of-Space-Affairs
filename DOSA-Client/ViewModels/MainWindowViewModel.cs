@@ -89,7 +89,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
         // Add the user to context
         Context.Add(ContextKeys.USER, await ApiClient.GetUserProfile(googleID));
         Console.WriteLine(jwt);
-        
+
         // now hide this page
         toggleLogin();
     }

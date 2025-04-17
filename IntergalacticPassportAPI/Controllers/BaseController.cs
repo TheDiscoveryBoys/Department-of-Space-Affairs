@@ -17,17 +17,17 @@ namespace IntergalacticPassportAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Model?>> GetById(string id)
         {
-                return await BaseRequest(async () =>
-                {
-                    var model = await _repo.GetById(id);
-                    return model == null ? NoContent() : Ok(model);
+            return await BaseRequest(async () =>
+            {
+                var model = await _repo.GetById(id);
+                return model == null ? NoContent() : Ok(model);
 
-                });
+            });
         }
 
         [HttpGet]
-        [Authorize(Roles="OFFICER, MANAGER")]
-        public async Task<ActionResult<IEnumerable<Model>>> GetAll()
+        [Authorize(Roles = "OFFICER, MANAGER")]
+        public virtual async Task<ActionResult<IEnumerable<Model>>> GetAll()
         {
             return await BaseRequest(async () =>
             {
@@ -79,13 +79,12 @@ namespace IntergalacticPassportAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles="OFFICER")]
+        [Authorize(Roles = "OFFICER")]
         public async Task<ActionResult> Delete(string id)
         {
             return await BaseRequest(async () =>
             {
                 bool deleted = await _repo.Delete(id);
-
                 return deleted ? Ok() : NotFound();
             });
         }

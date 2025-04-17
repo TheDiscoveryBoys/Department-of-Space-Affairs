@@ -126,11 +126,11 @@
                                             Margin="0,0,5,0"
                                             VerticalAlignment="Center"/>
                                     <TextBlock Text="Travel Date:" FontWeight="Bold" Margin="0,0,5,0" FontFamily="Consolas"/>
-                                    <TextBlock Text="{Binding VisaApplication.VisaApplication.StartDate, StringFormat='{}{0:yyyy-MM-dd}'}"
+                                    <TextBlock Text="{Binding VisaApplication.VisaApplication.StartDate, StringFormat='{}{0:dd-MM-yyyy}'}"
                                                FontFamily="Consolas"
                                                Margin="0,0,5,0"/>
                                     <TextBlock Text="to" VerticalAlignment="Center" FontFamily="Consolas"/>
-                                    <TextBlock Text="{Binding VisaApplication.VisaApplication.EndDate, StringFormat='{}{0:yyyy-MM-dd}'}"
+                                    <TextBlock Text="{Binding VisaApplication.VisaApplication.EndDate, StringFormat='{}{0:dd-MM-yyyy}'}"
                                                FontFamily="Consolas"
                                                Margin="5,0,5,0"/>
                                 </StackPanel>
@@ -151,10 +151,10 @@
                                            Height="16"
                                            Margin="0,0,5,0"
                                            VerticalAlignment="Center"/>
-                                    <TextBlock Text="Travel Reason:" FontFamily="Consolas" FontWeight="Bold" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Travel Reason: " FontFamily="Consolas" FontWeight="Bold" VerticalAlignment="Center"/>
                                 </StackPanel>
 
-                                <TextBlock Text="{Binding VisaApplication.VisaApplication.TravelReason}"
+                                <TextBlock Text="{Binding VisaApplication.TravelReason.Reason}"
                                            Grid.Column="1"
                                            HorizontalAlignment="Stretch"
                                            FontFamily="Consolas"

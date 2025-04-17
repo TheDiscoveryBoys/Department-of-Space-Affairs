@@ -6,6 +6,7 @@ using static DOSA_Client.ViewModels.UploadPassportDocumentsViewModel;
 using System.IO;
 using System.Net.Http.Headers;
 using System.Text.Json;
+using System.Windows.Media;
 
 public static class RestClient
 {
@@ -24,28 +25,30 @@ public static class RestClient
         }
     }
 
-    public static async Task<User?> GetUserByEmail(string email)
-    {
+    public static async Task<TravelReason?> GetTravelReasonById(int id){
+        return await HttpClient.GetFromJsonAsync<TravelReason>($"{Constants.BaseURI}api/travel_reasons/{id}");
+    }
+
+    public static async Task<List<TravelReason>?> GetTravelReasons(){
         try
         {
-            return await HttpClient.GetFromJsonAsync<User>($"{Constants.BaseURI}api/users/email/{email}");
+            return await HttpClient.GetFromJsonAsync<List<TravelReason>>($"{Constants.BaseURI}api/travel_reasons/all");
         } catch (Exception e)
         {
             Console.WriteLine(e);
             return null;
         }
+        
+    }
+
+    public static async Task<User?> GetUserByEmail(string email)
+    {
+        return await HttpClient.GetFromJsonAsync<User>($"{Constants.BaseURI}api/users/email/{email}");
     }
 
     public static async Task<List<Role>> GetRoles()
     {
-        try
-        {
-            return await HttpClient.GetFromJsonAsync<List<Role>>($"{Constants.BaseURI}api/roles");
-        }catch (Exception e)
-        {
-            Console.WriteLine(e);
-            return [];
-        }
+        return await HttpClient.GetFromJsonAsync<List<Role>>($"{Constants.BaseURI}api/roles");
     }
 
     public static string DynStatus = "APPROVED";
@@ -181,7 +184,7 @@ public static class RestClient
     public static async Task<Status> GetStatusByStatusId(int statusId)
     {
         try{
-            return await HttpClient.GetFromJsonAsync<Status>($"{Constants.BaseURI}api/status/{statusId}") ?? throw new Exception("Failed to fetch status");
+            return await HttpClient.GetFromJsonAsync<Status>($"{Constants.BaseURI}api/application_status/{statusId}") ?? throw new Exception("Failed to fetch status");
         }catch(Exception e){
             Console.WriteLine(e);
             return null;
@@ -243,10 +246,9 @@ public static class RestClient
             {
                 return await response.Content.ReadFromJsonAsync<PassportApplication>();
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                Console.WriteLine("Failed to deserialise");
+            catch (JsonException e)
+            {   
+                Console.WriteLine("Failed to deserialise the response.");
             }
         }
         Console.WriteLine(await response.Content.ReadAsStringAsync());

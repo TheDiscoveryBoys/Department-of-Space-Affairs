@@ -8,18 +8,18 @@ namespace IntergalacticPassportAPI.Controllers
 {
     [ApiController]
     [Route("api/visa")]
-    [Authorize(Roles="APPLICANT, OFFICER")]
-    public class VisaController : BaseController<Visa, IVisaRepository>
+    [Authorize(Roles = "APPLICANT, OFFICER")]
+    public class VisaController : BaseController<VisaApplication, IVisaRepository>
     {
-        IStatusRepository statusRepo;
-        public VisaController(IVisaRepository repo, IStatusRepository statusRepo) : base(repo)
+        IApplicationStatusRepository applicationStatusRepo;
+        public VisaController(IVisaRepository repo, IApplicationStatusRepository applicationStatusRepo) : base(repo)
         {
-            this.statusRepo = statusRepo;
+            this.applicationStatusRepo = applicationStatusRepo;
         }
 
         [HttpGet]
         [Route("user")]
-        public async Task<ActionResult<IEnumerable<Visa>>> GetVisaApplicationById(string google_id)
+        public async Task<ActionResult<IEnumerable<VisaApplication>>> GetVisaApplicationById(string google_id)
         {
             return await BaseRequest(async () =>
             {
@@ -33,16 +33,15 @@ namespace IntergalacticPassportAPI.Controllers
         }
 
         [HttpPost]
-        public override async Task<ActionResult<Visa>> Create(Visa visa)
+        public override async Task<ActionResult<VisaApplication>> Create(VisaApplication visa)
         {
-            return await BaseRequest(async () =>
-            {
+        
                 Console.WriteLine($"Trying to create visa");
                 //check if there exists a VISA for same DestinationPlanet, StatusId = 2 -> cannot create because pending VISA application exists for user
                 var userCurrentVisas = await _repo.GetVisaApplicationsByGoogleId(visa.UserId);
                 var hasPendingVisas = userCurrentVisas.Any(v =>
                     v.DestinationPlanet == visa.DestinationPlanet &&
-                    statusRepo.GetById(v.StatusId).Result?.Name == "PENDING");
+                    applicationStatusRepo.GetById(v.StatusId).Result?.Name == "PENDING");
 
 
                 if (hasPendingVisas)
@@ -58,26 +57,26 @@ namespace IntergalacticPassportAPI.Controllers
                     v.DestinationPlanet == visa.DestinationPlanet &&
                     v.StartDate.Date == visa.StartDate.Date &&
                     v.EndDate.Date == visa.EndDate.Date &&
-                    statusRepo.GetById(v.StatusId).Result?.Name == "APPROVED");
+                    applicationStatusRepo.GetById(v.StatusId).Result?.Name == "APPROVED");
 
                 if (hasApprovedVisaWithSameDetails)
                 {
                     return Conflict("Could not create VISA. An approved VISA already exists for this planet for this time.");
                 }
 
-                var status = await statusRepo.Create(new Status("PENDING", null));
-                visa.StatusId = status.Id;
+                // var status = await statusRepo.Create(new Status("PENDING", null));
+                visa.StatusId = 1;
                 var visaDB = await _repo.Create(visa);
                 Console.WriteLine($"Successfully created visa with id {visaDB}");
                 return Ok(visaDB);
-            });
+    
 
         }
 
         [HttpGet]
-        [Authorize(Roles="OFFICER")]
+        [Authorize(Roles = "OFFICER")]
         [Route("getnext")]
-        public async Task<ActionResult<Visa>> GetVisaApplicationByOfficerId(string officerId)
+        public async Task<ActionResult<VisaApplication>> GetVisaApplicationByOfficerId(string officerId)
         {
             return await BaseRequest(async () =>
            {
