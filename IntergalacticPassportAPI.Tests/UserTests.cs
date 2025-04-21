@@ -28,7 +28,6 @@ public class UserControllerTests
                 Name = "Zarg the Wise",
                 Species = "Nebulon",
                 PlanetOfOrigin = "Nebula-7",
-                PrimaryLanguage = "Quantum Dialect",
                 DateOfBirth = new DateTime(3100, 5, 12)
             },
             new Users
@@ -38,7 +37,6 @@ public class UserControllerTests
                 Name = "Xena of Mars",
                 Species = "Martian",
                 PlanetOfOrigin = "Mars",
-                PrimaryLanguage = "Martian Tongue",
                 DateOfBirth = new DateTime(2890, 11, 3)
             },
             new Users
@@ -48,7 +46,6 @@ public class UserControllerTests
                 Name = "John Doe",
                 Species = "Human",
                 PlanetOfOrigin = "Earth",
-                PrimaryLanguage = "English",
                 DateOfBirth = new DateTime(1995, 2, 28)
             }
         };
@@ -69,7 +66,7 @@ public class UserControllerTests
     }
 
     [Fact]
-    public async Task GetUserByUserId_ReturnsOkWithUser_WhenUserWithIdExists() 
+    public async Task GetUserByUserId_ReturnsOkWithUser_WhenUserWithIdExists()
     {
         var mockRepo = new Mock<IUsersRepository>();
 
@@ -81,7 +78,6 @@ public class UserControllerTests
             Name = "Zarg the Wise",
             Species = "Nebulon",
             PlanetOfOrigin = "Nebula-7",
-            PrimaryLanguage = "Quantum Dialect",
             DateOfBirth = new DateTime(3100, 5, 12)
         };
 
@@ -119,7 +115,7 @@ public class UserControllerTests
     public async Task Create_ReturnsOk_WhenUserIsCreated()
     {
         var mockRepo = new Mock<IUsersRepository>();
-        var newUser = new Users { GoogleId = "z123", Email = "z@galactic.com", Name = "Zarg", Species="Nebulon", DateOfBirth=new DateTime(3100, 5, 12),PlanetOfOrigin="Nebula-7",PrimaryLanguage="Quantum Dialect" };
+        var newUser = new Users { GoogleId = "z123", Email = "z@galactic.com", Name = "Zarg", Species = "Nebulon", DateOfBirth = new DateTime(3100, 5, 12), PlanetOfOrigin = "Nebula-7" };
 
         mockRepo.Setup(r => r.Exists(newUser)).ReturnsAsync(false);
         mockRepo.Setup(r => r.Create(newUser)).ReturnsAsync(newUser);
@@ -178,7 +174,6 @@ public class UserControllerTests
             Name = "John Doe",
             Species = "Human",
             PlanetOfOrigin = "Earth",
-            PrimaryLanguage = "English",
             DateOfBirth = new DateTime(1995, 2, 28)
         };
 
@@ -204,7 +199,6 @@ public class UserControllerTests
             Name = "John Doe",
             Species = "Human",
             PlanetOfOrigin = "Earth",
-            PrimaryLanguage = "English",
             DateOfBirth = new DateTime(1995, 2, 28)
         };
 
@@ -223,7 +217,7 @@ public class UserControllerTests
     public async Task Put_ReturnsBadRequest_WhenModelStateIsInvalid()
     {
         var mockRepo = new Mock<IUsersRepository>();
-        var invalidUser = new Users(); 
+        var invalidUser = new Users();
 
         var controller = new UserController(mockRepo.Object);
         controller.ModelState.AddModelError("email", "Email is required");
@@ -279,7 +273,6 @@ public class UserControllerTests
             Name = "Zarg the Wise",
             Species = "Nebulon",
             PlanetOfOrigin = "Nebula-7",
-            PrimaryLanguage = "Quantum Dialect",
             DateOfBirth = new DateTime(3100, 5, 12)
         };
 

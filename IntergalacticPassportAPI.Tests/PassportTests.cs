@@ -17,7 +17,7 @@ public class PassportControllerTests
         // Given
         var mockConfig = new Mock<IConfiguration>();
         var mockRepo = new Mock<IPassportRepository>();
-        var mockStatusRepo = new Mock<IStatusRepository>();
+        var mockStatusRepo = new Mock<IApplicationStatusRepository>();
 
         var testPassports = new List<Passport>
         {
@@ -80,7 +80,7 @@ public class PassportControllerTests
         // Given
         var mockConfig = new Mock<IConfiguration>();
         var mockRepo = new Mock<IPassportRepository>();
-        var mockStatusRepo = new Mock<IStatusRepository>();
+        var mockStatusRepo = new Mock<IApplicationStatusRepository>();
 
         // Simulate no passports in the repository
         var emptyPassports = new List<Passport>();
@@ -103,7 +103,7 @@ public class PassportControllerTests
     {
         // Arrange
         var mockRepo = new Mock<IPassportRepository>();
-        var mockStatusRepo = new Mock<IStatusRepository>();
+        var mockStatusRepo = new Mock<IApplicationStatusRepository>();
         var testPassport = new Passport
         {
             Id = 1,
@@ -133,7 +133,7 @@ public class PassportControllerTests
     {
         // Arrange
         var mockRepo = new Mock<IPassportRepository>();
-        var mockStatusRepo = new Mock<IStatusRepository>();
+        var mockStatusRepo = new Mock<IApplicationStatusRepository>();
         mockRepo.Setup(r => r.GetById("99")).ReturnsAsync((Passport?)null);
 
         var controller = new PassportController(mockRepo.Object, mockStatusRepo.Object);
@@ -152,7 +152,7 @@ public class PassportControllerTests
     {
         // Arrange
         var mockRepo = new Mock<IPassportRepository>();
-        var controller = new PassportController(mockRepo.Object, Mock.Of<IStatusRepository>());
+        var controller = new PassportController(mockRepo.Object, Mock.Of<IApplicationStatusRepository>());
 
         var model = new Passport
         {
@@ -179,7 +179,7 @@ public class PassportControllerTests
     {
         // Arrange
         var mockRepo = new Mock<IPassportRepository>();
-        var controller = new PassportController(mockRepo.Object, Mock.Of<IStatusRepository>());
+        var controller = new PassportController(mockRepo.Object, Mock.Of<IApplicationStatusRepository>());
 
         var model = new Passport
         {
@@ -204,7 +204,7 @@ public class PassportControllerTests
     {
         // Arrange
         var mockRepo = new Mock<IPassportRepository>();
-        var controller = new PassportController(mockRepo.Object, Mock.Of<IStatusRepository>());
+        var controller = new PassportController(mockRepo.Object, Mock.Of<IApplicationStatusRepository>());
 
         // Simulate model validation failure
         controller.ModelState.AddModelError("UserId", "UserId is required");
@@ -229,7 +229,7 @@ public class PassportControllerTests
     {
         // Arrange
         var mockRepo = new Mock<IPassportRepository>();
-        var controller = new PassportController(mockRepo.Object, Mock.Of<IStatusRepository>());
+        var controller = new PassportController(mockRepo.Object, Mock.Of<IApplicationStatusRepository>());
 
         var idToDelete = "123";
 
@@ -249,7 +249,7 @@ public class PassportControllerTests
     {
         // Arrange
         var mockRepo = new Mock<IPassportRepository>();
-        var controller = new PassportController(mockRepo.Object, Mock.Of<IStatusRepository>());
+        var controller = new PassportController(mockRepo.Object, Mock.Of<IApplicationStatusRepository>());
 
         var nonExistentId = "999";
 
@@ -269,7 +269,7 @@ public class PassportControllerTests
     {
         // Arrange
         var mockRepo = new Mock<IPassportRepository>();
-        var controller = new PassportController(mockRepo.Object, Mock.Of<IStatusRepository>());
+        var controller = new PassportController(mockRepo.Object, Mock.Of<IApplicationStatusRepository>());
 
         var googleId = "zarg123";
         var expectedPassports = new List<Passport>
@@ -313,7 +313,7 @@ public class PassportControllerTests
     {
         // Arrange
         var mockRepo = new Mock<IPassportRepository>();
-        var controller = new PassportController(mockRepo.Object, Mock.Of<IStatusRepository>());
+        var controller = new PassportController(mockRepo.Object, Mock.Of<IApplicationStatusRepository>());
 
         var googleId = "ghostuser";
         var emptyList = new List<Passport>();
@@ -335,57 +335,57 @@ public class PassportControllerTests
     }
 
     [Fact]
-public async Task GetPassportApplicationByOfficerId_ReturnsOkWithPassport_WhenExists()
-{
-    // Arrange
-    var mockRepo = new Mock<IPassportRepository>();
-    var controller = new PassportController(mockRepo.Object, Mock.Of<IStatusRepository>());
-
-    var officerId = "officer42";
-    var expectedPassport = new Passport
+    public async Task GetPassportApplicationByOfficerId_ReturnsOkWithPassport_WhenExists()
     {
-        Id = 1,
-        UserId = "zarg123",
-        StatusId = 2,
-        SubmittedAt = new DateTime(4025, 4, 1),
-        OfficerId = officerId,
-        ProcessedAt = null
-    };
+        // Arrange
+        var mockRepo = new Mock<IPassportRepository>();
+        var controller = new PassportController(mockRepo.Object, Mock.Of<IApplicationStatusRepository>());
 
-    mockRepo.Setup(r => r.GetPassportApplicationByOfficerId(officerId))
-            .ReturnsAsync(expectedPassport);
+        var officerId = "officer42";
+        var expectedPassport = new Passport
+        {
+            Id = 1,
+            UserId = "zarg123",
+            StatusId = 2,
+            SubmittedAt = new DateTime(4025, 4, 1),
+            OfficerId = officerId,
+            ProcessedAt = null
+        };
 
-    // Act
-    var result = await controller.GetPassportApplicationByOfficerId(officerId);
+        mockRepo.Setup(r => r.GetPassportApplicationByOfficerId(officerId))
+                .ReturnsAsync(expectedPassport);
 
-    // Assert
-    var okResult = result.Result as OkObjectResult;
-    okResult.Should().NotBeNull();
-    okResult!.StatusCode.Should().Be(200);
-    okResult.Value.Should().BeEquivalentTo(expectedPassport);
-}
+        // Act
+        var result = await controller.GetPassportApplicationByOfficerId(officerId);
 
-[Fact]
-public async Task GetPassportApplicationByOfficerId_ReturnsOkWithNull_WhenNoPassportAssigned()
-{
-    // Arrange
-    var mockRepo = new Mock<IPassportRepository>();
-    var controller = new PassportController(mockRepo.Object, Mock.Of<IStatusRepository>());
+        // Assert
+        var okResult = result.Result as OkObjectResult;
+        okResult.Should().NotBeNull();
+        okResult!.StatusCode.Should().Be(200);
+        okResult.Value.Should().BeEquivalentTo(expectedPassport);
+    }
 
-    var officerId = "unassignedOfficer";
+    [Fact]
+    public async Task GetPassportApplicationByOfficerId_ReturnsOkWithNull_WhenNoPassportAssigned()
+    {
+        // Arrange
+        var mockRepo = new Mock<IPassportRepository>();
+        var controller = new PassportController(mockRepo.Object, Mock.Of<IApplicationStatusRepository>());
 
-    mockRepo.Setup(r => r.GetPassportApplicationByOfficerId(officerId))
-            .ReturnsAsync((Passport?)null);
+        var officerId = "unassignedOfficer";
 
-    // Act
-    var result = await controller.GetPassportApplicationByOfficerId(officerId);
+        mockRepo.Setup(r => r.GetPassportApplicationByOfficerId(officerId))
+                .ReturnsAsync((Passport?)null);
 
-    // Assert
-    var okResult = result.Result as OkObjectResult;
-    okResult.Should().NotBeNull();
-    okResult!.StatusCode.Should().Be(200);
-    okResult.Value.Should().BeNull();
-}
+        // Act
+        var result = await controller.GetPassportApplicationByOfficerId(officerId);
+
+        // Assert
+        var okResult = result.Result as OkObjectResult;
+        okResult.Should().NotBeNull();
+        okResult!.StatusCode.Should().Be(200);
+        okResult.Value.Should().BeNull();
+    }
 
 
 }

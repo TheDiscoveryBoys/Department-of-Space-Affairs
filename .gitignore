@@ -103,5 +103,5 @@ terraform.rc
 
 IntergalacticPassportAPI/appsettings.json
 /IntergalacticPassportAPI/nuget.config
-IntergalacticPassportAPI.Tests/appsettings.json
-IntergalacticPassportAPI.Tests/IntergalacticPassportAPI.Tests.sln
+# IntergalacticPassportAPI.Tests/appsettings.json
+# IntergalacticPassportAPI.Tests/IntergalacticPassportAPI.Tests.sln
