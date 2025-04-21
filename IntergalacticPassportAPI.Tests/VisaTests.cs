@@ -15,11 +15,11 @@ public class VisaControllerTests
     {
         // Arrange
         var mockRepo = new Mock<IVisaRepository>();
-        var controller = new VisaController(mockRepo.Object, Mock.Of<IStatusRepository>());
+        var controller = new VisaController(mockRepo.Object, Mock.Of<IApplicationStatusRepository>());
 
-        var testVisas = new List<Visa>
+        var testVisas = new List<VisaApplication>
         {
-            new Visa
+            new VisaApplication
             {
                 Id = 1,
                 UserId = "zarg123",
@@ -28,11 +28,11 @@ public class VisaControllerTests
                 ProcessedAt = null,
                 OfficerId = "officer42",
                 DestinationPlanet = "Earth",
-                TravelReason = "Diplomatic Mission",
+                TravelReasonId = 1,
                 StartDate = new DateTime(4025, 5, 1),
                 EndDate = new DateTime(4025, 5, 10)
             },
-            new Visa
+            new VisaApplication
             {
                 Id = 2,
                 UserId = "nova88",
@@ -41,7 +41,7 @@ public class VisaControllerTests
                 ProcessedAt = new DateTime(4025, 3, 20),
                 OfficerId = "officer17",
                 DestinationPlanet = "Mars",
-                TravelReason = "Scientific Research",
+                TravelReasonId = 1,
                 StartDate = new DateTime(4025, 6, 1),
                 EndDate = new DateTime(4025, 7, 1)
             }
@@ -57,7 +57,7 @@ public class VisaControllerTests
         okResult.Should().NotBeNull("because visas exist");
         okResult!.StatusCode.Should().Be(200);
 
-        var actualVisas = okResult.Value as IEnumerable<Visa>;
+        var actualVisas = okResult.Value as IEnumerable<VisaApplication>;
         actualVisas.Should().NotBeNull();
         actualVisas.Should().HaveCount(2);
         actualVisas.Should().BeEquivalentTo(testVisas);
@@ -68,9 +68,9 @@ public class VisaControllerTests
     {
         // Arrange
         var mockRepo = new Mock<IVisaRepository>();
-        var controller = new VisaController(mockRepo.Object, Mock.Of<IStatusRepository>());
+        var controller = new VisaController(mockRepo.Object, Mock.Of<IApplicationStatusRepository>());
 
-        mockRepo.Setup(repo => repo.GetAll()).ReturnsAsync(new List<Visa>());
+        mockRepo.Setup(repo => repo.GetAll()).ReturnsAsync(new List<VisaApplication>());
 
         // Act
         var result = await controller.GetAll();
@@ -86,9 +86,9 @@ public class VisaControllerTests
     {
         // Arrange
         var mockRepo = new Mock<IVisaRepository>();
-        var controller = new VisaController(mockRepo.Object, Mock.Of<IStatusRepository>());
+        var controller = new VisaController(mockRepo.Object, Mock.Of<IApplicationStatusRepository>());
 
-        var testVisa = new Visa
+        var testVisa = new VisaApplication
         {
             Id = 1,
             UserId = "zarg123",
@@ -97,7 +97,7 @@ public class VisaControllerTests
             ProcessedAt = null,
             OfficerId = "officer42",
             DestinationPlanet = "Earth",
-            TravelReason = "Diplomatic Mission",
+            TravelReasonId = 1,
             StartDate = new DateTime(4025, 5, 1),
             EndDate = new DateTime(4025, 5, 10)
         };
@@ -112,7 +112,7 @@ public class VisaControllerTests
         okResult.Should().NotBeNull();
         okResult!.StatusCode.Should().Be(200);
 
-        var actualVisa = okResult.Value as Visa;
+        var actualVisa = okResult.Value as VisaApplication;
         actualVisa.Should().NotBeNull();
         actualVisa.Should().BeEquivalentTo(testVisa);
     }
@@ -122,9 +122,9 @@ public class VisaControllerTests
     {
         // Arrange
         var mockRepo = new Mock<IVisaRepository>();
-        var controller = new VisaController(mockRepo.Object, Mock.Of<IStatusRepository>());
+        var controller = new VisaController(mockRepo.Object, Mock.Of<IApplicationStatusRepository>());
 
-        mockRepo.Setup(repo => repo.GetById("999")).ReturnsAsync((Visa?)null);
+        mockRepo.Setup(repo => repo.GetById("999")).ReturnsAsync((VisaApplication?)null);
 
         // Act
         var result = await controller.GetById("999");
@@ -140,26 +140,26 @@ public class VisaControllerTests
     {
         // Arrange
         var mockRepo = new Mock<IVisaRepository>();
-        var mockStatusRepo = new Mock<IStatusRepository>();
+        var mockStatusRepo = new Mock<IApplicationStatusRepository>();
         var controller = new VisaController(mockRepo.Object, mockStatusRepo.Object);
 
-        var newVisa = new Visa
+        var newVisa = new VisaApplication
         {
             UserId = "test_user",
             DestinationPlanet = "Mars",
-            TravelReason = "Research",
+            TravelReasonId = 1,
             StartDate = new DateTime(4025, 6, 1),
             EndDate = new DateTime(4025, 6, 30),
             SubmittedAt = DateTime.UtcNow
         };
 
         mockRepo.Setup(r => r.GetVisaApplicationsByGoogleId("test_user"))
-                .ReturnsAsync(new List<Visa>()); // No existing visas
+                .ReturnsAsync(new List<VisaApplication>()); // No existing visas
 
-        mockStatusRepo.Setup(s => s.Create(It.IsAny<Status>()))
-                      .ReturnsAsync(new Status { Id = 1, Name = "PENDING" });
+        mockStatusRepo.Setup(s => s.Create(It.IsAny<ApplicationStatus>()))
+                      .ReturnsAsync(new ApplicationStatus { Id = 1, Name = "PENDING" });
 
-        mockRepo.Setup(r => r.Create(It.IsAny<Visa>()))
+        mockRepo.Setup(r => r.Create(It.IsAny<VisaApplication>()))
                 .ReturnsAsync(newVisa);
 
         // Act
@@ -177,10 +177,10 @@ public class VisaControllerTests
     {
         // Arrange
         var mockRepo = new Mock<IVisaRepository>();
-        var mockStatusRepo = new Mock<IStatusRepository>();
+        var mockStatusRepo = new Mock<IApplicationStatusRepository>();
         var controller = new VisaController(mockRepo.Object, mockStatusRepo.Object);
 
-        var newVisa = new Visa
+        var newVisa = new VisaApplication
         {
             UserId = "test_user",
             DestinationPlanet = "Jupiter",
@@ -189,7 +189,7 @@ public class VisaControllerTests
             SubmittedAt = DateTime.UtcNow
         };
 
-        var existingVisa = new Visa
+        var existingVisa = new VisaApplication
         {
             DestinationPlanet = "Jupiter",
             StatusId = 2,
@@ -198,10 +198,10 @@ public class VisaControllerTests
         };
 
         mockRepo.Setup(r => r.GetVisaApplicationsByGoogleId("test_user"))
-                .ReturnsAsync(new List<Visa> { existingVisa });
+                .ReturnsAsync(new List<VisaApplication> { existingVisa });
 
         mockStatusRepo.Setup(s => s.GetById(2))
-                      .ReturnsAsync(new Status { Id = 2, Name = "PENDING" });
+                      .ReturnsAsync(new ApplicationStatus { Id = 2, Name = "PENDING" });
 
         // Act
         var result = await controller.Create(newVisa);
@@ -218,10 +218,10 @@ public class VisaControllerTests
     {
         // Arrange
         var mockRepo = new Mock<IVisaRepository>();
-        var mockStatusRepo = new Mock<IStatusRepository>();
+        var mockStatusRepo = new Mock<IApplicationStatusRepository>();
         var controller = new VisaController(mockRepo.Object, mockStatusRepo.Object);
 
-        var newVisa = new Visa
+        var newVisa = new VisaApplication
         {
             UserId = "test_user",
             DestinationPlanet = "Venus",
@@ -230,7 +230,7 @@ public class VisaControllerTests
             SubmittedAt = DateTime.UtcNow
         };
 
-        var existingVisa = new Visa
+        var existingVisa = new VisaApplication
         {
             DestinationPlanet = "Venus",
             StatusId = 3,
@@ -239,10 +239,10 @@ public class VisaControllerTests
         };
 
         mockRepo.Setup(r => r.GetVisaApplicationsByGoogleId("test_user"))
-                .ReturnsAsync(new List<Visa> { existingVisa });
+                .ReturnsAsync(new List<VisaApplication> { existingVisa });
 
         mockStatusRepo.Setup(s => s.GetById(3))
-                      .ReturnsAsync(new Status { Id = 3, Name = "APPROVED" });
+                      .ReturnsAsync(new ApplicationStatus { Id = 3, Name = "APPROVED" });
 
         // Act
         var result = await controller.Create(newVisa);
@@ -259,14 +259,14 @@ public class VisaControllerTests
     {
         // Arrange
         var mockRepo = new Mock<IVisaRepository>();
-        var controller = new VisaController(mockRepo.Object, Mock.Of<IStatusRepository>());
+        var controller = new VisaController(mockRepo.Object, Mock.Of<IApplicationStatusRepository>());
 
-        var existingVisa = new Visa
+        var existingVisa = new VisaApplication
         {
             Id = 1,
             UserId = "user123",
             DestinationPlanet = "Neptune",
-            TravelReason = "Diplomacy",
+            TravelReasonId = 1,
             StartDate = DateTime.UtcNow.AddDays(10),
             EndDate = DateTime.UtcNow.AddDays(20),
             SubmittedAt = DateTime.UtcNow
@@ -290,14 +290,14 @@ public class VisaControllerTests
     {
         // Arrange
         var mockRepo = new Mock<IVisaRepository>();
-        var controller = new VisaController(mockRepo.Object, Mock.Of<IStatusRepository>());
+        var controller = new VisaController(mockRepo.Object, Mock.Of<IApplicationStatusRepository>());
         controller.ModelState.AddModelError("DestinationPlanet", "Required");
 
-        var invalidVisa = new Visa
+        var invalidVisa = new VisaApplication
         {
             Id = 2,
             UserId = "user456",
-            TravelReason = "Adventure",
+            TravelReasonId = 1,
             StartDate = DateTime.UtcNow,
             EndDate = DateTime.UtcNow.AddDays(5),
             SubmittedAt = DateTime.UtcNow
@@ -317,21 +317,21 @@ public class VisaControllerTests
     {
         // Arrange
         var mockRepo = new Mock<IVisaRepository>();
-        var controller = new VisaController(mockRepo.Object, Mock.Of<IStatusRepository>());
+        var controller = new VisaController(mockRepo.Object, Mock.Of<IApplicationStatusRepository>());
 
-        var visaToUpdate = new Visa
+        var visaToUpdate = new VisaApplication
         {
             Id = 3,
             UserId = "ghost_user",
             DestinationPlanet = "Mercury",
-            TravelReason = "Training",
+            TravelReasonId = 1,
             StartDate = DateTime.UtcNow.AddDays(1),
             EndDate = DateTime.UtcNow.AddDays(10),
             SubmittedAt = DateTime.UtcNow
         };
 
         mockRepo.Setup(r => r.Update(visaToUpdate))
-                .ReturnsAsync((Visa?)null); // Simulate failed update
+                .ReturnsAsync((VisaApplication?)null); // Simulate failed update
 
         // Act
         var result = await controller.Put(visaToUpdate);
@@ -347,7 +347,7 @@ public class VisaControllerTests
     {
         // Arrange
         var mockRepo = new Mock<IVisaRepository>();
-        var controller = new VisaController(mockRepo.Object, Mock.Of<IStatusRepository>());
+        var controller = new VisaController(mockRepo.Object, Mock.Of<IApplicationStatusRepository>());
 
         string visaId = "123";
 
@@ -367,7 +367,7 @@ public class VisaControllerTests
     {
         // Arrange
         var mockRepo = new Mock<IVisaRepository>();
-        var controller = new VisaController(mockRepo.Object, Mock.Of<IStatusRepository>());
+        var controller = new VisaController(mockRepo.Object, Mock.Of<IApplicationStatusRepository>());
 
         string nonExistentVisaId = "999";
 
@@ -387,27 +387,27 @@ public class VisaControllerTests
     {
         // Arrange
         var mockRepo = new Mock<IVisaRepository>();
-        var controller = new VisaController(mockRepo.Object, Mock.Of<IStatusRepository>());
+        var controller = new VisaController(mockRepo.Object, Mock.Of<IApplicationStatusRepository>());
 
         string googleId = "xena456";
-        var visaApplications = new List<Visa>
+        var visaApplications = new List<VisaApplication>
     {
-        new Visa
+        new VisaApplication
         {
             Id = 1,
             UserId = googleId,
             DestinationPlanet = "Mars",
-            TravelReason = "Business",
+            TravelReasonId = 1,
             StartDate = DateTime.UtcNow.AddDays(10),
             EndDate = DateTime.UtcNow.AddDays(20),
             SubmittedAt = DateTime.UtcNow
         },
-        new Visa
+        new VisaApplication
         {
             Id = 2,
             UserId = googleId,
             DestinationPlanet = "Venus",
-            TravelReason = "Vacation",
+            TravelReasonId = 1,
             StartDate = DateTime.UtcNow.AddDays(5),
             EndDate = DateTime.UtcNow.AddDays(15),
             SubmittedAt = DateTime.UtcNow
@@ -424,7 +424,7 @@ public class VisaControllerTests
         okResult.Should().NotBeNull();
         okResult!.StatusCode.Should().Be(200);
 
-        var actualVisaApplications = okResult.Value as IEnumerable<Visa>;
+        var actualVisaApplications = okResult.Value as IEnumerable<VisaApplication>;
         actualVisaApplications.Should().NotBeNull();
         actualVisaApplications.Should().HaveCount(2);
         actualVisaApplications.Should().BeEquivalentTo(visaApplications);
@@ -435,16 +435,16 @@ public class VisaControllerTests
     {
         // Arrange
         var mockRepo = new Mock<IVisaRepository>();
-        var controller = new VisaController(mockRepo.Object, Mock.Of<IStatusRepository>());
+        var controller = new VisaController(mockRepo.Object, Mock.Of<IApplicationStatusRepository>());
 
         string officerId = "officer123";
-        var visaApplication = new Visa
+        var visaApplication = new VisaApplication
         {
             Id = 1,
             UserId = "xena456",
             OfficerId = officerId,
             DestinationPlanet = "Mars",
-            TravelReason = "Business",
+            TravelReasonId = 1,
             StartDate = DateTime.UtcNow.AddDays(10),
             EndDate = DateTime.UtcNow.AddDays(20),
             SubmittedAt = DateTime.UtcNow
@@ -460,7 +460,7 @@ public class VisaControllerTests
         okResult.Should().NotBeNull();
         okResult!.StatusCode.Should().Be(200);
 
-        var actualVisaApplication = okResult.Value as Visa;
+        var actualVisaApplication = okResult.Value as VisaApplication;
         actualVisaApplication.Should().NotBeNull();
         actualVisaApplication.Should().BeEquivalentTo(visaApplication);
     }
