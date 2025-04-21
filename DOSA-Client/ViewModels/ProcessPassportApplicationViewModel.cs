@@ -113,7 +113,7 @@ namespace DOSA_Client.ViewModels
 
         public async void ApproveApplication()
         {
-            if (Reason.Length > 255)
+            if (Reason != null && Reason.Length > 255)
             {
                 Reason = Reason.Substring(0, 255);
                 MessageBox.Show("Reason exceeds 255 characters. Input will be truncated.");
