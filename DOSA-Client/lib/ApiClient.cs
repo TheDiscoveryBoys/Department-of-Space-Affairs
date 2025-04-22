@@ -34,8 +34,8 @@ namespace DOSA_Client.lib
             foreach (var visaApplication in visaApplications)
             {
                 var Status = await RestClient.GetStatusByStatusId(visaApplication.StatusId ?? throw new Exception("An application must have a status id"));
-                var formattedStartDate = visaApplication.StartDate?.ToString("MM/dd/yy");
-                var formattedEndDate = visaApplication.EndDate?.ToString("MM/dd/yy"); ;
+                var formattedStartDate = visaApplication.StartDate?.ToString("dd/MM/yy");
+                var formattedEndDate = visaApplication.EndDate?.ToString("dd/MM/yy"); ;
                 applications.Add(new Application(Status, visaApplication.SubmittedAt, $"VISA - {visaApplication.DestinationPlanet} ({formattedStartDate} - {formattedEndDate})",visaApplication.OfficerComment, visaApplication.ProcessedAt));
             }
             Console.WriteLine(applications.Count);

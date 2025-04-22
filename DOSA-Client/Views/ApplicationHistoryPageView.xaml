@@ -33,11 +33,8 @@
                 </Border.BorderBrush>
                 <Grid>
                     <Grid.RowDefinitions>
-                        <!-- Title -->
                         <RowDefinition Height="Auto"/>
-                        <!-- Headers -->
                         <RowDefinition Height="Auto"/>
-                        <!-- Applications -->
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
@@ -45,7 +42,7 @@
                     <!-- Headers -->
                     <Grid Grid.Row="1" Margin="30,0,45,10">
                         <Grid.ColumnDefinitions>
-                            <!-- Document Type -->
+                            <!-- Document -->
                             <ColumnDefinition Width="2*" />
                             <!-- Date -->
                             <ColumnDefinition Width="2*" />
@@ -62,7 +59,6 @@
                     </Grid>
                     
                     <!-- Application List -->
-                    <!-- Application List + Button -->
                     <Grid Grid.Row="2" Margin="30,0,30,20">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*" />
@@ -90,14 +86,14 @@
 
                                                 <!-- Date -->
                                                 <TextBlock Grid.Column="1"
-                                       Text="{Binding SubmittedAt, StringFormat={}{0:dd/MM/yyyy}}" FontFamily="Consolas" FontSize="13"/>
+                                                            Text="{Binding SubmittedAt, StringFormat={}{0:dd/MM/yyyy}}" FontFamily="Consolas" FontSize="13"/>
 
                                                 <!-- Status -->
                                                 <TextBlock Grid.Column="2"
-                                       FontWeight="Bold"
-                                       FontSize="13"
-                                       FontFamily="Consolas"
-                                       Text="{Binding Status.Name}">
+                                                           FontWeight="Bold"
+                                                           FontSize="13"
+                                                           FontFamily="Consolas"
+                                                           Text="{Binding Status.Name}">
                                                     <TextBlock.Style>
                                                         <Style TargetType="TextBlock">
                                                             <Setter Property="Foreground" Value="Black"/>
@@ -118,10 +114,10 @@
 
                                                 <!-- Reason -->
                                                 <TextBlock Grid.Column="3"
-                                       Text="{Binding OfficerComment, TargetNullValue='-'}"
-                                       FontSize="13"
-                                       FontFamily="Consolas"
-                                       TextWrapping="Wrap" />
+                                                           Text="{Binding OfficerComment, TargetNullValue='-'}"
+                                                           FontSize="13"
+                                                           FontFamily="Consolas"
+                                                           TextWrapping="Wrap" />
                                             </Grid>
                                         </Border>
                                     </DataTemplate>
@@ -132,29 +128,29 @@
                         <!-- Refresh Button -->
                         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,30,0,0">
                             <Button Command="{Binding RefreshCommand}"
-        Width="120"
-        Height="35"
-        Background="#7F5AF0"
-        Foreground="White"
-        FontWeight="Bold"
-        FontSize="14"
-        ToolTip="Refresh Application History"
-        Cursor="Hand"
-        Style="{StaticResource RoundedButtonStyle}">
+                                    Width="120"
+                                    Height="35"
+                                    Background="#7F5AF0"
+                                    Foreground="White"
+                                    FontWeight="Bold"
+                                    FontSize="14"
+                                    ToolTip="Refresh Application History"
+                                    Cursor="Hand"
+                                    Style="{StaticResource RoundedButtonStyle}">
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                     <!-- Refresh Icon -->
                                     <TextBlock Text=""
-                   FontFamily="Segoe MDL2 Assets"
-                   Margin="0,0,5,0"
-                   VerticalAlignment="Center"
-                   FontSize="16"
-                   Foreground="White"/>
+                                               FontFamily="Segoe MDL2 Assets"
+                                               Margin="0,0,5,0"
+                                               VerticalAlignment="Center"
+                                               FontSize="16"
+                                               Foreground="White"/>
                                     <!-- Label -->
                                     <TextBlock Text="Refresh"
-                   FontFamily="Consolas"
-                   VerticalAlignment="Center"
-                   FontWeight="Bold"
-                   Foreground="White"/>
+                                               FontFamily="Consolas"
+                                               VerticalAlignment="Center"
+                                               FontWeight="Bold"
+                                               Foreground="White"/>
                                 </StackPanel>
                             </Button>
 
